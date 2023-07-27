@@ -29,12 +29,41 @@ export interface IUserClient {
    */
   getBaseAccount(): IStarkExpressAccount | null;
 
+  /**
+   * Generate a stark account.
+   * 
+   * @param ethereumPrivateKey - The Ethereum Private Key.
+   *
+   * @returns An object of type IStarkExpressAccount.
+   */
   generateStarkAccount(ethereumPrivateKey: string): IStarkExpressAccount;
 
+  /**
+   * Registers a new StarkExpress user.
+   * 
+   * @param username - StarkExpress Username.
+   * @param starkExpressAccount - starkExpress account of type IStarkExpressAccount.
+   *
+   * @returns An object of type IRegisteredUser.
+   */
   registerStarkUser(username: string, starkExpressAccount?: IStarkExpressAccount): Promise<IRegisteredUser>;
 
+  /**
+   * Gets user information.
+   * 
+   * @param userId - StarkExpress Username.
+   *
+   * @returns An object of type IUserInfo.
+   */
   getUserInfo(userId: string): Promise<IUserInfo>;
 
+  /**
+   * Gets multiple users information.
+   * 
+   * @param filter - IGetAllUsersFilter.
+   *
+   * @returns An object of type IGetAllUsersResponse.
+   */
   getAllUsersInfo(filter: IGetAllUsersFilter): Promise<IGetAllUsersResponse>
 
 }
