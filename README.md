@@ -73,7 +73,9 @@ import {
    IRegisteredUser,
    IStarkExpressAccount,
    IUserInfo,
-   IGetAllUsersResponse
+   IGetAllUsersResponse,
+   ITEM_COMPARISON,
+   IGetAllUsersFilter
 } from "@threesigma/starkexpress-ts-sdk";
 
 // generate a new starkexpress account using ethereum private key
