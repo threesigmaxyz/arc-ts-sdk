@@ -6,7 +6,8 @@ import { trySafeExecute } from '../utils/retryExecuteFunction';
 import { IUserClient } from '../interfaces/IUserClient';
 import { IStarkAccount } from '../interfaces/IStarkAccount';
 import { IEIP712SignableDataUrlParams } from '../interfaces/IEIP712SignableDataUrlParams';
-import {privateToPublic,
+import {
+  privateToPublic,
   isHexPrefixed,
   addHexPrefix,
   stripHexPrefix,
@@ -14,13 +15,14 @@ import {privateToPublic,
   isValidChecksumAddress,
   isValidPublic,
   toChecksumAddress,
-  publicToAddress} from "ethereumjs-util";
+  publicToAddress,
+} from 'ethereumjs-util';
 import {
   MessageTypes,
   SignTypedDataVersion,
   TypedMessage,
   signTypedData,
-} from "@metamask/eth-sig-util";
+} from '@metamask/eth-sig-util';
 import { IRegisterUserPayload } from '../interfaces/IRegisterUserPayload';
 import { IRegisteredUser } from '../interfaces/IRegisteredUser';
 import { IStarkExpressAccount } from '../interfaces/IStarkExpressAccount';
@@ -46,9 +48,7 @@ export class UserClient extends BaseClient implements IUserClient {
    *
    * @param clientConfig - Configuration parameters for the client.
    */
-  public constructor(
-    clientConfig: IClientConfig,
-  ) {
+  public constructor(clientConfig: IClientConfig) {
     super(clientConfig);
 
     // public methods
@@ -60,19 +60,25 @@ export class UserClient extends BaseClient implements IUserClient {
     this.getUserInfo = this.getUserInfo.bind(this);
 
     // public methods
-    this.generateStarkAccountFromEthPrivateKey = this.generateStarkAccountFromEthPrivateKey.bind(this);
+    this.generateStarkAccountFromEthPrivateKey =
+      this.generateStarkAccountFromEthPrivateKey.bind(this);
     this.getEIP712SignableData = this.getEIP712SignableData.bind(this);
     this.registerNewUser = this.registerNewUser.bind(this);
   }
 
-  private generateStarkAccountFromEthPrivateKey(fullyPrefixedPrivateKey: string): IStarkAccount {
-    const keyPair = starkwareCrypto.ec.keyFromPrivate(stripHexPrefix(fullyPrefixedPrivateKey), 'hex');
+  private generateStarkAccountFromEthPrivateKey(
+    fullyPrefixedPrivateKey: string,
+  ): IStarkAccount {
+    const keyPair = starkwareCrypto.ec.keyFromPrivate(
+      stripHexPrefix(fullyPrefixedPrivateKey),
+      'hex',
+    );
     // const _starkPublicKey: string = keyPair.getPublic(true, 'hex');
     const starkSecretKey: string = keyPair.getPrivate('hex');
-  
+
     const keyPairPub = starkwareCrypto.ec.keyFromPublic(
       keyPair.getPublic(true, 'hex'),
-      'hex'
+      'hex',
     );
     const publicKeyX = keyPairPub.getPublic().getX();
     return {
@@ -81,54 +87,60 @@ export class UserClient extends BaseClient implements IUserClient {
     } as IStarkAccount;
   }
 
-
-  private async getEIP712SignableData<T extends MessageTypes>(queryParams: IEIP712SignableDataUrlParams): Promise<TypedMessage<T>> {
+  private async getEIP712SignableData<T extends MessageTypes>(
+    queryParams: IEIP712SignableDataUrlParams,
+  ): Promise<TypedMessage<T>> {
     const query = new URLSearchParams({
       username: queryParams.username,
       stark_key: queryParams.starkKey,
       address: queryParams.address,
     }).toString();
-      
+
     const resp = await fetch(
       `${this.getProvider().url}/users/register-details?${query}`,
       {
         method: 'GET',
         headers: {
-          'x-api-key': this.clientConfig.apiKey
-        }
-      }
+          'x-api-key': this.clientConfig.apiKey,
+        },
+      },
     );
-          
+
     const data = await resp.json();
     return data as TypedMessage<T>;
-  };
+  }
 
-  private async registerNewUser(body: IRegisterUserPayload): Promise<IRegisteredUser> {
-    const resp = await fetch(
-      `${this.getProvider().url}/users`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': this.clientConfig.apiKey
-        },
-        body: JSON.stringify(body)
-      }
-    );
+  private async registerNewUser(
+    body: IRegisterUserPayload,
+  ): Promise<IRegisteredUser> {
+    const resp = await fetch(`${this.getProvider().url}/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': this.clientConfig.apiKey,
+      },
+      body: JSON.stringify(body),
+    });
     const data = await resp.json();
     return data as IRegisteredUser;
-  };
+  }
 
-  public generateStarkAccount(ethereumPrivateKey: string): IStarkExpressAccount {
-
+  public generateStarkAccount(
+    ethereumPrivateKey: string,
+  ): IStarkExpressAccount {
     let fullyPrefixedPrivateKey = ethereumPrivateKey;
     if (!isHexPrefixed(ethereumPrivateKey)) {
       fullyPrefixedPrivateKey = addHexPrefix(ethereumPrivateKey);
     }
 
-    const privateKeyBuffer = Buffer.from(stripHexPrefix(fullyPrefixedPrivateKey), 'hex');
+    const privateKeyBuffer = Buffer.from(
+      stripHexPrefix(fullyPrefixedPrivateKey),
+      'hex',
+    );
     const ethereumPubKey: Buffer = privateToPublic(privateKeyBuffer);
-    const fullEthereumPubKeyHex: string = addHexPrefix(ethereumPubKey.toString('hex'));
+    const fullEthereumPubKeyHex: string = addHexPrefix(
+      ethereumPubKey.toString('hex'),
+    );
 
     if (!isValidPublic(ethereumPubKey)) {
       throw new Error(`Invalid Ethereum public key`);
@@ -136,7 +148,9 @@ export class UserClient extends BaseClient implements IUserClient {
 
     const ethereumAddress: Buffer = publicToAddress(ethereumPubKey, true);
     const ethereumAddressHex = ethereumAddress.toString('hex');
-    const checksummedAddress = toChecksumAddress(addHexPrefix(ethereumAddressHex));
+    const checksummedAddress = toChecksumAddress(
+      addHexPrefix(ethereumAddressHex),
+    );
 
     if (!isValidAddress(checksummedAddress)) {
       throw new Error(`Invalid Ethereum address`);
@@ -151,42 +165,53 @@ export class UserClient extends BaseClient implements IUserClient {
       publicKey: fullEthereumPubKeyHex,
       secretKey: fullyPrefixedPrivateKey,
     } as IAccount;
-    const starkAccount: IStarkAccount = this.generateStarkAccountFromEthPrivateKey(fullyPrefixedPrivateKey);
+    const starkAccount: IStarkAccount =
+      this.generateStarkAccountFromEthPrivateKey(fullyPrefixedPrivateKey);
     return {
       ethereumAccount,
-      starkAccount
+      starkAccount,
     } as IStarkExpressAccount;
   }
 
-  public async registerStarkUser(username: string, starkExpressAccount?: IStarkExpressAccount): Promise<IRegisteredUser> {
-    const starkExpressAccountToRegister = starkExpressAccount || this.baseStarkExpressAccount;
+  public async registerStarkUser(
+    username: string,
+    starkExpressAccount?: IStarkExpressAccount,
+  ): Promise<IRegisteredUser> {
+    const starkExpressAccountToRegister =
+      starkExpressAccount || this.baseStarkExpressAccount;
     if (!starkExpressAccountToRegister) {
       throw new Error(`Missing StarkExpressAccount to register username with`);
     }
 
     // get register details
-    const eip712SignableData: TypedMessage<MessageTypes> = 
-    await this.getEIP712SignableData({
-      username: username,
-      starkKey: starkExpressAccountToRegister.starkAccount.publicKey,
-      address: starkExpressAccountToRegister.ethereumAccount.address} as IEIP712SignableDataUrlParams);
+    const eip712SignableData: TypedMessage<MessageTypes> =
+      await this.getEIP712SignableData({
+        username: username,
+        starkKey: starkExpressAccountToRegister.starkAccount.publicKey,
+        address: starkExpressAccountToRegister.ethereumAccount.address,
+      } as IEIP712SignableDataUrlParams);
 
     // sign_eip712_register_message
     const messageParams: Record<string, unknown> = {
-      "username": (eip712SignableData.message[0] as object)["value"],
-      "address": (eip712SignableData["message"][2] as object)["value"],
-      "starkKey": stripHexPrefix((eip712SignableData["message"][1] as object)["value"]),
+      username: (eip712SignableData.message[0] as object)['value'],
+      address: (eip712SignableData['message'][2] as object)['value'],
+      starkKey: stripHexPrefix(
+        (eip712SignableData['message'][1] as object)['value'],
+      ),
     };
-  
+
     const data = {
       domain: eip712SignableData.domain,
       types: eip712SignableData.types,
       primaryType: eip712SignableData.primaryType,
-      message: messageParams
+      message: messageParams,
     };
     data.domain.chainId = data.domain.chainId as number;
 
-    const privateKeyBuffer = Buffer.from(stripHexPrefix(starkExpressAccountToRegister.ethereumAccount.secretKey), 'hex');
+    const privateKeyBuffer = Buffer.from(
+      stripHexPrefix(starkExpressAccountToRegister.ethereumAccount.secretKey),
+      'hex',
+    );
     const eip712Signature: string = signTypedData({
       privateKey: privateKeyBuffer,
       data: data,
@@ -194,8 +219,16 @@ export class UserClient extends BaseClient implements IUserClient {
     });
 
     // Sign the Ethereum address => create stark signature
-    const keyPair = starkwareCrypto.ec.keyFromPrivate(stripHexPrefix(starkExpressAccountToRegister.ethereumAccount.secretKey), 'hex');
-    const starkSignature = starkwareCrypto.sign(keyPair, starkwareCrypto.pedersen([stripHexPrefix(starkExpressAccountToRegister.ethereumAccount.address)]));
+    const keyPair = starkwareCrypto.ec.keyFromPrivate(
+      stripHexPrefix(starkExpressAccountToRegister.ethereumAccount.secretKey),
+      'hex',
+    );
+    const starkSignature = starkwareCrypto.sign(
+      keyPair,
+      starkwareCrypto.pedersen([
+        stripHexPrefix(starkExpressAccountToRegister.ethereumAccount.address),
+      ]),
+    );
     const r = starkSignature.r.toString('hex');
     const s = starkSignature.s.toString('hex');
 
@@ -206,8 +239,8 @@ export class UserClient extends BaseClient implements IUserClient {
           address: starkExpressAccountToRegister.ethereumAccount.address,
           eip712Signature,
           starkKey: starkExpressAccountToRegister.starkAccount.publicKey,
-          starkSignature: {r, s},
-        } as IRegisterUserPayload
+          starkSignature: { r, s },
+        } as IRegisterUserPayload,
       ]);
     } else {
       return await this.registerNewUser({
@@ -215,7 +248,7 @@ export class UserClient extends BaseClient implements IUserClient {
         address: starkExpressAccountToRegister.ethereumAccount.address,
         eip712Signature,
         starkKey: starkExpressAccountToRegister.starkAccount.publicKey,
-        starkSignature: {r, s},
+        starkSignature: { r, s },
       } as IRegisterUserPayload);
     }
   }
@@ -227,7 +260,9 @@ export class UserClient extends BaseClient implements IUserClient {
    *
    * @returns A Promise that resolves to `void` when the base account has been set successfully.
    */
-  public async setBaseAccount(baseAccount: IStarkExpressAccount): Promise<void> {
+  public async setBaseAccount(
+    baseAccount: IStarkExpressAccount,
+  ): Promise<void> {
     this.baseStarkExpressAccount = baseAccount;
   }
 
@@ -247,16 +282,13 @@ export class UserClient extends BaseClient implements IUserClient {
    *
    * @returns a promise that resolves to an object of IUserInfo.
    */
-  public async getUserInfo(userId: string): Promise<IUserInfo> {     
-    const resp = await fetch(
-      `${this.getProvider().url}/users/${userId}`,
-      {
-        method: 'GET',
-        headers: {
-          'x-api-key': this.clientConfig.apiKey
-        }
-      }
-    );
+  public async getUserInfo(userId: string): Promise<IUserInfo> {
+    const resp = await fetch(`${this.getProvider().url}/users/${userId}`, {
+      method: 'GET',
+      headers: {
+        'x-api-key': this.clientConfig.apiKey,
+      },
+    });
     const data = await resp.json();
     return data as IUserInfo;
   }
@@ -268,45 +300,45 @@ export class UserClient extends BaseClient implements IUserClient {
    *
    * @returns a promise that resolves to an array of userInfos.
    */
-  public async getAllUsersInfo(filter: IGetAllUsersFilter): Promise<IGetAllUsersResponse> {
-
+  public async getAllUsersInfo(
+    filter: IGetAllUsersFilter,
+  ): Promise<IGetAllUsersResponse> {
     let queryBuilder = {};
     if (filter.username) {
-      queryBuilder["username"] = filter.username.toString();
+      queryBuilder['username'] = filter.username.toString();
     }
     if (filter.usernameComparison) {
-      queryBuilder["username_comparison"] = filter.usernameComparison.toString();
+      queryBuilder['username_comparison'] =
+        filter.usernameComparison.toString();
     }
     if (filter.address) {
-      queryBuilder["address"] = filter.address.toString();
+      queryBuilder['address'] = filter.address.toString();
     }
     if (filter.creationDate) {
-      queryBuilder["creation_date"] = filter.creationDate.toString();
+      queryBuilder['creation_date'] = filter.creationDate.toString();
     }
     if (filter.creationDateComparison) {
-      queryBuilder["creation_date_comparison"] = filter.creationDateComparison.toString();
+      queryBuilder['creation_date_comparison'] =
+        filter.creationDateComparison.toString();
     }
     if (filter.pageNumber) {
-      queryBuilder["page_number"] = filter.pageNumber.toString();
+      queryBuilder['page_number'] = filter.pageNumber.toString();
     }
     if (filter.pageSize) {
-      queryBuilder["page_size"] = filter.pageSize.toString();
+      queryBuilder['page_size'] = filter.pageSize.toString();
     }
     if (filter.sortBy) {
-      queryBuilder["sort_by"] = filter.sortBy.toString();
+      queryBuilder['sort_by'] = filter.sortBy.toString();
     }
 
     const query = new URLSearchParams(queryBuilder).toString();
 
-    const resp = await fetch(
-      `${this.getProvider().url}/users?${query}`,
-      {
-        method: 'GET',
-        headers: {
-          'x-api-key': this.clientConfig.apiKey
-        }
-      }
-    );
+    const resp = await fetch(`${this.getProvider().url}/users?${query}`, {
+      method: 'GET',
+      headers: {
+        'x-api-key': this.clientConfig.apiKey,
+      },
+    });
     const data = await resp.json();
     return data as IGetAllUsersResponse;
   }

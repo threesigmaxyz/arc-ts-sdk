@@ -90,11 +90,7 @@ export class BaseClient {
     };
 
     try {
-      resp = await axios.post(
-        this.getProvider().url,
-        body,
-        requestHeaders,
-      );
+      resp = await axios.post(this.getProvider().url, body, requestHeaders);
     } catch (ex) {
       return {
         isError: true,

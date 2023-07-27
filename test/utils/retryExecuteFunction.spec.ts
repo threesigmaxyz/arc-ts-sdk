@@ -43,9 +43,7 @@ describe('trySafeExecute function', () => {
 
   it('should retry the function the correct number of times and then throw an error', async () => {
     const mockFunc = jest.fn().mockRejectedValue(new Error('failed'));
-    await expect(
-      trySafeExecute(mockFunc, [{}], 3),
-    ).rejects.toThrow('failed');
+    await expect(trySafeExecute(mockFunc, [{}], 3)).rejects.toThrow('failed');
     expect(mockFunc).toHaveBeenCalledTimes(3);
   });
 

@@ -18,5 +18,5 @@ export interface IVault {
   userStarkKey?: string;
   availableBalance: string;
   accountingBalance: string;
-  dataAvailabilityMode: DATA_AVAILABILITY_MODE
+  dataAvailabilityMode: DATA_AVAILABILITY_MODE;
 }

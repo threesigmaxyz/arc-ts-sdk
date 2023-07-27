@@ -31,7 +31,7 @@ export interface IUserClient {
 
   /**
    * Generate a stark account.
-   * 
+   *
    * @param ethereumPrivateKey - The Ethereum Private Key.
    *
    * @returns An object of type IStarkExpressAccount.
@@ -40,17 +40,20 @@ export interface IUserClient {
 
   /**
    * Registers a new StarkExpress user.
-   * 
+   *
    * @param username - StarkExpress Username.
    * @param starkExpressAccount - starkExpress account of type IStarkExpressAccount.
    *
    * @returns An object of type IRegisteredUser.
    */
-  registerStarkUser(username: string, starkExpressAccount?: IStarkExpressAccount): Promise<IRegisteredUser>;
+  registerStarkUser(
+    username: string,
+    starkExpressAccount?: IStarkExpressAccount,
+  ): Promise<IRegisteredUser>;
 
   /**
    * Gets user information.
-   * 
+   *
    * @param userId - StarkExpress Username.
    *
    * @returns An object of type IUserInfo.
@@ -59,11 +62,10 @@ export interface IUserClient {
 
   /**
    * Gets multiple users information.
-   * 
+   *
    * @param filter - IGetAllUsersFilter.
    *
    * @returns An object of type IGetAllUsersResponse.
    */
-  getAllUsersInfo(filter: IGetAllUsersFilter): Promise<IGetAllUsersResponse>
-
+  getAllUsersInfo(filter: IGetAllUsersFilter): Promise<IGetAllUsersResponse>;
 }

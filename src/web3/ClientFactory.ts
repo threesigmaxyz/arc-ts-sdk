@@ -37,13 +37,11 @@ export class ClientFactory {
       url: publicProviderUrl,
     } as IProvider;
 
-    const client: Client = new Client(
-      {
-        apiKey: apiKey,
-        retryStrategyOn,
-        provider,
-      } as IClientConfig,
-    );
+    const client: Client = new Client({
+      apiKey: apiKey,
+      retryStrategyOn,
+      provider,
+    } as IClientConfig);
 
     return client;
   }
@@ -62,14 +60,12 @@ export class ClientFactory {
     apiKey: string,
     retryStrategyOn = true,
   ): Promise<Client> {
-    const client: Client = new Client(
-      {
-        apiKey,
-        retryStrategyOn,
-        provider,
-      } as IClientConfig,
-    );
-  
+    const client: Client = new Client({
+      apiKey,
+      retryStrategyOn,
+      provider,
+    } as IClientConfig);
+
     return client;
   }
 }

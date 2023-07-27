@@ -17,12 +17,8 @@ export class Client implements IClient {
    * @param clientConfig - client configuration object.
    * @param baseAccount - base account to use for signing transactions (optional).
    */
-  public constructor(
-    private clientConfig: IClientConfig,
-  ) {
-    this.userClient = new UserClient(
-      clientConfig,
-    );
+  public constructor(private clientConfig: IClientConfig) {
+    this.userClient = new UserClient(clientConfig);
 
     // subclients
     this.user = this.user.bind(this);

@@ -1,5 +1,5 @@
-import { IAccount } from "./IAccount";
-import { IStarkAccount } from "./IStarkAccount";
+import { IAccount } from './IAccount';
+import { IStarkAccount } from './IStarkAccount';
 
 /**
  * Represents the structure of a StarkExpress Account object.

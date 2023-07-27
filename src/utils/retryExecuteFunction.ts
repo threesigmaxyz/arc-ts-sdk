@@ -1,9 +1,7 @@
 import { wait } from './time';
 
 const MAX_NUMBER_RETRIALS = 5;
-type CallbackFunction<R> = (
-  params: object,
-) => Promise<R>;
+type CallbackFunction<R> = (params: object) => Promise<R>;
 
 /**
  * Tries to execute a function and retries if it fails.

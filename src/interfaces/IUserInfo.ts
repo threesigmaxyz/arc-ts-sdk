@@ -1,7 +1,7 @@
-import { IRegisteredUser } from "./IRegisteredUser";
-import { IVault } from "./IVault";
+import { IRegisteredUser } from './IRegisteredUser';
+import { IVault } from './IVault';
 
 export interface IUserInfo {
-    user: IRegisteredUser;
-    vaultsPerAsset: [IVault];
+  user: IRegisteredUser;
+  vaultsPerAsset: [IVault];
 }
