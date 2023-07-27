@@ -192,19 +192,15 @@ export class UserClient extends BaseClient implements IUserClient {
       } as IEIP712SignableDataUrlParams);
 
     // sign_eip712_register_message
-    const messageParams: Record<string, unknown> = {
-      username: (eip712SignableData.message[0] as object)['value'],
-      address: (eip712SignableData['message'][2] as object)['value'],
-      starkKey: stripHexPrefix(
-        (eip712SignableData['message'][1] as object)['value'],
-      ),
-    };
+    eip712SignableData.message['starkKey'] = stripHexPrefix(
+      eip712SignableData.message['starkKey'] as string,
+    );
 
     const data = {
       domain: eip712SignableData.domain,
       types: eip712SignableData.types,
       primaryType: eip712SignableData.primaryType,
-      message: messageParams,
+      message: eip712SignableData.message,
     };
     data.domain.chainId = data.domain.chainId as number;
 
