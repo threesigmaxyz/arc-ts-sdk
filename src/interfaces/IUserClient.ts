@@ -1,6 +1,8 @@
 import { IStarkExpressAccount } from './IStarkExpressAccount';
 import { IRegisteredUser } from './IRegisteredUser';
 import { IUserInfo } from './IUserInfo';
+import { IGetAllUsersFilter } from './IGetAllUsersFilter';
+import { IGetAllUsersResponse } from './IGetAllUsersResponse';
 
 /**
  * Interface for IUserClient object
@@ -31,8 +33,8 @@ export interface IUserClient {
 
   registerStarkUser(username: string, starkExpressAccount?: IStarkExpressAccount): Promise<IRegisteredUser>;
 
-  getAllUsersInfo(message: Uint8Array): Promise<any>;
+  getUserInfo(userId: string): Promise<IUserInfo>;
 
-  getUserInfo(userId: string): Promise<IUserInfo>
+  getAllUsersInfo(filter: IGetAllUsersFilter): Promise<IGetAllUsersResponse>
 
 }

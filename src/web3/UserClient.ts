@@ -28,6 +28,8 @@ import { IStarkExpressAccount } from '../interfaces/IStarkExpressAccount';
 const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 import fetch from 'node-fetch';
 import { IUserInfo } from '../interfaces/IUserInfo';
+import { IGetAllUsersFilter } from '../interfaces/IGetAllUsersFilter';
+import { IGetAllUsersResponse } from '../interfaces/IGetAllUsersResponse';
 
 /**
  * A client class for interacting with the user API of StarkExpress.
@@ -266,7 +268,46 @@ export class UserClient extends BaseClient implements IUserClient {
    *
    * @returns a promise that resolves to an array of userInfos.
    */
-  public async getAllUsersInfo(message: Uint8Array): Promise<any> {
-    return null;
+  public async getAllUsersInfo(filter: IGetAllUsersFilter): Promise<IGetAllUsersResponse> {
+
+    let queryBuilder = {};
+    if (filter.username) {
+      queryBuilder["username"] = filter.username.toString();
+    }
+    if (filter.usernameComparison) {
+      queryBuilder["username_comparison"] = filter.usernameComparison.toString();
+    }
+    if (filter.address) {
+      queryBuilder["address"] = filter.address.toString();
+    }
+    if (filter.creationDate) {
+      queryBuilder["creation_date"] = filter.creationDate.toString();
+    }
+    if (filter.creationDateComparison) {
+      queryBuilder["creation_date_comparison"] = filter.creationDateComparison.toString();
+    }
+    if (filter.pageNumber) {
+      queryBuilder["page_number"] = filter.pageNumber.toString();
+    }
+    if (filter.pageSize) {
+      queryBuilder["page_size"] = filter.pageSize.toString();
+    }
+    if (filter.sortBy) {
+      queryBuilder["sort_by"] = filter.sortBy.toString();
+    }
+
+    const query = new URLSearchParams(queryBuilder).toString();
+
+    const resp = await fetch(
+      `${this.getProvider().url}/users?${query}`,
+      {
+        method: 'GET',
+        headers: {
+          'x-api-key': this.clientConfig.apiKey
+        }
+      }
+    );
+    const data = await resp.json();
+    return data as IGetAllUsersResponse;
   }
 }

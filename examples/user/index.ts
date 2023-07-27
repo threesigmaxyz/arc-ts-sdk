@@ -5,6 +5,9 @@ import { ClientFactory, DefaultProviderUrls } from '../../src/web3/ClientFactory
 import { IRegisteredUser } from '../../src/interfaces/IRegisteredUser';
 import { IStarkExpressAccount } from '../../src/interfaces/IStarkExpressAccount';
 import { IUserInfo } from '../../src/interfaces/IUserInfo';
+import { IGetAllUsersFilter } from '../../src/interfaces/IGetAllUsersFilter';
+import { IGetAllUsersResponse } from '../../src/interfaces/IGetAllUsersResponse';
+import { ITEM_COMPARISON } from '../../src/interfaces/EItemComparison';
 const path = require('path');
 const chalk = require('chalk');
 
@@ -62,6 +65,20 @@ if (!ethereumPrivateKey) {
     console.log(
       `StarkExpress User Info: ${
         JSON.stringify(userInfo, null, 4)
+      }`,
+    );
+
+    // get all users with a filter
+    const usersInfo: IGetAllUsersResponse = await starkExpressClient.user().getAllUsersInfo({
+      username: 'evgenipirianov',
+      usernameComparison: ITEM_COMPARISON.CONTAINS,
+      pageNumber: 0,
+      pageSize: 100,
+    } as IGetAllUsersFilter);
+
+    console.log(
+      `StarkExpress Users Info: ${
+        JSON.stringify(usersInfo, null, 4)
       }`,
     );
 

@@ -82,6 +82,15 @@ const registeredUser: IRegisteredUser = await starkExpressClient.user().register
 // get full user info
 const userInfo: IUserInfo = await starkExpressClient.user().getUserInfo(registeredUser.userId);
 
+
+// get all users with a filter
+const usersInfo: IGetAllUsersResponse = await starkExpressClient.user().getAllUsersInfo({
+    username: 'SOME_SEARCH_STRING',
+    usernameComparison: ITEM_COMPARISON.CONTAINS,
+    pageNumber: 0,
+    pageSize: 100,
+} as IGetAllUsersFilter);
+
 ```
 
 ## Contributing and testing
