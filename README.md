@@ -74,7 +74,7 @@ import {
 } from "@threesigma/starkexpress-ts-sdk";
 
 // generate a new starkexpress account using ethereum private key
-const starkExpressAccount: IStarkExpressAccount = starkExpressClient.user().generateStarkAccount("0x0.....");
+const starkExpressAccount: IStarkExpressAccount = starkExpressClient.user().generateStarkAccount("ETHEREUM_PRIVATE_KEY");
 
 // register a new starkexpress user
 const registeredUser: IRegisteredUser = await starkExpressClient.user().registerStarkUser("STAREX_USERNAME", starkExpressAccount);
