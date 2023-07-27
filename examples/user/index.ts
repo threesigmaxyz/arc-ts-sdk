@@ -36,7 +36,6 @@ if (!ethereumPrivateKey) {
     const starkExpressClient: Client = await ClientFactory.createDefaultClient(
       DefaultProviderUrls.TESTNET,
       apiKey,
-      false,
     );
     // generate a starkexpress account
     const starkExpressAccount: IStarkExpressAccount = starkExpressClient.user().generateStarkAccount(ethereumPrivateKey);
@@ -49,7 +48,7 @@ if (!ethereumPrivateKey) {
     // set as base account
     starkExpressClient.user().setBaseAccount(starkExpressAccount);
 
-    // register the user
+    // register a new user
     const registeredUser: IRegisteredUser = await starkExpressClient.user().registerStarkUser("evgenip", starkExpressAccount);
     console.log(
       `StarkExpress Registered User: ${
