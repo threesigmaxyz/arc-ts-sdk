@@ -17,7 +17,15 @@ if (typeof window !== 'undefined') {
 
 /** Exposed interfaces */
 export { IAccount } from './interfaces/IAccount';
+export { IStarkAccount } from './interfaces/IStarkAccount';
+export { IStarkExpressAccount } from './interfaces/IStarkExpressAccount';
 export { IClientConfig } from './interfaces/IClientConfig';
+export { IGetAllUsersFilter } from './interfaces/IGetAllUsersFilter';
+export { IVault } from './interfaces/IVault';
+export { IUserInfo } from './interfaces/IUserInfo';
+export { IPagination } from './interfaces/IPagination';
+export { IRegisteredUser } from './interfaces/IRegisteredUser';
+export { IGetAllUsersResponse } from './interfaces/IGetAllUsersResponse';
 export { IProvider } from './interfaces/IProvider';
 export { JsonRpcResponseData } from './interfaces/JsonRpcResponseData';
 export { EOperationStatus } from './interfaces/EOperationStatus';
