@@ -82,7 +82,6 @@ const registeredUser: IRegisteredUser = await starkExpressClient.user().register
 // get full user info
 const userInfo: IUserInfo = await starkExpressClient.user().getUserInfo(registeredUser.userId);
 
-
 // get all users with a filter
 const usersInfo: IGetAllUsersResponse = await starkExpressClient.user().getAllUsersInfo({
     username: 'SOME_SEARCH_STRING',
