@@ -70,7 +70,10 @@ Example:
 
 ```ts
 import {
-   IRegisteredUser, IStarkExpressAccount
+   IRegisteredUser,
+   IStarkExpressAccount,
+   IUserInfo,
+   IGetAllUsersResponse
 } from "@threesigma/starkexpress-ts-sdk";
 
 // generate a new starkexpress account using ethereum private key
@@ -91,6 +94,27 @@ const usersInfo: IGetAllUsersResponse = await starkExpressClient.user().getAllUs
 } as IGetAllUsersFilter);
 
 ```
+
+### Asset API
+TODO
+
+### Operations API
+TODO
+
+- Mint
+- Transfer
+- Transactional
+- Withdraw
+- Deposit
+
+### Vault API
+TODO
+
+### Fee API
+TODO
+
+### Settlement API
+TODO
 
 ## Contributing and testing
 
