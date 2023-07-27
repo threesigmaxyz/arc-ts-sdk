@@ -1,5 +1,6 @@
 import { IStarkExpressAccount } from './IStarkExpressAccount';
 import { IRegisteredUser } from './IRegisteredUser';
+import { IUserInfo } from './IUserInfo';
 
 /**
  * Interface for IUserClient object
@@ -32,6 +33,6 @@ export interface IUserClient {
 
   getAllUsersInfo(message: Uint8Array): Promise<any>;
 
-  getUserInfo(userId: string): Promise<any>
+  getUserInfo(userId: string): Promise<IUserInfo>
 
 }

@@ -4,6 +4,7 @@ import { Client } from '../../src/web3/Client';
 import { ClientFactory, DefaultProviderUrls } from '../../src/web3/ClientFactory';
 import { IRegisteredUser } from '../../src/interfaces/IRegisteredUser';
 import { IStarkExpressAccount } from '../../src/interfaces/IStarkExpressAccount';
+import { IUserInfo } from '../../src/interfaces/IUserInfo';
 const path = require('path');
 const chalk = require('chalk');
 
@@ -57,7 +58,12 @@ if (!ethereumPrivateKey) {
     );
 
     // get user id
-    // await starkExpressClient.user().getUserInfo()
+    const userInfo: IUserInfo = await starkExpressClient.user().getUserInfo("ff41bed6-4eb7-49c4-adf5-a0122230948c");
+    console.log(
+      `StarkExpress User Info: ${
+        JSON.stringify(userInfo, null, 4)
+      }`,
+    );
 
     process.exit(0);
   } catch (ex) {

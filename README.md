@@ -79,6 +79,9 @@ const starkExpressAccount: IStarkExpressAccount = starkExpressClient.user().gene
 // register a new starkexpress user
 const registeredUser: IRegisteredUser = await starkExpressClient.user().registerStarkUser("STAREX_USERNAME", starkExpressAccount);
 
+// get full user info
+const userInfo: IUserInfo = await starkExpressClient.user().getUserInfo(registeredUser.userId);
+
 ```
 
 ## Contributing and testing

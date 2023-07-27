@@ -27,6 +27,7 @@ import { IStarkExpressAccount } from '../interfaces/IStarkExpressAccount';
 
 const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 import fetch from 'node-fetch';
+import { IUserInfo } from '../interfaces/IUserInfo';
 
 /**
  * A client class for interacting with the user API of StarkExpress.
@@ -242,9 +243,9 @@ export class UserClient extends BaseClient implements IUserClient {
    *
    * @param userId - The userId to get the info for
    *
-   * @returns a promise that resolves to an array of userInfos.
+   * @returns a promise that resolves to an object of IUserInfo.
    */
-  public async getUserInfo(userId: string): Promise<any> {     
+  public async getUserInfo(userId: string): Promise<IUserInfo> {     
     const resp = await fetch(
       `${this.getProvider().url}/users/${userId}`,
       {
@@ -255,7 +256,7 @@ export class UserClient extends BaseClient implements IUserClient {
       }
     );
     const data = await resp.json();
-    return data as any;
+    return data as IUserInfo;
   }
 
   /**
