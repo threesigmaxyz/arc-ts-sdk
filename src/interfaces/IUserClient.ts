@@ -3,6 +3,7 @@ import { IRegisteredUser } from './IRegisteredUser';
 import { IUserInfo } from './IUserInfo';
 import { IGetAllUsersFilter } from './IGetAllUsersFilter';
 import { IGetAllUsersResponse } from './IGetAllUsersResponse';
+import { ResponseData } from './ResponseData';
 
 /**
  * Interface for IUserClient object
@@ -49,7 +50,7 @@ export interface IUserClient {
   registerStarkUser(
     username: string,
     starkExpressAccount?: IStarkExpressAccount,
-  ): Promise<IRegisteredUser>;
+  ): Promise<ResponseData<IRegisteredUser>>;
 
   /**
    * Gets user information.
@@ -58,7 +59,7 @@ export interface IUserClient {
    *
    * @returns An object of type IUserInfo.
    */
-  getUserInfo(userId: string): Promise<IUserInfo>;
+  getUserInfo(userId: string): Promise<ResponseData<IUserInfo>>;
 
   /**
    * Gets multiple users information.
@@ -67,5 +68,7 @@ export interface IUserClient {
    *
    * @returns An object of type IGetAllUsersResponse.
    */
-  getAllUsersInfo(filter: IGetAllUsersFilter): Promise<IGetAllUsersResponse>;
+  getAllUsersInfo(
+    filter: IGetAllUsersFilter,
+  ): Promise<ResponseData<IGetAllUsersResponse>>;
 }

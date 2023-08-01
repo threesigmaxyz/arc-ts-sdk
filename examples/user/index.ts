@@ -11,6 +11,7 @@ import { IUserInfo } from '../../src/interfaces/IUserInfo';
 import { IGetAllUsersFilter } from '../../src/interfaces/IGetAllUsersFilter';
 import { IGetAllUsersResponse } from '../../src/interfaces/IGetAllUsersResponse';
 import { ITEM_COMPARISON } from '../../src/interfaces/EItemComparison';
+import { ResponseData } from '../../src/interfaces/ResponseData';
 const path = require('path');
 const chalk = require('chalk');
 
@@ -41,6 +42,7 @@ if (!ethereumPrivateKey) {
     const starkExpressClient: Client = await ClientFactory.createDefaultClient(
       DefaultProviderUrls.TESTNET,
       apiKey,
+      false,
     );
     // generate a starkexpress account
     const starkExpressAccount: IStarkExpressAccount = starkExpressClient
@@ -58,40 +60,55 @@ if (!ethereumPrivateKey) {
     starkExpressClient.user().setBaseAccount(starkExpressAccount);
 
     // register a new user
-    const registeredUser: IRegisteredUser = await starkExpressClient
-      .user()
-      .registerStarkUser('evgenip', starkExpressAccount);
+    const registeredUser: ResponseData<IRegisteredUser> =
+      await starkExpressClient
+        .user()
+        .registerStarkUser('evgenip', starkExpressAccount);
+
+    if (registeredUser.error) {
+      throw new Error(JSON.stringify(registeredUser.error, null, 4));
+    }
+
     console.log(
       `StarkExpress Registered User: ${JSON.stringify(
-        registeredUser,
+        registeredUser.result,
         null,
         4,
       )}`,
     );
 
     // get user id
-    const userInfo: IUserInfo = await starkExpressClient
+    const userInfo: ResponseData<IUserInfo> = await starkExpressClient
       .user()
       .getUserInfo('ff41bed6-4eb7-49c4-adf5-a0122230948c');
-    console.log(`StarkExpress User Info: ${JSON.stringify(userInfo, null, 4)}`);
+
+    if (userInfo.error) {
+      throw new Error(JSON.stringify(userInfo.error, null, 4));
+    }
+
+    console.log(
+      `StarkExpress User Info: ${JSON.stringify(userInfo.result, null, 4)}`,
+    );
 
     // get all users with a filter
-    const usersInfo: IGetAllUsersResponse = await starkExpressClient
-      .user()
-      .getAllUsersInfo({
+    const usersInfo: ResponseData<IGetAllUsersResponse> =
+      await starkExpressClient.user().getAllUsersInfo({
         username: 'evgenipirianov',
         usernameComparison: ITEM_COMPARISON.CONTAINS,
         pageNumber: 0,
         pageSize: 100,
       } as IGetAllUsersFilter);
 
+    if (userInfo.error) {
+      throw new Error(JSON.stringify(usersInfo.error, null, 4));
+    }
+
     console.log(
-      `StarkExpress Users Info: ${JSON.stringify(usersInfo, null, 4)}`,
+      `StarkExpress Users Info: ${JSON.stringify(usersInfo.result, null, 4)}`,
     );
 
     process.exit(0);
   } catch (ex) {
-    console.error(ex);
     const msg = chalk.red(`Error = ${ex}`);
     console.error(msg);
     process.exit(-1);

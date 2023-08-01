@@ -1,7 +1,7 @@
 import { wait } from './time';
 
 const MAX_NUMBER_RETRIALS = 5;
-type CallbackFunction<R> = (params: object) => Promise<R>;
+type CallbackFunction<R> = (...params: any) => Promise<R>;
 
 /**
  * Tries to execute a function and retries if it fails.
@@ -16,7 +16,7 @@ type CallbackFunction<R> = (params: object) => Promise<R>;
  */
 export const trySafeExecute = async <R>(
   func: CallbackFunction<R>,
-  args?: [object],
+  args?: [...params: any],
   retryTimes: number = MAX_NUMBER_RETRIALS,
 ): Promise<R> => {
   args = args || [{}];

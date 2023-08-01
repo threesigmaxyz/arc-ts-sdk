@@ -1,16 +1,8 @@
 import { IProvider } from '../interfaces/IProvider';
 import { IClientConfig } from '../interfaces/IClientConfig';
-import { JsonRpcResponseData } from '../interfaces/JsonRpcResponseData';
-import axios, { AxiosResponse, AxiosRequestHeaders } from 'axios';
-import { JSON_RPC_REQUEST_METHOD } from '../interfaces/JsonRpcMethods';
-
-export const requestHeaders = {
-  Accept:
-    'application/json,text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Credentials': true,
-  'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-} as AxiosRequestHeaders;
+import { ResponseData } from '../interfaces/ResponseData';
+import { IRequestError } from '../interfaces/IRequestError';
+import axios, { AxiosRequestHeaders, AxiosResponse } from 'axios';
 
 /**
  * The Base Client object is the main entry point for interacting with the StarkExpress L2 chain.
@@ -35,9 +27,9 @@ export class BaseClient {
 
     // bind class methods
     this.getProvider = this.getProvider.bind(this);
-    this.sendJsonRPCRequest = this.sendJsonRPCRequest.bind(this);
     this.setProvider = this.setProvider.bind(this);
-    this.promisifyJsonRpcCall = this.promisifyJsonRpcCall.bind(this);
+    this.doGenericPostCall = this.doGenericPostCall.bind(this);
+    this.doGenericGetCall = this.doGenericGetCall.bind(this);
   }
 
   /**
@@ -64,80 +56,84 @@ export class BaseClient {
   }
 
   /**
-   * Converts an API call to a promise that resolves as a JsonRpcResponseData
+   * Creates a generic post call using axios which returns `Promise<ResponseData<T>>`
    *
-   * @privateRemarks
-   * If there is an error while sending the request, the function catches the error, the isError
-   * property is set to true, the result property set to null, and the error property set to a
-   * new Error object with a message indicating that there was an error.
    *
-   * @param resource - The rpc method to call.
-   * @param params - The parameters to pass to the rpc method.
+   * @param url - The http url to call.
+   * @param body - The message body to send.
    *
-   * @returns A promise that resolves as a JsonRpcResponseData.
+   * @returns A promise that resolves as a `Promise<ResponseData<T>>`.
    */
-  private async promisifyJsonRpcCall<T>(
-    resource: JSON_RPC_REQUEST_METHOD,
-    params: object,
-  ): Promise<JsonRpcResponseData<T>> {
-    let resp: AxiosResponse<JsonRpcResponseData<T>> = null;
+  protected async doGenericPostCall<T>(
+    url: string,
+    body?: object,
+  ): Promise<ResponseData<T>> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'x-api-key': `${this.clientConfig.apiKey}`,
+    } as AxiosRequestHeaders;
 
-    const body = {
-      jsonrpc: '2.0',
-      method: resource,
-      params: params,
-      id: 0,
-    };
+    let resp: AxiosResponse<T, any> = null;
 
     try {
-      resp = await axios.post(this.getProvider().url, body, requestHeaders);
-    } catch (ex) {
-      return {
-        isError: true,
-        result: null,
-        error: new Error('JSON.parse error: ' + String(ex)),
-      } as JsonRpcResponseData<T>;
+      resp = await axios({
+        method: 'post',
+        url,
+        data: body || {},
+        headers: headers,
+      });
+    } catch (error) {
+      if (error.response) {
+        // The server responded with a status other than 2xx (e.g., 4xx, 5xx)
+        return { error: error.response.data as IRequestError };
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received:', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error:', error.message);
+      }
     }
 
-    const responseData: JsonRpcResponseData<T> = resp.data;
-
-    if (responseData.error) {
-      return {
-        isError: true,
-        result: null,
-        error: new Error(responseData.error.message),
-      } as JsonRpcResponseData<T>;
-    }
-
-    return {
-      isError: false,
-      result: responseData.result as T,
-      error: null,
-    } as JsonRpcResponseData<T>;
+    return { result: resp.data as T };
   }
 
   /**
-   * Sends a post API request to the node.
+   * Creates a generic get call using axios which returns `Promise<ResponseData<T>>`
    *
-   * @param resource - The rpc method to call.
-   * @param params - The parameters to pass to the rpc method.
    *
-   * @throws An error if the rpc method returns an error.
+   * @param url - The http url to call.
+   * @param body - The message body to send.
    *
-   * @returns A promise that resolves as the result of the rpc method.
+   * @returns A promise that resolves as a `Promise<ResponseData<T>>`.
    */
-  protected async sendJsonRPCRequest<T>(
-    resource: JSON_RPC_REQUEST_METHOD,
-    params: object,
-  ): Promise<T> {
-    let resp: JsonRpcResponseData<T> = null;
-    resp = await this.promisifyJsonRpcCall(resource, params);
+  protected async doGenericGetCall<T>(url: string): Promise<ResponseData<T>> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'x-api-key': `${this.clientConfig.apiKey}`,
+    } as AxiosRequestHeaders;
 
-    // in case of rpc error, rethrow the error.
-    if (resp.error && resp.error) {
-      throw resp.error;
+    let resp: AxiosResponse<T, any> = null;
+
+    try {
+      resp = await axios({
+        method: 'get',
+        url,
+        headers: headers,
+      });
+    } catch (error) {
+      if (error.response) {
+        // The server responded with a status other than 2xx (e.g., 4xx, 5xx)
+        return { error: error.response.data as IRequestError };
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received:', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error:', error.message);
+      }
     }
 
-    return resp.result;
+    return { result: resp.data as T };
   }
 }

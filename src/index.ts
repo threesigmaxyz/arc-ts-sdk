@@ -27,7 +27,7 @@ export { IPagination } from './interfaces/IPagination';
 export { IRegisteredUser } from './interfaces/IRegisteredUser';
 export { IGetAllUsersResponse } from './interfaces/IGetAllUsersResponse';
 export { IProvider } from './interfaces/IProvider';
-export { JsonRpcResponseData } from './interfaces/JsonRpcResponseData';
+export { ResponseData } from './interfaces/ResponseData';
 export { EOperationStatus } from './interfaces/EOperationStatus';
 export { IClient } from './interfaces/IClient';
 export { IUserClient } from './interfaces/IUserClient';

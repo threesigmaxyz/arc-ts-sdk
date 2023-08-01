@@ -75,20 +75,21 @@ import {
    IUserInfo,
    IGetAllUsersResponse,
    ITEM_COMPARISON,
-   IGetAllUsersFilter
+   IGetAllUsersFilter,
+   ResponseData
 } from "@threesigma/starkexpress-ts-sdk";
 
 // generate a new starkexpress account using ethereum private key
 const starkExpressAccount: IStarkExpressAccount = starkExpressClient.user().generateStarkAccount("ETHEREUM_PRIVATE_KEY");
 
 // register a new starkexpress user
-const registeredUser: IRegisteredUser = await starkExpressClient.user().registerStarkUser("STAREX_USERNAME", starkExpressAccount);
+const registeredUser: ResponseData<IRegisteredUser> = await starkExpressClient.user().registerStarkUser("STAREX_USERNAME", starkExpressAccount);
 
 // get full user info
-const userInfo: IUserInfo = await starkExpressClient.user().getUserInfo(registeredUser.userId);
+const userInfo: ResponseData<IUserInfo> = await starkExpressClient.user().getUserInfo(registeredUser.userId);
 
 // get all users with a filter
-const usersInfo: IGetAllUsersResponse = await starkExpressClient.user().getAllUsersInfo({
+const usersInfo: ResponseData<IGetAllUsersResponse> = await starkExpressClient.user().getAllUsersInfo({
     username: 'SOME_SEARCH_STRING',
     usernameComparison: ITEM_COMPARISON.CONTAINS,
     pageNumber: 0,

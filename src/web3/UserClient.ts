@@ -26,12 +26,11 @@ import {
 import { IRegisterUserPayload } from '../interfaces/IRegisterUserPayload';
 import { IRegisteredUser } from '../interfaces/IRegisteredUser';
 import { IStarkExpressAccount } from '../interfaces/IStarkExpressAccount';
-
 const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
-import fetch from 'node-fetch';
 import { IUserInfo } from '../interfaces/IUserInfo';
 import { IGetAllUsersFilter } from '../interfaces/IGetAllUsersFilter';
 import { IGetAllUsersResponse } from '../interfaces/IGetAllUsersResponse';
+import { ResponseData } from '../interfaces/ResponseData';
 
 /**
  * A client class for interacting with the user API of StarkExpress.
@@ -89,40 +88,25 @@ export class UserClient extends BaseClient implements IUserClient {
 
   private async getEIP712SignableData<T extends MessageTypes>(
     queryParams: IEIP712SignableDataUrlParams,
-  ): Promise<TypedMessage<T>> {
+  ): Promise<ResponseData<TypedMessage<T>>> {
     const query = new URLSearchParams({
       username: queryParams.username,
       stark_key: queryParams.starkKey,
       address: queryParams.address,
     }).toString();
 
-    const resp = await fetch(
+    return await this.doGenericGetCall<TypedMessage<T>>(
       `${this.getProvider().url}/users/register-details?${query}`,
-      {
-        method: 'GET',
-        headers: {
-          'x-api-key': this.clientConfig.apiKey,
-        },
-      },
     );
-
-    const data = await resp.json();
-    return data as TypedMessage<T>;
   }
 
   private async registerNewUser(
     body: IRegisterUserPayload,
-  ): Promise<IRegisteredUser> {
-    const resp = await fetch(`${this.getProvider().url}/users`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': this.clientConfig.apiKey,
-      },
-      body: JSON.stringify(body),
-    });
-    const data = await resp.json();
-    return data as IRegisteredUser;
+  ): Promise<ResponseData<IRegisteredUser>> {
+    return await this.doGenericPostCall<IRegisteredUser>(
+      `${this.getProvider().url}/users`,
+      body,
+    );
   }
 
   public generateStarkAccount(
@@ -176,7 +160,7 @@ export class UserClient extends BaseClient implements IUserClient {
   public async registerStarkUser(
     username: string,
     starkExpressAccount?: IStarkExpressAccount,
-  ): Promise<IRegisteredUser> {
+  ): Promise<ResponseData<IRegisteredUser>> {
     const starkExpressAccountToRegister =
       starkExpressAccount || this.baseStarkExpressAccount;
     if (!starkExpressAccountToRegister) {
@@ -184,23 +168,29 @@ export class UserClient extends BaseClient implements IUserClient {
     }
 
     // get register details
-    const eip712SignableData: TypedMessage<MessageTypes> =
+    const eip712SignableData: ResponseData<TypedMessage<MessageTypes>> =
       await this.getEIP712SignableData({
         username: username,
         starkKey: starkExpressAccountToRegister.starkAccount.publicKey,
         address: starkExpressAccountToRegister.ethereumAccount.address,
       } as IEIP712SignableDataUrlParams);
 
+    if (eip712SignableData.error) {
+      throw new Error(JSON.stringify(eip712SignableData.error, null, 4));
+    }
+
+    const result = eip712SignableData.result as TypedMessage<MessageTypes>;
+
     // sign_eip712_register_message
-    eip712SignableData.message['starkKey'] = stripHexPrefix(
-      eip712SignableData.message['starkKey'] as string,
+    result.message['starkKey'] = stripHexPrefix(
+      result.message['starkKey'] as string,
     );
 
     const data = {
-      domain: eip712SignableData.domain,
-      types: eip712SignableData.types,
-      primaryType: eip712SignableData.primaryType,
-      message: eip712SignableData.message,
+      domain: result.domain,
+      types: result.types,
+      primaryType: result.primaryType,
+      message: result.message,
     };
     data.domain.chainId = data.domain.chainId as number;
 
@@ -229,15 +219,18 @@ export class UserClient extends BaseClient implements IUserClient {
     const s = starkSignature.s.toString('hex');
 
     if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<IRegisteredUser>(this.registerNewUser, [
-        {
-          username,
-          address: starkExpressAccountToRegister.ethereumAccount.address,
-          eip712Signature,
-          starkKey: starkExpressAccountToRegister.starkAccount.publicKey,
-          starkSignature: { r, s },
-        } as IRegisterUserPayload,
-      ]);
+      return await trySafeExecute<ResponseData<IRegisteredUser>>(
+        this.registerNewUser,
+        [
+          {
+            username,
+            address: starkExpressAccountToRegister.ethereumAccount.address,
+            eip712Signature,
+            starkKey: starkExpressAccountToRegister.starkAccount.publicKey,
+            starkSignature: { r, s },
+          } as IRegisterUserPayload,
+        ],
+      );
     } else {
       return await this.registerNewUser({
         username,
@@ -278,15 +271,17 @@ export class UserClient extends BaseClient implements IUserClient {
    *
    * @returns a promise that resolves to an object of IUserInfo.
    */
-  public async getUserInfo(userId: string): Promise<IUserInfo> {
-    const resp = await fetch(`${this.getProvider().url}/users/${userId}`, {
-      method: 'GET',
-      headers: {
-        'x-api-key': this.clientConfig.apiKey,
-      },
-    });
-    const data = await resp.json();
-    return data as IUserInfo;
+  public async getUserInfo(userId: string): Promise<ResponseData<IUserInfo>> {
+    if (this.clientConfig.retryStrategyOn) {
+      return await trySafeExecute<ResponseData<IUserInfo>>(
+        this.doGenericGetCall,
+        [`${this.getProvider().url}/users/${userId}`],
+      );
+    } else {
+      return await this.doGenericGetCall<IUserInfo>(
+        `${this.getProvider().url}/users/${userId}`,
+      );
+    }
   }
 
   /**
@@ -298,7 +293,7 @@ export class UserClient extends BaseClient implements IUserClient {
    */
   public async getAllUsersInfo(
     filter: IGetAllUsersFilter,
-  ): Promise<IGetAllUsersResponse> {
+  ): Promise<ResponseData<IGetAllUsersResponse>> {
     let queryBuilder = {};
     if (filter.username) {
       queryBuilder['username'] = filter.username.toString();
@@ -328,14 +323,15 @@ export class UserClient extends BaseClient implements IUserClient {
     }
 
     const query = new URLSearchParams(queryBuilder).toString();
-
-    const resp = await fetch(`${this.getProvider().url}/users?${query}`, {
-      method: 'GET',
-      headers: {
-        'x-api-key': this.clientConfig.apiKey,
-      },
-    });
-    const data = await resp.json();
-    return data as IGetAllUsersResponse;
+    if (this.clientConfig.retryStrategyOn) {
+      return await trySafeExecute<ResponseData<IGetAllUsersResponse>>(
+        this.doGenericGetCall,
+        [`${this.getProvider().url}/users?${query}`],
+      );
+    } else {
+      return await this.doGenericGetCall<IGetAllUsersResponse>(
+        `${this.getProvider().url}/users?${query}`,
+      );
+    }
   }
 }
