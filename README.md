@@ -73,7 +73,7 @@ import {
    IRegisteredUser,
    IStarkExpressAccount,
    IUserInfo,
-   IGetAllUsersResponse,
+   IGetAllEntitiesResponse,
    ITEM_COMPARISON,
    IGetAllUsersFilter,
    ResponseData
@@ -85,11 +85,11 @@ const starkExpressAccount: IStarkExpressAccount = starkExpressClient.user().gene
 // register a new starkexpress user
 const registeredUser: ResponseData<IRegisteredUser> = await starkExpressClient.user().registerStarkUser("STAREX_USERNAME", starkExpressAccount);
 
-// get full user info
+// get full user info by id
 const userInfo: ResponseData<IUserInfo> = await starkExpressClient.user().getUserInfo(registeredUser.userId);
 
 // get all users with a filter
-const usersInfo: ResponseData<IGetAllUsersResponse> = await starkExpressClient.user().getAllUsersInfo({
+const usersInfo: ResponseData<IGetAllEntitiesResponse<IRegisteredUser>> = await starkExpressClient.user().getAllUsersInfo({
     username: 'SOME_SEARCH_STRING',
     usernameComparison: ITEM_COMPARISON.CONTAINS,
     pageNumber: 0,
@@ -98,8 +98,35 @@ const usersInfo: ResponseData<IGetAllUsersResponse> = await starkExpressClient.u
 
 ```
 
-### Asset API
-TODO
+### Assets API
+
+Client public API operations are accessible under the assets sub-client, which is accessible via the `assets()` method on the client.
+
+Example:
+
+```ts
+
+import {
+   IAsset,
+   IGetAllEntitiesResponse,
+   ASSET_TYPE,
+   IGetAllAssetsFilter,
+   ResponseData
+} from "@threesigma/starkexpress-ts-sdk";
+
+// get all assets with a filter
+const allAssetsInfo: ResponseData<IGetAllEntitiesResponse<IAsset>> = await starkExpressClient.assets().getAllAssetsInfo({
+    assetType: ASSET_TYPE.ERC_721,
+    pageNumber: 0,
+    pageSize: 100,
+} as IGetAllAssetsFilter);
+
+// get full asset info by id
+const assetInfo: ResponseData<IAsset> = await starkExpressClient
+    .assets()
+    .getAsset((allAssetsInfo.result?.data as [IAsset])[0].assetId);
+
+```
 
 ### Operations API
 TODO

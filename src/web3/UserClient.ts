@@ -29,7 +29,7 @@ import { IStarkExpressAccount } from '../interfaces/IStarkExpressAccount';
 const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 import { IUserInfo } from '../interfaces/IUserInfo';
 import { IGetAllUsersFilter } from '../interfaces/IGetAllUsersFilter';
-import { IGetAllUsersResponse } from '../interfaces/IGetAllUsersResponse';
+import { IGetAllEntitiesResponse } from '../interfaces/IGetAllEntitiesResponse';
 import { ResponseData } from '../interfaces/ResponseData';
 
 /**
@@ -50,15 +50,13 @@ export class UserClient extends BaseClient implements IUserClient {
   public constructor(clientConfig: IClientConfig) {
     super(clientConfig);
 
-    // public methods
+    // bound methods
     this.generateStarkAccount = this.generateStarkAccount.bind(this);
     this.registerStarkUser = this.registerStarkUser.bind(this);
     this.setBaseAccount = this.setBaseAccount.bind(this);
     this.getBaseAccount = this.getBaseAccount.bind(this);
     this.getAllUsersInfo = this.getAllUsersInfo.bind(this);
     this.getUserInfo = this.getUserInfo.bind(this);
-
-    // public methods
     this.generateStarkAccountFromEthPrivateKey =
       this.generateStarkAccountFromEthPrivateKey.bind(this);
     this.getEIP712SignableData = this.getEIP712SignableData.bind(this);
@@ -287,13 +285,13 @@ export class UserClient extends BaseClient implements IUserClient {
   /**
    * Get Users Information by Filter.
    *
-   * @param userId - The userId to get the info for
+   * @param filter - The filter used for filtering entries of type `IGetAllUsersFilter`
    *
-   * @returns a promise that resolves to an array of userInfos.
+   * @returns a promise that resolves to an ab oject of `ResponseData<IGetAllEntitiesResponse<IRegisteredUser>>`
    */
   public async getAllUsersInfo(
     filter: IGetAllUsersFilter,
-  ): Promise<ResponseData<IGetAllUsersResponse>> {
+  ): Promise<ResponseData<IGetAllEntitiesResponse<IRegisteredUser>>> {
     let queryBuilder = {};
     if (filter.username) {
       queryBuilder['username'] = filter.username.toString();
@@ -324,14 +322,13 @@ export class UserClient extends BaseClient implements IUserClient {
 
     const query = new URLSearchParams(queryBuilder).toString();
     if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<ResponseData<IGetAllUsersResponse>>(
-        this.doGenericGetCall,
-        [`${this.getProvider().url}/users?${query}`],
-      );
+      return await trySafeExecute<
+        ResponseData<IGetAllEntitiesResponse<IRegisteredUser>>
+      >(this.doGenericGetCall, [`${this.getProvider().url}/users?${query}`]);
     } else {
-      return await this.doGenericGetCall<IGetAllUsersResponse>(
-        `${this.getProvider().url}/users?${query}`,
-      );
+      return await this.doGenericGetCall<
+        IGetAllEntitiesResponse<IRegisteredUser>
+      >(`${this.getProvider().url}/users?${query}`);
     }
   }
 }

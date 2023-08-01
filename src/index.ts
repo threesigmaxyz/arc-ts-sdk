@@ -16,23 +16,33 @@ if (typeof window !== 'undefined') {
 }
 
 /** Exposed interfaces */
+
+// common
 export { IAccount } from './interfaces/IAccount';
 export { IStarkAccount } from './interfaces/IStarkAccount';
 export { IStarkExpressAccount } from './interfaces/IStarkExpressAccount';
 export { IClientConfig } from './interfaces/IClientConfig';
-export { IGetAllUsersFilter } from './interfaces/IGetAllUsersFilter';
-export { IVault } from './interfaces/IVault';
-export { IUserInfo } from './interfaces/IUserInfo';
 export { IPagination } from './interfaces/IPagination';
-export { IRegisteredUser } from './interfaces/IRegisteredUser';
-export { IGetAllUsersResponse } from './interfaces/IGetAllUsersResponse';
+export { IClient } from './interfaces/IClient';
 export { IProvider } from './interfaces/IProvider';
 export { ResponseData } from './interfaces/ResponseData';
 export { EOperationStatus } from './interfaces/EOperationStatus';
-export { IClient } from './interfaces/IClient';
+export { IGetAllEntitiesResponse } from './interfaces/IGetAllEntitiesResponse';
+
+// users
 export { IUserClient } from './interfaces/IUserClient';
+export { IVault } from './interfaces/IVault';
+export { IUserInfo } from './interfaces/IUserInfo';
+export { IRegisteredUser } from './interfaces/IRegisteredUser';
+export { IGetAllUsersFilter } from './interfaces/IGetAllUsersFilter';
+
+// assets
+export { IAssetsClient } from './interfaces/IAssetsClient';
+export { IAsset } from './interfaces/IAsset';
+export { IGetAllAssetsFilter } from './interfaces/IGetAllAssetsFilter';
 
 /** Exposed clients and factories */
 export { ClientFactory, DefaultProviderUrls } from './web3/ClientFactory';
 export { Client } from './web3/Client';
 export { UserClient } from './web3/UserClient';
+export { AssetsClient } from './web3/AssetsClient';

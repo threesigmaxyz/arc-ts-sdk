@@ -2,7 +2,7 @@ import { IStarkExpressAccount } from './IStarkExpressAccount';
 import { IRegisteredUser } from './IRegisteredUser';
 import { IUserInfo } from './IUserInfo';
 import { IGetAllUsersFilter } from './IGetAllUsersFilter';
-import { IGetAllUsersResponse } from './IGetAllUsersResponse';
+import { IGetAllEntitiesResponse } from './IGetAllEntitiesResponse';
 import { ResponseData } from './ResponseData';
 
 /**
@@ -70,5 +70,5 @@ export interface IUserClient {
    */
   getAllUsersInfo(
     filter: IGetAllUsersFilter,
-  ): Promise<ResponseData<IGetAllUsersResponse>>;
+  ): Promise<ResponseData<IGetAllEntitiesResponse<IRegisteredUser>>>;
 }

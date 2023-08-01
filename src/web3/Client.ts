@@ -4,12 +4,15 @@ import { IProvider } from '../interfaces/IProvider';
 import { DefaultProviderUrls } from './ClientFactory';
 import { IClient } from '../interfaces/IClient';
 import { IUserClient } from '../interfaces/IUserClient';
+import { IAssetsClient } from '../interfaces/IAssetsClient';
+import { AssetsClient } from './AssetsClient';
 
 /**
- * StarkExpress Web3 Client object wraps all user, asset, mint, transfer ,transaction, withdraw, vault, fee, deposit and settlement functionalities.
+ * StarkExpress Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
  */
 export class Client implements IClient {
   private userClient: UserClient;
+  private assetsClient: AssetsClient;
 
   /**
    * Constructor of the Client class.
@@ -19,9 +22,11 @@ export class Client implements IClient {
    */
   public constructor(private clientConfig: IClientConfig) {
     this.userClient = new UserClient(clientConfig);
+    this.assetsClient = new AssetsClient(clientConfig);
 
     // subclients
     this.user = this.user.bind(this);
+    this.assets = this.assets.bind(this);
     // setters
     this.setCustomProvider = this.setCustomProvider.bind(this);
     this.setDefaultProvider = this.setDefaultProvider.bind(this);
@@ -30,12 +35,21 @@ export class Client implements IClient {
   }
 
   /**
-   * Get the Wallet related methods.
+   * Get the user-related methods.
    *
-   * @returns WalletClient object.
+   * @returns IUserClient object.
    */
   public user(): IUserClient {
     return this.userClient;
+  }
+
+  /**
+   * Get the assets-related methods.
+   *
+   * @returns IAssetsClient object.
+   */
+  public assets(): IAssetsClient {
+    return this.assetsClient;
   }
 
   /**
@@ -45,6 +59,7 @@ export class Client implements IClient {
    */
   public setCustomProvider(provider: IProvider): void {
     this.userClient.setProvider(provider);
+    this.assetsClient.setProvider(provider);
   }
 
   /**
@@ -66,5 +81,6 @@ export class Client implements IClient {
       url: defaultProvider.toString(),
     } as IProvider;
     this.userClient.setProvider(provider);
+    this.assetsClient.setProvider(provider);
   }
 }

@@ -20,6 +20,7 @@
         "test": "jest",
         "test:cov": "jest --coverage",
         "test-user": "ts-node ./examples/user/index.ts",
+        "test-assets": "ts-node ./examples/assets/index.ts",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "prettier": "prettier --check .",

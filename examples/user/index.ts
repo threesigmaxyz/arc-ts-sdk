@@ -9,7 +9,7 @@ import { IRegisteredUser } from '../../src/interfaces/IRegisteredUser';
 import { IStarkExpressAccount } from '../../src/interfaces/IStarkExpressAccount';
 import { IUserInfo } from '../../src/interfaces/IUserInfo';
 import { IGetAllUsersFilter } from '../../src/interfaces/IGetAllUsersFilter';
-import { IGetAllUsersResponse } from '../../src/interfaces/IGetAllUsersResponse';
+import { IGetAllEntitiesResponse } from '../../src/interfaces/IGetAllEntitiesResponse';
 import { ITEM_COMPARISON } from '../../src/interfaces/EItemComparison';
 import { ResponseData } from '../../src/interfaces/ResponseData';
 const path = require('path');
@@ -91,7 +91,7 @@ if (!ethereumPrivateKey) {
     );
 
     // get all users with a filter
-    const usersInfo: ResponseData<IGetAllUsersResponse> =
+    const usersInfo: ResponseData<IGetAllEntitiesResponse<IRegisteredUser>> =
       await starkExpressClient.user().getAllUsersInfo({
         username: 'evgenipirianov',
         usernameComparison: ITEM_COMPARISON.CONTAINS,
