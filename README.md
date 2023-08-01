@@ -58,6 +58,8 @@ The client exposes several APIs for accessing different parts of the StarkExpres
 
 ```ts
 starkExpressClient.user() -> sub-client for users api (interface: IUserClient)
+starkExpressClient.assets() -> sub-client for assets api (interface: IAssetsClient)
+
 TODO
 
 ```
