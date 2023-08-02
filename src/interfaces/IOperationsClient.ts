@@ -9,6 +9,9 @@ import {
 } from '../gen';
 import { IVault } from './IVault';
 import { ITransferDetails } from './ITransferDetails';
+import { ITransactionDetails } from './ITransactionDetails';
+import { IGetAllTransactionsFilter } from './IGetAllTransactionsFilter';
+import { IGetAllEntitiesResponse } from './IGetAllEntitiesResponse';
 
 /**
  * Interface for IOperationsClient object
@@ -75,4 +78,26 @@ export interface IOperationsClient {
   getTransferDetails(
     transferDetailsData: TransferDetailsModel,
   ): Promise<ResponseData<ITransferDetails>>;
+
+  /**
+   * Get Transaction Details
+   *
+   * @param transactionId - The transaction Id
+   *
+   * @returns a promise that resolves to an object of `ResponseData<ITransactionDetails>`.
+   */
+  getTransaction(
+    transactionId: string,
+  ): Promise<ResponseData<ITransactionDetails>>;
+
+  /**
+   * Get All Transaction Details by Filter.
+   *
+   * @param filter - The filter used for filtering entries of type `IGetAllTransactionsFilter`
+   *
+   * @returns a promise that resolves to an object of `ResponseData<ITransactionDetails>`.
+   */
+  getAllTransactions(
+    filter: IGetAllTransactionsFilter,
+  ): Promise<ResponseData<IGetAllEntitiesResponse<ITransactionDetails>>>;
 }
