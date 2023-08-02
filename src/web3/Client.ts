@@ -6,6 +6,8 @@ import { IClient } from '../interfaces/IClient';
 import { IUserClient } from '../interfaces/IUserClient';
 import { IAssetsClient } from '../interfaces/IAssetsClient';
 import { AssetsClient } from './AssetsClient';
+import { IFeeModelClient } from '../interfaces/IFeeModelClient';
+import { FeeClient } from './FeeClient';
 
 /**
  * StarkExpress Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
@@ -13,6 +15,7 @@ import { AssetsClient } from './AssetsClient';
 export class Client implements IClient {
   private userClient: UserClient;
   private assetsClient: AssetsClient;
+  private feeClient: FeeClient;
 
   /**
    * Constructor of the Client class.
@@ -23,6 +26,7 @@ export class Client implements IClient {
   public constructor(private clientConfig: IClientConfig) {
     this.userClient = new UserClient(clientConfig);
     this.assetsClient = new AssetsClient(clientConfig);
+    this.feeClient = new FeeClient(clientConfig);
 
     // subclients
     this.user = this.user.bind(this);
@@ -53,6 +57,15 @@ export class Client implements IClient {
   }
 
   /**
+   * Get the fee-related methods.
+   *
+   * @returns IFeeModelClient object.
+   */
+  public fees(): IFeeModelClient {
+    return this.feeClient;
+  }
+
+  /**
    * Set new custom provider.
    *
    * @param provider - a new custom provider to set.
@@ -60,6 +73,7 @@ export class Client implements IClient {
   public setCustomProvider(provider: IProvider): void {
     this.userClient.setProvider(provider);
     this.assetsClient.setProvider(provider);
+    this.feeClient.setProvider(provider);
   }
 
   /**
@@ -82,5 +96,6 @@ export class Client implements IClient {
     } as IProvider;
     this.userClient.setProvider(provider);
     this.assetsClient.setProvider(provider);
+    this.feeClient.setProvider(provider);
   }
 }

@@ -59,6 +59,7 @@ The client exposes several APIs for accessing different parts of the StarkExpres
 ```ts
 starkExpressClient.user() -> sub-client for users api (interface: IUserClient)
 starkExpressClient.assets() -> sub-client for assets api (interface: IAssetsClient)
+starkExpressClient.fees() -> sub-client for fees api (interface: IFeeModelClient)
 
 TODO
 
@@ -145,6 +146,35 @@ const enabledAsset: ResponseData<IAsset> = await starkExpressClient
     .assets()
     .enableAsset("8ecce465-0e58-4d14-914c-79241d7dc773");
 
+```
+
+### Fees API
+
+Client public API operations are accessible under the assets sub-client, which is accessible via the `fees()` method on the client.
+
+Example:
+
+```ts
+
+import {
+   IConfigureFeeModelPayload,
+   FeeAction,
+   ResponseData,
+   IFeeModel
+} from "@threesigma/starkexpress-ts-sdk";
+
+// configure fee Model
+const configuredFeeModel: ResponseData<IFeeModel> = await starkExpressClient
+    .fees()
+    .configureFeeModel({
+    feeAction: FeeAction.TRANSFER,
+    basisPoints: 100,
+    } as IConfigureFeeModelPayload);
+
+// get fee model
+const feeModel: ResponseData<IFeeModel> = await starkExpressClient
+    .fees()
+    .getFeeModel(configuredFeeModel.result?.feeId as string);
 
 ```
 
@@ -158,9 +188,6 @@ TODO
 - Deposit
 
 ### Vault API
-TODO
-
-### Fee API
 TODO
 
 ### Settlement API
