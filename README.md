@@ -113,7 +113,8 @@ import {
    IGetAllEntitiesResponse,
    ASSET_TYPE,
    IGetAllAssetsFilter,
-   ResponseData
+   ResponseData,
+   IDeployAssetPayload
 } from "@threesigma/starkexpress-ts-sdk";
 
 // get all assets with a filter
@@ -127,6 +128,23 @@ const allAssetsInfo: ResponseData<IGetAllEntitiesResponse<IAsset>> = await stark
 const assetInfo: ResponseData<IAsset> = await starkExpressClient
     .assets()
     .getAsset((allAssetsInfo.result?.data as [IAsset])[0].assetId);
+
+
+// deploy asset
+const createdAsset: ResponseData<IAsset> = await starkExpressClient
+    .assets()
+    .deployAsset({
+    name: "Custom Asset",
+    symbol: "EGP",
+    type: ASSET_TYPE.ERC_721,
+    uri: "www.egp.com"
+    } as IDeployAssetPayload);
+
+// enable asset
+const enabledAsset: ResponseData<IAsset> = await starkExpressClient
+    .assets()
+    .enableAsset("8ecce465-0e58-4d14-914c-79241d7dc773");
+
 
 ```
 

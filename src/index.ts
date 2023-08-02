@@ -26,7 +26,6 @@ export { IPagination } from './interfaces/IPagination';
 export { IClient } from './interfaces/IClient';
 export { IProvider } from './interfaces/IProvider';
 export { ResponseData } from './interfaces/ResponseData';
-export { EOperationStatus } from './interfaces/EOperationStatus';
 export { IGetAllEntitiesResponse } from './interfaces/IGetAllEntitiesResponse';
 
 // users

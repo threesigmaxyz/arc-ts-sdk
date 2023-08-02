@@ -7,6 +7,7 @@ import { IAssetsClient } from '../interfaces/IAssetsClient';
 import { IAsset } from '../interfaces/IAsset';
 import { IGetAllAssetsFilter } from '../interfaces/IGetAllAssetsFilter';
 import { IGetAllEntitiesResponse } from '../interfaces/IGetAllEntitiesResponse';
+import { IDeployAssetPayload } from '../interfaces/IDeployAssetPayload';
 
 /**
  * A client class for interacting with the assets API of StarkExpress.
@@ -31,6 +32,8 @@ export class AssetsClient extends BaseClient implements IAssetsClient {
     this.getBaseAccount = this.getBaseAccount.bind(this);
     this.getAllAssetsInfo = this.getAllAssetsInfo.bind(this);
     this.getAsset = this.getAsset.bind(this);
+    this.deployAsset = this.deployAsset.bind(this);
+    this.enableAsset = this.enableAsset.bind(this);
   }
 
   /**
@@ -56,6 +59,31 @@ export class AssetsClient extends BaseClient implements IAssetsClient {
   }
 
   /**
+   * Deploy Asset.
+   *
+   * @param assetData - The asset data to deploy the asset with
+   *
+   * @returns a promise that resolves to an object of `ResponseData<IAsset>`.
+   */
+  public async deployAsset(
+    assetData: IDeployAssetPayload,
+  ): Promise<ResponseData<IAsset>> {
+    const body = { ...assetData, type: assetData.type.toString() };
+
+    if (this.clientConfig.retryStrategyOn) {
+      return await trySafeExecute<ResponseData<IAsset>>(this.doGenericGetCall, [
+        `${this.getProvider().url}/assets/deploy`,
+        body,
+      ]);
+    } else {
+      return await this.doGenericPostCall<IAsset>(
+        `${this.getProvider().url}/assets/deploy`,
+        body,
+      );
+    }
+  }
+
+  /**
    * Get Asset Info by assetId.
    *
    * @param userId - The assetId to get the info for
@@ -70,6 +98,30 @@ export class AssetsClient extends BaseClient implements IAssetsClient {
     } else {
       return await this.doGenericGetCall<IAsset>(
         `${this.getProvider().url}/assets/${assetId}`,
+      );
+    }
+  }
+
+  /**
+   * Enable Asset by assetId.
+   *
+   * @param userId - The assetId to be enabled
+   *
+   * @returns a promise that resolves to an object of IAsset.
+   */
+  public async enableAsset(assetId: string): Promise<ResponseData<IAsset>> {
+    const body = {
+      assetId,
+    };
+    if (this.clientConfig.retryStrategyOn) {
+      return await trySafeExecute<ResponseData<IAsset>>(
+        this.doGenericPostCall,
+        [`${this.getProvider().url}/assets`, body],
+      );
+    } else {
+      return await this.doGenericPostCall<IAsset>(
+        `${this.getProvider().url}/assets`,
+        body,
       );
     }
   }

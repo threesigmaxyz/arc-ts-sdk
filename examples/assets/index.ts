@@ -9,6 +9,7 @@ import { IGetAllEntitiesResponse } from '../../src/interfaces/IGetAllEntitiesRes
 import { ResponseData } from '../../src/interfaces/ResponseData';
 import { ASSET_TYPE, IAsset } from '../../src/interfaces/IAsset';
 import { IGetAllAssetsFilter } from '../../src/interfaces/IGetAllAssetsFilter';
+import { IDeployAssetPayload } from '../../src/interfaces/IDeployAssetPayload';
 const path = require('path');
 const chalk = require('chalk');
 
@@ -40,7 +41,7 @@ if (!apiKey) {
     // get all assets with a filter
     const allAssetsInfo: ResponseData<IGetAllEntitiesResponse<IAsset>> =
       await starkExpressClient.assets().getAllAssetsInfo({
-        assetType: ASSET_TYPE.ERC_721,
+        assetType: ASSET_TYPE.ERC_20,
         pageNumber: 0,
         pageSize: 100,
       } as IGetAllAssetsFilter);
@@ -64,6 +65,45 @@ if (!apiKey) {
 
     console.log(
       `StarkExpress Asset Info: ${JSON.stringify(assetInfo.result, null, 4)}`,
+    );
+
+    // deploy asset
+    const deployedAsset: ResponseData<IAsset> = await starkExpressClient
+      .assets()
+      .deployAsset({
+        name: 'Custom Asset',
+        symbol: 'EGP',
+        type: ASSET_TYPE.ERC_721,
+        uri: 'www.egp.com',
+      } as IDeployAssetPayload);
+
+    if (deployedAsset.error) {
+      throw new Error(JSON.stringify(deployedAsset.error, null, 4));
+    }
+
+    console.log(
+      `StarkExpress Deployed Asset: ${JSON.stringify(
+        deployedAsset.result,
+        null,
+        4,
+      )}`,
+    );
+
+    // enable asset
+    const enabledAsset: ResponseData<IAsset> = await starkExpressClient
+      .assets()
+      .enableAsset('8ecce465-0e58-4d14-914c-79241d7dc773');
+
+    if (enabledAsset.error) {
+      throw new Error(JSON.stringify(enabledAsset.error, null, 4));
+    }
+
+    console.log(
+      `StarkExpress Enabled Asset: ${JSON.stringify(
+        enabledAsset.result,
+        null,
+        4,
+      )}`,
     );
 
     process.exit(0);

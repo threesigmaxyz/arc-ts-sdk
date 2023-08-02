@@ -101,10 +101,17 @@ export class UserClient extends BaseClient implements IUserClient {
   private async registerNewUser(
     body: IRegisterUserPayload,
   ): Promise<ResponseData<IRegisteredUser>> {
-    return await this.doGenericPostCall<IRegisteredUser>(
-      `${this.getProvider().url}/users`,
-      body,
-    );
+    if (this.clientConfig.retryStrategyOn) {
+      return await trySafeExecute<ResponseData<IRegisteredUser>>(
+        this.doGenericPostCall,
+        [`${this.getProvider().url}/users`, body],
+      );
+    } else {
+      return await this.doGenericPostCall<IRegisteredUser>(
+        `${this.getProvider().url}/users`,
+        body,
+      );
+    }
   }
 
   public generateStarkAccount(
