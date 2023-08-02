@@ -10,6 +10,8 @@ import { IFeeModelClient } from '../interfaces/IFeeModelClient';
 import { FeeClient } from './FeeClient';
 import { OperationsClient } from './OperationsClient';
 import { IOperationsClient } from '../interfaces/IOperationsClient';
+import { VaultClient } from './VaultClient';
+import { IVaultClient } from '../interfaces/IVaultClient';
 
 /**
  * StarkExpress Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
@@ -19,6 +21,7 @@ export class Client implements IClient {
   private assetsClient: AssetsClient;
   private feeClient: FeeClient;
   private operationsClient: OperationsClient;
+  private vaultClient: VaultClient;
 
   /**
    * Constructor of the Client class.
@@ -31,12 +34,14 @@ export class Client implements IClient {
     this.assetsClient = new AssetsClient(clientConfig);
     this.feeClient = new FeeClient(clientConfig);
     this.operationsClient = new OperationsClient(clientConfig);
+    this.vaultClient = new VaultClient(clientConfig);
 
     // subclients
     this.user = this.user.bind(this);
     this.assets = this.assets.bind(this);
     this.fees = this.fees.bind(this);
     this.operations = this.operations.bind(this);
+    this.vault = this.vault.bind(this);
     // setters
     this.setCustomProvider = this.setCustomProvider.bind(this);
     this.setDefaultProvider = this.setDefaultProvider.bind(this);
@@ -81,6 +86,15 @@ export class Client implements IClient {
   }
 
   /**
+   * Get the vault-related methods.
+   *
+   * @returns IVaultClient object.
+   */
+  public vault(): IVaultClient {
+    return this.vaultClient;
+  }
+
+  /**
    * Set new custom provider.
    *
    * @param provider - a new custom provider to set.
@@ -90,6 +104,7 @@ export class Client implements IClient {
     this.assetsClient.setProvider(provider);
     this.feeClient.setProvider(provider);
     this.operationsClient.setProvider(provider);
+    this.vaultClient.setProvider(provider);
   }
 
   /**
@@ -114,5 +129,6 @@ export class Client implements IClient {
     this.assetsClient.setProvider(provider);
     this.feeClient.setProvider(provider);
     this.operationsClient.setProvider(provider);
+    this.vaultClient.setProvider(provider);
   }
 }
