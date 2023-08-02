@@ -33,7 +33,6 @@ if (!apiKey) {
     const starkExpressClient: Client = await ClientFactory.createDefaultClient(
       DefaultProviderUrls.TESTNET,
       apiKey,
-      false,
     );
 
     // configure fee Model

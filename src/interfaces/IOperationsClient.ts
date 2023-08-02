@@ -1,7 +1,14 @@
 import { IStarkExpressAccount } from './IStarkExpressAccount';
 import { ResponseData } from './ResponseData';
 import { IDepositDetails } from './IDepositDetails';
-import { DepositDetailsModel } from '../gen';
+import {
+  BatchMintRequestModel,
+  DepositDetailsModel,
+  TransferDetailsModel,
+  TransferModel,
+} from '../gen';
+import { IVault } from './IVault';
+import { ITransferDetails } from './ITransferDetails';
 
 /**
  * Interface for IOperationsClient object
@@ -35,4 +42,37 @@ export interface IOperationsClient {
   getDepositDetailsFotAsset(
     depositDetailsPayload: DepositDetailsModel,
   ): Promise<ResponseData<IDepositDetails>>;
+
+  /**
+   * Mint Assets in a batch
+   *
+   * @param mintRequest - The deposit details to be retrieved
+   *
+   * @returns a promise that resolves to an object of `ResponseData<{ [key: string]: Array<IVault> }>`.
+   */
+  mintAssets(
+    mintRequest: BatchMintRequestModel,
+  ): Promise<ResponseData<{ [key: string]: Array<IVault> }>>;
+
+  /**
+   * Transfer Assets
+   *
+   * @param mintRequest - The transfer details to be used
+   *
+   * @returns a promise that resolves to an object of `ResponseData<[IVault]>`.
+   */
+  transferAsset(
+    transferData: TransferModel,
+  ): Promise<ResponseData<Array<IVault>>>;
+
+  /**
+   * Get Transfer Details
+   *
+   * @param transferDetailsData - The transfer details to be used
+   *
+   * @returns a promise that resolves to an object of `ResponseData<ITransferDetails>`.
+   */
+  getTransferDetails(
+    transferDetailsData: TransferDetailsModel,
+  ): Promise<ResponseData<ITransferDetails>>;
 }

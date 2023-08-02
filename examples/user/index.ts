@@ -43,7 +43,6 @@ if (!ethereumPrivateKey) {
     const starkExpressClient: Client = await ClientFactory.createDefaultClient(
       DefaultProviderUrls.TESTNET,
       apiKey,
-      false,
     );
     // generate a starkexpress account
     const starkExpressAccount: IStarkExpressAccount = starkExpressClient

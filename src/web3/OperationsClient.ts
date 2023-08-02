@@ -4,7 +4,20 @@ import { IStarkExpressAccount } from '../interfaces/IStarkExpressAccount';
 import { ResponseData } from '../interfaces/ResponseData';
 import { IOperationsClient } from '../interfaces/IOperationsClient';
 import { IDepositDetails } from '../interfaces/IDepositDetails';
-import { Configuration, DepositApi, DepositDetailsModel } from '../gen';
+import {
+  BatchMintRequestModel,
+  Configuration,
+  DepositApi,
+  DepositDetailsModel,
+  MintApi,
+  TransactionApi,
+  TransferApi,
+  TransferDetailsModel,
+  TransferModel,
+  WithdrawApi,
+} from '../gen';
+import { IVault } from '../interfaces/IVault';
+import { ITransferDetails } from '../interfaces/ITransferDetails';
 
 /**
  * A client class for interacting with the operations API of StarkExpress.
@@ -16,6 +29,10 @@ import { Configuration, DepositApi, DepositDetailsModel } from '../gen';
 export class OperationsClient extends BaseClient implements IOperationsClient {
   private baseStarkExpressAccount?: IStarkExpressAccount;
   private depositsApi: DepositApi;
+  private withdrawApi: WithdrawApi;
+  private mintApi: MintApi;
+  private transferApi: TransferApi;
+  private transactionApi: TransactionApi;
 
   /**
    * Constructor of the {@link OperationsClient} class.
@@ -25,8 +42,28 @@ export class OperationsClient extends BaseClient implements IOperationsClient {
   public constructor(clientConfig: IClientConfig) {
     super(clientConfig);
 
-    // bind generated client
+    // bind generated clients
     this.depositsApi = new DepositApi({
+      apiKey: clientConfig.apiKey,
+      basePath: clientConfig.provider.url,
+    } as Configuration);
+
+    this.withdrawApi = new WithdrawApi({
+      apiKey: clientConfig.apiKey,
+      basePath: clientConfig.provider.url,
+    } as Configuration);
+
+    this.mintApi = new MintApi({
+      apiKey: clientConfig.apiKey,
+      basePath: clientConfig.provider.url,
+    } as Configuration);
+
+    this.transferApi = new TransferApi({
+      apiKey: clientConfig.apiKey,
+      basePath: clientConfig.provider.url,
+    } as Configuration);
+
+    this.transactionApi = new TransactionApi({
       apiKey: clientConfig.apiKey,
       basePath: clientConfig.provider.url,
     } as Configuration);
@@ -71,6 +108,51 @@ export class OperationsClient extends BaseClient implements IOperationsClient {
   ): Promise<ResponseData<IDepositDetails>> {
     return await this.sanitizeResponse<IDepositDetails>(
       this.depositsApi.depositDetails(depositDetails),
+    );
+  }
+
+  /**
+   * Mint Assets in a batch
+   *
+   * @param mintRequest - The deposit details to be retrieved
+   *
+   * @returns a promise that resolves to an object of `ResponseData<{ [key: string]: Array<IVault> }>`.
+   */
+  public async mintAssets(
+    mintRequest: BatchMintRequestModel,
+  ): Promise<ResponseData<{ [key: string]: Array<IVault> }>> {
+    return await this.sanitizeResponse<{ [key: string]: Array<IVault> }>(
+      this.mintApi.mintAssets(mintRequest),
+    );
+  }
+
+  /**
+   * Transfer Assets
+   *
+   * @param transferData - The transfer details to be used
+   *
+   * @returns a promise that resolves to an object of `ResponseData<[IVault]>`.
+   */
+  public async transferAsset(
+    transferData: TransferModel,
+  ): Promise<ResponseData<Array<IVault>>> {
+    return await this.sanitizeResponse<Array<IVault>>(
+      this.transferApi.transfer(transferData),
+    );
+  }
+
+  /**
+   * Get Transfer Details
+   *
+   * @param transferDetailsData - The transfer details to be used
+   *
+   * @returns a promise that resolves to an object of `ResponseData<ITransferDetails>`.
+   */
+  public async getTransferDetails(
+    transferDetailsData: TransferDetailsModel,
+  ): Promise<ResponseData<ITransferDetails>> {
+    return await this.sanitizeResponse<ITransferDetails>(
+      this.transferApi.transferDetails(transferDetailsData),
     );
   }
 }

@@ -35,7 +35,6 @@ if (!apiKey) {
     const starkExpressClient: Client = await ClientFactory.createDefaultClient(
       DefaultProviderUrls.TESTNET,
       apiKey,
-      true,
     );
 
     // get all assets with a filter
