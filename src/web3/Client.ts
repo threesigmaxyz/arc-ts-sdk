@@ -8,6 +8,8 @@ import { IAssetsClient } from '../interfaces/IAssetsClient';
 import { AssetsClient } from './AssetsClient';
 import { IFeeModelClient } from '../interfaces/IFeeModelClient';
 import { FeeClient } from './FeeClient';
+import { OperationsClient } from './OperationsClient';
+import { IOperationsClient } from '../interfaces/IOperationsClient';
 
 /**
  * StarkExpress Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
@@ -16,6 +18,7 @@ export class Client implements IClient {
   private userClient: UserClient;
   private assetsClient: AssetsClient;
   private feeClient: FeeClient;
+  private operationsClient: OperationsClient;
 
   /**
    * Constructor of the Client class.
@@ -27,10 +30,13 @@ export class Client implements IClient {
     this.userClient = new UserClient(clientConfig);
     this.assetsClient = new AssetsClient(clientConfig);
     this.feeClient = new FeeClient(clientConfig);
+    this.operationsClient = new OperationsClient(clientConfig);
 
     // subclients
     this.user = this.user.bind(this);
     this.assets = this.assets.bind(this);
+    this.fees = this.fees.bind(this);
+    this.operations = this.operations.bind(this);
     // setters
     this.setCustomProvider = this.setCustomProvider.bind(this);
     this.setDefaultProvider = this.setDefaultProvider.bind(this);
@@ -66,6 +72,15 @@ export class Client implements IClient {
   }
 
   /**
+   * Get the operations-related methods.
+   *
+   * @returns IOperationsClient object.
+   */
+  public operations(): IOperationsClient {
+    return this.operationsClient;
+  }
+
+  /**
    * Set new custom provider.
    *
    * @param provider - a new custom provider to set.
@@ -74,6 +89,7 @@ export class Client implements IClient {
     this.userClient.setProvider(provider);
     this.assetsClient.setProvider(provider);
     this.feeClient.setProvider(provider);
+    this.operationsClient.setProvider(provider);
   }
 
   /**
@@ -97,5 +113,6 @@ export class Client implements IClient {
     this.userClient.setProvider(provider);
     this.assetsClient.setProvider(provider);
     this.feeClient.setProvider(provider);
+    this.operationsClient.setProvider(provider);
   }
 }

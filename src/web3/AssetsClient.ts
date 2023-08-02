@@ -71,10 +71,10 @@ export class AssetsClient extends BaseClient implements IAssetsClient {
     const body = { ...assetData, type: assetData.type.toString() };
 
     if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<ResponseData<IAsset>>(this.doGenericGetCall, [
-        `${this.getProvider().url}/assets/deploy`,
-        body,
-      ]);
+      return await trySafeExecute<ResponseData<IAsset>>(
+        this.doGenericPostCall,
+        [`${this.getProvider().url}/assets/deploy`, body],
+      );
     } else {
       return await this.doGenericPostCall<IAsset>(
         `${this.getProvider().url}/assets/deploy`,
