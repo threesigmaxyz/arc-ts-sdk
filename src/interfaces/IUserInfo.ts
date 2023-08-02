@@ -1,7 +1,3 @@
-import { IRegisteredUser } from './IRegisteredUser';
-import { IVault } from './IVault';
+import { UserWithVaultsDto } from '../gen';
 
-export interface IUserInfo {
-  user: IRegisteredUser;
-  vaultsPerAsset: [IVault];
-}
+export type IUserInfo = UserWithVaultsDto;

@@ -1,12 +1,11 @@
-import { ITEM_COMPARISON } from './EItemComparison';
-import { ASSET_TYPE } from './IAsset';
+import { AssetType, FilterOptions } from '../gen';
 
 export interface IGetAllAssetsFilter {
   assetId?: string;
-  assetType: ASSET_TYPE;
-  assetTypeComparison?: ITEM_COMPARISON;
+  assetType?: AssetType;
+  assetTypeComparison?: FilterOptions;
   assetSymbol?: string;
-  assetSymbolComparison?: ITEM_COMPARISON;
+  assetSymbolComparison?: FilterOptions;
   pageNumber?: number;
   pageSize?: number;
   sortBy?: string;

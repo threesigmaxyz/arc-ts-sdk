@@ -1,9 +1,9 @@
 import { IStarkExpressAccount } from './IStarkExpressAccount';
 import { IRegisteredUser } from './IRegisteredUser';
 import { IUserInfo } from './IUserInfo';
-import { IGetAllUsersFilter } from './IGetAllUsersFilter';
 import { IGetAllEntitiesResponse } from './IGetAllEntitiesResponse';
 import { ResponseData } from './ResponseData';
+import { IGetAllUsersFilter } from './IGetAllUsersFilter';
 
 /**
  * Interface for IUserClient object

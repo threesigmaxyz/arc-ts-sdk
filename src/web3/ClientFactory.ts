@@ -4,8 +4,8 @@ import { IClientConfig } from '../interfaces/IClientConfig';
 
 /** Global connection urls, for StarkExpress's MAINNET, TESTNET */
 export enum DefaultProviderUrls {
-  MAINNET = 'https://api.starkexpress.io/api/v1',
-  TESTNET = 'https://testnet-api.starkexpress.io/api/v1',
+  MAINNET = 'https://api.starkexpress.io',
+  TESTNET = 'https://testnet-api.starkexpress.io',
 }
 
 /**

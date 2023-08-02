@@ -6,9 +6,8 @@ import {
   DefaultProviderUrls,
 } from '../../src/web3/ClientFactory';
 import { ResponseData } from '../../src/interfaces/ResponseData';
-import { IConfigureFeeModelPayload } from '../../src/interfaces/IConfigureFeeModelPayload';
-import { FeeAction } from '../../src/interfaces/FeeAction';
 import { IFeeModel } from '../../src/interfaces/IFeeModel';
+import { ConfigureFeeModel, FeeAction } from '../../src/gen';
 const path = require('path');
 const chalk = require('chalk');
 
@@ -41,9 +40,9 @@ if (!apiKey) {
     const configuredFeeModel: ResponseData<IFeeModel> = await starkExpressClient
       .fees()
       .configureFeeModel({
-        feeAction: FeeAction.TRANSFER,
+        feeAction: FeeAction.Transfer,
         basisPoints: 100,
-      } as IConfigureFeeModelPayload);
+      } as ConfigureFeeModel);
 
     if (configuredFeeModel.error) {
       throw new Error(JSON.stringify(configuredFeeModel.error, null, 4));

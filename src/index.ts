@@ -30,7 +30,6 @@ export { IGetAllEntitiesResponse } from './interfaces/IGetAllEntitiesResponse';
 
 // users
 export { IUserClient } from './interfaces/IUserClient';
-export { IVault } from './interfaces/IVault';
 export { IUserInfo } from './interfaces/IUserInfo';
 export { IRegisteredUser } from './interfaces/IRegisteredUser';
 export { IGetAllUsersFilter } from './interfaces/IGetAllUsersFilter';

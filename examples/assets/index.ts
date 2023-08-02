@@ -7,9 +7,9 @@ import {
 } from '../../src/web3/ClientFactory';
 import { IGetAllEntitiesResponse } from '../../src/interfaces/IGetAllEntitiesResponse';
 import { ResponseData } from '../../src/interfaces/ResponseData';
-import { ASSET_TYPE, IAsset } from '../../src/interfaces/IAsset';
+import { IAsset } from '../../src/interfaces/IAsset';
 import { IGetAllAssetsFilter } from '../../src/interfaces/IGetAllAssetsFilter';
-import { IDeployAssetPayload } from '../../src/interfaces/IDeployAssetPayload';
+import { AssetType, DeployAssetModel, EnableAssetModel } from '../../src/gen';
 const path = require('path');
 const chalk = require('chalk');
 
@@ -35,13 +35,13 @@ if (!apiKey) {
     const starkExpressClient: Client = await ClientFactory.createDefaultClient(
       DefaultProviderUrls.TESTNET,
       apiKey,
-      false,
+      true,
     );
 
     // get all assets with a filter
     const allAssetsInfo: ResponseData<IGetAllEntitiesResponse<IAsset>> =
       await starkExpressClient.assets().getAllAssetsInfo({
-        assetType: ASSET_TYPE.ERC_20,
+        assetType: AssetType.Erc20,
         pageNumber: 0,
         pageSize: 100,
       } as IGetAllAssetsFilter);
@@ -57,7 +57,7 @@ if (!apiKey) {
     // get asset id
     const assetInfo: ResponseData<IAsset> = await starkExpressClient
       .assets()
-      .getAsset((allAssetsInfo.result?.data as [IAsset])[0].assetId);
+      .getAsset((allAssetsInfo.result?.data as [IAsset])[0].assetId as string);
 
     if (assetInfo.error) {
       throw new Error(JSON.stringify(assetInfo.error, null, 4));
@@ -73,9 +73,9 @@ if (!apiKey) {
       .deployAsset({
         name: 'Custom Asset',
         symbol: 'EGP',
-        type: ASSET_TYPE.ERC_721,
+        type: AssetType.Erc721,
         uri: 'www.egp.com',
-      } as IDeployAssetPayload);
+      } as DeployAssetModel);
 
     if (deployedAsset.error) {
       throw new Error(JSON.stringify(deployedAsset.error, null, 4));
@@ -92,7 +92,9 @@ if (!apiKey) {
     // enable asset
     const enabledAsset: ResponseData<IAsset> = await starkExpressClient
       .assets()
-      .enableAsset('8ecce465-0e58-4d14-914c-79241d7dc773');
+      .enableAsset({
+        assetId: '8ecce465-0e58-4d14-914c-79241d7dc773',
+      } as EnableAssetModel);
 
     if (enabledAsset.error) {
       throw new Error(JSON.stringify(enabledAsset.error, null, 4));

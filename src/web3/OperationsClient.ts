@@ -1,11 +1,10 @@
 import { IClientConfig } from '../interfaces/IClientConfig';
 import { BaseClient } from './BaseClient';
-import { trySafeExecute } from '../utils/retryExecuteFunction';
 import { IStarkExpressAccount } from '../interfaces/IStarkExpressAccount';
 import { ResponseData } from '../interfaces/ResponseData';
-import { IGetDepositDetailsPayload } from '../interfaces/IGetDepositDetailsPayload';
 import { IOperationsClient } from '../interfaces/IOperationsClient';
 import { IDepositDetails } from '../interfaces/IDepositDetails';
+import { Configuration, DepositApi, DepositDetailsModel } from '../gen';
 
 /**
  * A client class for interacting with the operations API of StarkExpress.
@@ -16,6 +15,7 @@ import { IDepositDetails } from '../interfaces/IDepositDetails';
  */
 export class OperationsClient extends BaseClient implements IOperationsClient {
   private baseStarkExpressAccount?: IStarkExpressAccount;
+  private depositsApi: DepositApi;
 
   /**
    * Constructor of the {@link OperationsClient} class.
@@ -24,6 +24,12 @@ export class OperationsClient extends BaseClient implements IOperationsClient {
    */
   public constructor(clientConfig: IClientConfig) {
     super(clientConfig);
+
+    // bind generated client
+    this.depositsApi = new DepositApi({
+      apiKey: clientConfig.apiKey,
+      basePath: clientConfig.provider.url,
+    } as Configuration);
 
     // bound methods
     this.setBaseAccount = this.setBaseAccount.bind(this);
@@ -56,29 +62,15 @@ export class OperationsClient extends BaseClient implements IOperationsClient {
   /**
    * Get Deposit Details for asset
    *
-   * @param depositDetailsPayload - The deposit details to be retrieved
+   * @param depositDetails - The deposit details to be retrieved
    *
    * @returns a promise that resolves to an object of `ResponseData<IDepositDetails>`.
    */
   public async getDepositDetailsFotAsset(
-    depositDetailsPayload: IGetDepositDetailsPayload,
+    depositDetails: DepositDetailsModel,
   ): Promise<ResponseData<IDepositDetails>> {
-    const body = {
-      ...depositDetailsPayload,
-      dataAvailabilityMode:
-        depositDetailsPayload.dataAvailabilityMode.toString(),
-    };
-
-    if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<ResponseData<IDepositDetails>>(
-        this.doGenericPostCall,
-        [`${this.getProvider().url}/vaults/deposit-details`, body],
-      );
-    } else {
-      return await this.doGenericPostCall<IDepositDetails>(
-        `${this.getProvider().url}/vaults/deposit-details`,
-        body,
-      );
-    }
+    return await this.sanitizeResponse<IDepositDetails>(
+      this.depositsApi.depositDetails(depositDetails),
+    );
   }
 }

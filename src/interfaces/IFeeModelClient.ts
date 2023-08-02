@@ -1,7 +1,7 @@
 import { IStarkExpressAccount } from './IStarkExpressAccount';
 import { ResponseData } from './ResponseData';
 import { IFeeModel } from './IFeeModel';
-import { IConfigureFeeModelPayload } from './IConfigureFeeModelPayload';
+import { ConfigureFeeModel } from '../gen';
 
 /**
  * Interface for IFeeModelClient object
@@ -43,6 +43,6 @@ export interface IFeeModelClient {
    * @returns a promise that resolves to an object of `ResponseData<IFeeModel>`.
    */
   configureFeeModel(
-    feeModelData: IConfigureFeeModelPayload,
+    feeModelData: ConfigureFeeModel,
   ): Promise<ResponseData<IFeeModel>>;
 }

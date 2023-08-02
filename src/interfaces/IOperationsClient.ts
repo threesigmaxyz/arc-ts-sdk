@@ -1,7 +1,7 @@
 import { IStarkExpressAccount } from './IStarkExpressAccount';
 import { ResponseData } from './ResponseData';
-import { IGetDepositDetailsPayload } from './IGetDepositDetailsPayload';
 import { IDepositDetails } from './IDepositDetails';
+import { DepositDetailsModel } from '../gen';
 
 /**
  * Interface for IOperationsClient object
@@ -33,6 +33,6 @@ export interface IOperationsClient {
    * @returns a promise that resolves to an object of `ResponseData<IFeeModel>`.
    */
   getDepositDetailsFotAsset(
-    depositDetailsPayload: IGetDepositDetailsPayload,
+    depositDetailsPayload: DepositDetailsModel,
   ): Promise<ResponseData<IDepositDetails>>;
 }

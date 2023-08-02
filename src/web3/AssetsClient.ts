@@ -1,13 +1,19 @@
 import { IClientConfig } from '../interfaces/IClientConfig';
 import { BaseClient } from './BaseClient';
-import { trySafeExecute } from '../utils/retryExecuteFunction';
 import { IStarkExpressAccount } from '../interfaces/IStarkExpressAccount';
 import { ResponseData } from '../interfaces/ResponseData';
 import { IAssetsClient } from '../interfaces/IAssetsClient';
 import { IAsset } from '../interfaces/IAsset';
 import { IGetAllAssetsFilter } from '../interfaces/IGetAllAssetsFilter';
 import { IGetAllEntitiesResponse } from '../interfaces/IGetAllEntitiesResponse';
-import { IDeployAssetPayload } from '../interfaces/IDeployAssetPayload';
+import {
+  AssetApi,
+  Configuration,
+  DeployAssetModel,
+  EnableAssetModel,
+  TenantAssetDtoPaginatedResponseDto,
+} from '../gen';
+import { AxiosResponse } from 'axios';
 
 /**
  * A client class for interacting with the assets API of StarkExpress.
@@ -18,6 +24,7 @@ import { IDeployAssetPayload } from '../interfaces/IDeployAssetPayload';
  */
 export class AssetsClient extends BaseClient implements IAssetsClient {
   private baseStarkExpressAccount?: IStarkExpressAccount;
+  private assetsApi: AssetApi;
 
   /**
    * Constructor of the {@link AssetsClient} class.
@@ -26,6 +33,12 @@ export class AssetsClient extends BaseClient implements IAssetsClient {
    */
   public constructor(clientConfig: IClientConfig) {
     super(clientConfig);
+
+    // bind generated client
+    this.assetsApi = new AssetApi({
+      apiKey: clientConfig.apiKey,
+      basePath: clientConfig.provider.url,
+    } as Configuration);
 
     // bound methods
     this.setBaseAccount = this.setBaseAccount.bind(this);
@@ -66,21 +79,11 @@ export class AssetsClient extends BaseClient implements IAssetsClient {
    * @returns a promise that resolves to an object of `ResponseData<IAsset>`.
    */
   public async deployAsset(
-    assetData: IDeployAssetPayload,
+    deployAssetData: DeployAssetModel,
   ): Promise<ResponseData<IAsset>> {
-    const body = { ...assetData, type: assetData.type.toString() };
-
-    if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<ResponseData<IAsset>>(
-        this.doGenericPostCall,
-        [`${this.getProvider().url}/assets/deploy`, body],
-      );
-    } else {
-      return await this.doGenericPostCall<IAsset>(
-        `${this.getProvider().url}/assets/deploy`,
-        body,
-      );
-    }
+    return await this.sanitizeResponse<IAsset>(
+      this.assetsApi.deployAsset(deployAssetData),
+    );
   }
 
   /**
@@ -91,39 +94,24 @@ export class AssetsClient extends BaseClient implements IAssetsClient {
    * @returns a promise that resolves to an object of IAsset.
    */
   public async getAsset(assetId: string): Promise<ResponseData<IAsset>> {
-    if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<ResponseData<IAsset>>(this.doGenericGetCall, [
-        `${this.getProvider().url}/assets/${assetId}`,
-      ]);
-    } else {
-      return await this.doGenericGetCall<IAsset>(
-        `${this.getProvider().url}/assets/${assetId}`,
-      );
-    }
+    return await this.sanitizeResponse<IAsset>(
+      this.assetsApi.getAsset(assetId),
+    );
   }
 
   /**
    * Enable Asset by assetId.
    *
-   * @param userId - The assetId to be enabled
+   * @param enableAssetData - The assetId to be enabled
    *
    * @returns a promise that resolves to an object of IAsset.
    */
-  public async enableAsset(assetId: string): Promise<ResponseData<IAsset>> {
-    const body = {
-      assetId,
-    };
-    if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<ResponseData<IAsset>>(
-        this.doGenericPostCall,
-        [`${this.getProvider().url}/assets`, body],
-      );
-    } else {
-      return await this.doGenericPostCall<IAsset>(
-        `${this.getProvider().url}/assets`,
-        body,
-      );
-    }
+  public async enableAsset(
+    enableAssetData: EnableAssetModel,
+  ): Promise<ResponseData<IAsset>> {
+    return await this.sanitizeResponse<IAsset>(
+      this.assetsApi.enableAsset(enableAssetData),
+    );
   }
 
   /**
@@ -136,40 +124,21 @@ export class AssetsClient extends BaseClient implements IAssetsClient {
   public async getAllAssetsInfo(
     filter: IGetAllAssetsFilter,
   ): Promise<ResponseData<IGetAllEntitiesResponse<IAsset>>> {
-    let queryBuilder = {};
-    if (filter.assetId) {
-      queryBuilder['asset_id'] = filter.assetId.toString();
-    }
-    if (filter.assetTypeComparison) {
-      queryBuilder['asset_type_comparison'] =
-        filter.assetTypeComparison.toString();
-    }
-    if (filter.assetSymbol) {
-      queryBuilder['asset_symbol'] = filter.assetSymbol.toString();
-    }
-    if (filter.assetSymbolComparison) {
-      queryBuilder['asset_symbol_comparison'] =
-        filter.assetSymbolComparison.toString();
-    }
-    if (filter.pageNumber) {
-      queryBuilder['page_number'] = filter.pageNumber.toString();
-    }
-    if (filter.pageSize) {
-      queryBuilder['page_size'] = filter.pageSize.toString();
-    }
-    if (filter.sortBy) {
-      queryBuilder['sort_by'] = filter.sortBy.toString();
-    }
+    const resp: Promise<
+      AxiosResponse<TenantAssetDtoPaginatedResponseDto, any>
+    > = this.assetsApi.getAllAssets(
+      filter.assetId,
+      filter.assetType,
+      filter.assetTypeComparison,
+      filter.assetSymbol,
+      filter.assetSymbolComparison,
+      filter.pageNumber,
+      filter.pageSize,
+      filter.sortBy,
+    );
 
-    const query = new URLSearchParams(queryBuilder).toString();
-    if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<
-        ResponseData<IGetAllEntitiesResponse<IAsset>>
-      >(this.doGenericGetCall, [`${this.getProvider().url}/assets?${query}`]);
-    } else {
-      return await this.doGenericGetCall<IGetAllEntitiesResponse<IAsset>>(
-        `${this.getProvider().url}/assets?${query}`,
-      );
-    }
+    return (await this.sanitizeResponse<TenantAssetDtoPaginatedResponseDto>(
+      resp,
+    )) as ResponseData<IGetAllEntitiesResponse<IAsset>>;
   }
 }

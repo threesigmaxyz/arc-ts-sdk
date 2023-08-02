@@ -136,4 +136,26 @@ export class BaseClient {
 
     return { result: resp.data as T };
   }
+
+  protected async sanitizeResponse<T>(
+    call: Promise<AxiosResponse<T, any>>,
+  ): Promise<ResponseData<T>> {
+    let resp: AxiosResponse<T, any> = null;
+    try {
+      resp = await call;
+    } catch (error) {
+      if (error.response) {
+        // The server responded with a status other than 2xx (e.g., 4xx, 5xx)
+        return { error: error.response.data as IRequestError };
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received:', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error:', error.message);
+      }
+    }
+
+    return { result: resp.data as T };
+  }
 }
