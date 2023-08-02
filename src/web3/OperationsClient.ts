@@ -16,6 +16,7 @@ import {
   TransferDetailsModel,
   TransferModel,
   WithdrawApi,
+  WithdrawModel,
 } from '../gen';
 import { IVault } from '../interfaces/IVault';
 import { ITransferDetails } from '../interfaces/ITransferDetails';
@@ -23,6 +24,7 @@ import { ITransactionDetails } from '../interfaces/ITransactionDetails';
 import { IGetAllTransactionsFilter } from '../interfaces/IGetAllTransactionsFilter';
 import { AxiosResponse } from 'axios';
 import { IGetAllEntitiesResponse } from '../interfaces/IGetAllEntitiesResponse';
+import { IWithdrawDetails } from '../interfaces/IWithdrawDetails';
 
 /**
  * A client class for interacting with the operations API of StarkExpress.
@@ -202,5 +204,20 @@ export class OperationsClient extends BaseClient implements IOperationsClient {
     return (await this.sanitizeResponse<TransactionDtoPaginatedResponseDto>(
       resp,
     )) as ResponseData<IGetAllEntitiesResponse<ITransactionDetails>>;
+  }
+
+  /**
+   * Withdraw Asset
+   *
+   * @param withdrawAssetData - The withdrawal details to be used
+   *
+   * @returns a promise that resolves to an object of `ResponseData<IWithdrawDetails>`.
+   */
+  public async withdrawAsset(
+    withdrawAssetData: WithdrawModel,
+  ): Promise<ResponseData<IWithdrawDetails>> {
+    return await this.sanitizeResponse<IWithdrawDetails>(
+      this.withdrawApi.withdraw(withdrawAssetData),
+    );
   }
 }

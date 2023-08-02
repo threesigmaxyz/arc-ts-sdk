@@ -6,12 +6,14 @@ import {
   DepositDetailsModel,
   TransferDetailsModel,
   TransferModel,
+  WithdrawModel,
 } from '../gen';
 import { IVault } from './IVault';
 import { ITransferDetails } from './ITransferDetails';
 import { ITransactionDetails } from './ITransactionDetails';
 import { IGetAllTransactionsFilter } from './IGetAllTransactionsFilter';
 import { IGetAllEntitiesResponse } from './IGetAllEntitiesResponse';
+import { IWithdrawDetails } from './IWithdrawDetails';
 
 /**
  * Interface for IOperationsClient object
@@ -100,4 +102,15 @@ export interface IOperationsClient {
   getAllTransactions(
     filter: IGetAllTransactionsFilter,
   ): Promise<ResponseData<IGetAllEntitiesResponse<ITransactionDetails>>>;
+
+  /**
+   * Withdraw Asset
+   *
+   * @param withdrawAssetData - The withdrawal details to be used
+   *
+   * @returns a promise that resolves to an object of `ResponseData<IWithdrawDetails>`.
+   */
+  withdrawAsset(
+    withdrawAssetData: WithdrawModel,
+  ): Promise<ResponseData<IWithdrawDetails>>;
 }
