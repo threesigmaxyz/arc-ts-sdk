@@ -1,7 +1,7 @@
 {
     "name": "@threesigmaxyz/starkexpress-ts-sdk",
     "version": "0.0.1",
-    "description": "threesigma's starkexpress Typescript SDK client",
+    "description": "Threesigma's Starkexpress Typescript SDK client",
     "main": "dist/cmd/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/esm/index.d.ts",
