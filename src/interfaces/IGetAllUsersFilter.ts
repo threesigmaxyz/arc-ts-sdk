@@ -1,11 +1,11 @@
-import { ITEM_COMPARISON } from './EItemComparison';
+import { FilterOptions } from '../gen';
 
 export interface IGetAllUsersFilter {
   username?: string;
-  usernameComparison?: ITEM_COMPARISON;
+  usernameComparison?: FilterOptions;
   address?: string;
   creationDate?: string;
-  creationDateComparison?: ITEM_COMPARISON;
+  creationDateComparison?: FilterOptions;
   pageNumber?: number;
   pageSize?: number;
   sortBy?: string;

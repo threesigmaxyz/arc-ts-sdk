@@ -10,8 +10,8 @@ import { IStarkExpressAccount } from '../../src/interfaces/IStarkExpressAccount'
 import { IUserInfo } from '../../src/interfaces/IUserInfo';
 import { IGetAllUsersFilter } from '../../src/interfaces/IGetAllUsersFilter';
 import { IGetAllEntitiesResponse } from '../../src/interfaces/IGetAllEntitiesResponse';
-import { ITEM_COMPARISON } from '../../src/interfaces/EItemComparison';
 import { ResponseData } from '../../src/interfaces/ResponseData';
+import { FilterOptions } from '../../src/gen';
 const path = require('path');
 const chalk = require('chalk');
 
@@ -38,11 +38,11 @@ if (!ethereumPrivateKey) {
     console.log('Ethereum Private Key ', ethereumPrivateKey);
     console.log('Api Key ', apiKey);
 
+    // ===================================================================================
     // init stark express client
     const starkExpressClient: Client = await ClientFactory.createDefaultClient(
       DefaultProviderUrls.TESTNET,
       apiKey,
-      false,
     );
     // generate a starkexpress account
     const starkExpressAccount: IStarkExpressAccount = starkExpressClient
@@ -94,7 +94,7 @@ if (!ethereumPrivateKey) {
     const usersInfo: ResponseData<IGetAllEntitiesResponse<IRegisteredUser>> =
       await starkExpressClient.user().getAllUsersInfo({
         username: 'evgenipirianov',
-        usernameComparison: ITEM_COMPARISON.CONTAINS,
+        usernameComparison: FilterOptions.Contains,
         pageNumber: 0,
         pageSize: 100,
       } as IGetAllUsersFilter);

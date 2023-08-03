@@ -1,21 +1,21 @@
 import { IClientConfig } from '../interfaces/IClientConfig';
 import { BaseClient } from './BaseClient';
-import { trySafeExecute } from '../utils/retryExecuteFunction';
 import { IStarkExpressAccount } from '../interfaces/IStarkExpressAccount';
 import { ResponseData } from '../interfaces/ResponseData';
 import { IFeeModel } from '../interfaces/IFeeModel';
-import { IFeeModelClient } from '../interfaces/IFeeModelClient';
-import { IConfigureFeeModelPayload } from '../interfaces/IConfigureFeeModelPayload';
+import { IFeeClient } from '../interfaces/IFeeClient';
+import { Configuration, ConfigureFeeModel, FeeApi } from '../gen';
 
 /**
  * A client class for interacting with the fee API of StarkExpress.
  *
  * @remarks
  * The FeeClient manages retrieving and setting fees. It extends the BaseClient
- * class and implements the IFeeModelClient interface.
+ * class and implements the IFeeClient interface.
  */
-export class FeeClient extends BaseClient implements IFeeModelClient {
+export class FeeClient extends BaseClient implements IFeeClient {
   private baseStarkExpressAccount?: IStarkExpressAccount;
+  private feeApi: FeeApi;
 
   /**
    * Constructor of the {@link FeeClient} class.
@@ -24,6 +24,12 @@ export class FeeClient extends BaseClient implements IFeeModelClient {
    */
   public constructor(clientConfig: IClientConfig) {
     super(clientConfig);
+
+    // bind generated client
+    this.feeApi = new FeeApi({
+      apiKey: clientConfig.apiKey,
+      basePath: clientConfig.provider.url,
+    } as Configuration);
 
     // bound methods
     this.setBaseAccount = this.setBaseAccount.bind(this);
@@ -62,24 +68,11 @@ export class FeeClient extends BaseClient implements IFeeModelClient {
    * @returns a promise that resolves to an object of `ResponseData<IFeeModel>`.
    */
   public async configureFeeModel(
-    feeModelData: IConfigureFeeModelPayload,
+    feeModelData: ConfigureFeeModel,
   ): Promise<ResponseData<IFeeModel>> {
-    const body = {
-      ...feeModelData,
-      feeAction: feeModelData.feeAction.toString(),
-    };
-
-    if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<ResponseData<IFeeModel>>(
-        this.doGenericPostCall,
-        [`${this.getProvider().url}/assets/fees`, body],
-      );
-    } else {
-      return await this.doGenericPostCall<IFeeModel>(
-        `${this.getProvider().url}/assets/fees`,
-        body,
-      );
-    }
+    return await this.sanitizeResponse<IFeeModel>(
+      this.feeApi.configureFeeModel(feeModelData),
+    );
   }
 
   /**
@@ -90,15 +83,8 @@ export class FeeClient extends BaseClient implements IFeeModelClient {
    * @returns a promise that resolves to an object of IFeeModel.
    */
   public async getFeeModel(feeId: string): Promise<ResponseData<IFeeModel>> {
-    if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<ResponseData<IFeeModel>>(
-        this.doGenericGetCall,
-        [`${this.getProvider().url}/fees/${feeId}`],
-      );
-    } else {
-      return await this.doGenericGetCall<IFeeModel>(
-        `${this.getProvider().url}/fees/${feeId}`,
-      );
-    }
+    return await this.sanitizeResponse<IFeeModel>(
+      this.feeApi.getFeeModel(feeId),
+    );
   }
 }

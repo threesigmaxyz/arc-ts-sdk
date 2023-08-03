@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { wait } from './time';
 
 const MAX_NUMBER_RETRIALS = 5;

@@ -1,11 +1,3 @@
-import { FeeAction } from './FeeAction';
+import { FeeConfigDto } from '../gen';
 
-/**
- * Represents a fee model.
- *
- */
-export interface IFeeModel {
-  feeId: string;
-  action: FeeAction;
-  basisPoints: number;
-}
+export type IFeeModel = FeeConfigDto;

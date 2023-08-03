@@ -2,7 +2,6 @@
 import { IClientConfig } from '../interfaces/IClientConfig';
 import { IAccount } from '../interfaces/IAccount';
 import { BaseClient } from './BaseClient';
-import { trySafeExecute } from '../utils/retryExecuteFunction';
 import { IUserClient } from '../interfaces/IUserClient';
 import { IStarkAccount } from '../interfaces/IStarkAccount';
 import { IEIP712SignableDataUrlParams } from '../interfaces/IEIP712SignableDataUrlParams';
@@ -23,14 +22,21 @@ import {
   TypedMessage,
   signTypedData,
 } from '@metamask/eth-sig-util';
-import { IRegisterUserPayload } from '../interfaces/IRegisterUserPayload';
 import { IRegisteredUser } from '../interfaces/IRegisteredUser';
 import { IStarkExpressAccount } from '../interfaces/IStarkExpressAccount';
-const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 import { IUserInfo } from '../interfaces/IUserInfo';
-import { IGetAllUsersFilter } from '../interfaces/IGetAllUsersFilter';
 import { IGetAllEntitiesResponse } from '../interfaces/IGetAllEntitiesResponse';
 import { ResponseData } from '../interfaces/ResponseData';
+import {
+  Configuration,
+  RegisterDetailsDto,
+  RegisterUserModel,
+  UserApi,
+  UserDtoPaginatedResponseDto,
+} from '../gen';
+import { AxiosResponse } from 'axios';
+import { IGetAllUsersFilter } from '../interfaces/IGetAllUsersFilter';
+const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 
 /**
  * A client class for interacting with the user API of StarkExpress.
@@ -41,6 +47,7 @@ import { ResponseData } from '../interfaces/ResponseData';
  */
 export class UserClient extends BaseClient implements IUserClient {
   private baseStarkExpressAccount?: IStarkExpressAccount;
+  private usersApi: UserApi;
 
   /**
    * Constructor of the {@link UserClient} class.
@@ -49,6 +56,12 @@ export class UserClient extends BaseClient implements IUserClient {
    */
   public constructor(clientConfig: IClientConfig) {
     super(clientConfig);
+
+    // bind generated client
+    this.usersApi = new UserApi({
+      apiKey: clientConfig.apiKey,
+      basePath: clientConfig.provider.url,
+    } as Configuration);
 
     // bound methods
     this.generateStarkAccount = this.generateStarkAccount.bind(this);
@@ -87,31 +100,21 @@ export class UserClient extends BaseClient implements IUserClient {
   private async getEIP712SignableData<T extends MessageTypes>(
     queryParams: IEIP712SignableDataUrlParams,
   ): Promise<ResponseData<TypedMessage<T>>> {
-    const query = new URLSearchParams({
-      username: queryParams.username,
-      stark_key: queryParams.starkKey,
-      address: queryParams.address,
-    }).toString();
-
-    return await this.doGenericGetCall<TypedMessage<T>>(
-      `${this.getProvider().url}/users/register-details?${query}`,
-    );
+    const resp: Promise<AxiosResponse<RegisterDetailsDto, undefined>> =
+      this.usersApi.eIP712Details(
+        queryParams.username,
+        queryParams.starkKey,
+        queryParams.address,
+      );
+    return (await this.sanitizeResponse(resp)) as ResponseData<TypedMessage<T>>;
   }
 
   private async registerNewUser(
-    body: IRegisterUserPayload,
+    userData: RegisterUserModel,
   ): Promise<ResponseData<IRegisteredUser>> {
-    if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<ResponseData<IRegisteredUser>>(
-        this.doGenericPostCall,
-        [`${this.getProvider().url}/users`, body],
-      );
-    } else {
-      return await this.doGenericPostCall<IRegisteredUser>(
-        `${this.getProvider().url}/users`,
-        body,
-      );
-    }
+    return await this.sanitizeResponse<IRegisteredUser>(
+      this.usersApi.registerUser(userData),
+    );
   }
 
   public generateStarkAccount(
@@ -223,28 +226,15 @@ export class UserClient extends BaseClient implements IUserClient {
     const r = starkSignature.r.toString('hex');
     const s = starkSignature.s.toString('hex');
 
-    if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<ResponseData<IRegisteredUser>>(
-        this.registerNewUser,
-        [
-          {
-            username,
-            address: starkExpressAccountToRegister.ethereumAccount.address,
-            eip712Signature,
-            starkKey: starkExpressAccountToRegister.starkAccount.publicKey,
-            starkSignature: { r, s },
-          } as IRegisterUserPayload,
-        ],
-      );
-    } else {
-      return await this.registerNewUser({
+    return await this.sanitizeResponse<IRegisteredUser>(
+      this.usersApi.registerUser({
         username,
         address: starkExpressAccountToRegister.ethereumAccount.address,
         eip712Signature,
         starkKey: starkExpressAccountToRegister.starkAccount.publicKey,
         starkSignature: { r, s },
-      } as IRegisterUserPayload);
-    }
+      } as RegisterUserModel),
+    );
   }
 
   /**
@@ -277,16 +267,9 @@ export class UserClient extends BaseClient implements IUserClient {
    * @returns a promise that resolves to an object of IUserInfo.
    */
   public async getUserInfo(userId: string): Promise<ResponseData<IUserInfo>> {
-    if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<ResponseData<IUserInfo>>(
-        this.doGenericGetCall,
-        [`${this.getProvider().url}/users/${userId}`],
-      );
-    } else {
-      return await this.doGenericGetCall<IUserInfo>(
-        `${this.getProvider().url}/users/${userId}`,
-      );
-    }
+    return await this.sanitizeResponse<IUserInfo>(
+      this.usersApi.getUser(userId),
+    );
   }
 
   /**
@@ -299,43 +282,20 @@ export class UserClient extends BaseClient implements IUserClient {
   public async getAllUsersInfo(
     filter: IGetAllUsersFilter,
   ): Promise<ResponseData<IGetAllEntitiesResponse<IRegisteredUser>>> {
-    let queryBuilder = {};
-    if (filter.username) {
-      queryBuilder['username'] = filter.username.toString();
-    }
-    if (filter.usernameComparison) {
-      queryBuilder['username_comparison'] =
-        filter.usernameComparison.toString();
-    }
-    if (filter.address) {
-      queryBuilder['address'] = filter.address.toString();
-    }
-    if (filter.creationDate) {
-      queryBuilder['creation_date'] = filter.creationDate.toString();
-    }
-    if (filter.creationDateComparison) {
-      queryBuilder['creation_date_comparison'] =
-        filter.creationDateComparison.toString();
-    }
-    if (filter.pageNumber) {
-      queryBuilder['page_number'] = filter.pageNumber.toString();
-    }
-    if (filter.pageSize) {
-      queryBuilder['page_size'] = filter.pageSize.toString();
-    }
-    if (filter.sortBy) {
-      queryBuilder['sort_by'] = filter.sortBy.toString();
-    }
+    const resp: Promise<AxiosResponse<UserDtoPaginatedResponseDto, undefined>> =
+      this.usersApi.getAllUsers(
+        filter.username,
+        filter.usernameComparison,
+        filter.address,
+        filter.creationDate,
+        filter.creationDateComparison,
+        filter.pageNumber,
+        filter.pageSize,
+        filter.sortBy,
+      );
 
-    const query = new URLSearchParams(queryBuilder).toString();
-    if (this.clientConfig.retryStrategyOn) {
-      return await trySafeExecute<
-        ResponseData<IGetAllEntitiesResponse<IRegisteredUser>>
-      >(this.doGenericGetCall, [`${this.getProvider().url}/users?${query}`]);
-    } else {
-      return await this.doGenericGetCall<
-        IGetAllEntitiesResponse<IRegisteredUser>
-      >(`${this.getProvider().url}/users?${query}`);
-    }
+    return (await this.sanitizeResponse<UserDtoPaginatedResponseDto>(
+      resp,
+    )) as ResponseData<IGetAllEntitiesResponse<IRegisteredUser>>;
   }
 }

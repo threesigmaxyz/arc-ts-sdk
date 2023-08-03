@@ -1,6 +1,3 @@
-export interface IRegisteredUser {
-  userId: string;
-  username: string;
-  starkKey: string;
-  address: string;
-}
+import { UserDto } from '../gen';
+
+export type IRegisteredUser = UserDto;

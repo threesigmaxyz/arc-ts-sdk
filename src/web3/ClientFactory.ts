@@ -4,8 +4,8 @@ import { IClientConfig } from '../interfaces/IClientConfig';
 
 /** Global connection urls, for StarkExpress's MAINNET, TESTNET */
 export enum DefaultProviderUrls {
-  MAINNET = 'https://api.starkexpress.io/api/v1',
-  TESTNET = 'https://testnet-api.starkexpress.io/api/v1',
+  MAINNET = 'https://api.starkexpress.io',
+  TESTNET = 'https://testnet-api.starkexpress.io',
 }
 
 /**
@@ -29,7 +29,6 @@ export class ClientFactory {
   public static async createDefaultClient(
     defaultProvider: DefaultProviderUrls,
     apiKey: string,
-    retryStrategyOn = true,
   ): Promise<Client> {
     let publicProviderUrl = defaultProvider.toString();
 
@@ -39,7 +38,6 @@ export class ClientFactory {
 
     const client: Client = new Client({
       apiKey: apiKey,
-      retryStrategyOn,
       provider,
     } as IClientConfig);
 
@@ -58,11 +56,9 @@ export class ClientFactory {
   public static async createCustomClient(
     provider: IProvider,
     apiKey: string,
-    retryStrategyOn = true,
   ): Promise<Client> {
     const client: Client = new Client({
       apiKey,
-      retryStrategyOn,
       provider,
     } as IClientConfig);
 

@@ -1,17 +1,17 @@
 import { IStarkExpressAccount } from './IStarkExpressAccount';
 import { ResponseData } from './ResponseData';
 import { IFeeModel } from './IFeeModel';
-import { IConfigureFeeModelPayload } from './IConfigureFeeModelPayload';
+import { ConfigureFeeModel } from '../gen';
 
 /**
- * Interface for IFeeModelClient object
+ * Interface for IFeeClient object
  *
  * @see setBaseAccount - set base account for wallet
  * @see getBaseAccount - get base account for wallet
  * @see getFeeModel - get a feel model
  * @see configureFeeModel - configure fee model
  */
-export interface IFeeModelClient {
+export interface IFeeClient {
   /**
    * Set the base account.
    *
@@ -43,6 +43,6 @@ export interface IFeeModelClient {
    * @returns a promise that resolves to an object of `ResponseData<IFeeModel>`.
    */
   configureFeeModel(
-    feeModelData: IConfigureFeeModelPayload,
+    feeModelData: ConfigureFeeModel,
   ): Promise<ResponseData<IFeeModel>>;
 }
