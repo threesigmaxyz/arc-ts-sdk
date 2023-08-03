@@ -88,6 +88,7 @@
         "@types/node": "^18.13.0",
         "@typescript-eslint/eslint-plugin": "^5.52.0",
         "@typescript-eslint/parser": "^5.52.0",
+        "@openapitools/openapi-generator-cli": "2.7.0",
         "chalk": "^4.1.0",
         "eslint": "^8.34.0",
         "eslint-config-airbnb-base": "^15.0.0",
