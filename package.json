@@ -1,5 +1,5 @@
 {
-    "name": "starkexpress-ts-sdk",
+    "name": "@threesigmaxyz/starkexpress-ts-sdk",
     "version": "0.0.1",
     "description": "threesigma's starkexpress Typescript SDK client",
     "main": "dist/cmd/index.js",
@@ -34,7 +34,7 @@
         "prepare": "husky install",
         "generate-openapi": "openapi-generator-cli generate -g typescript-axios -i swagger.json -o src/gen && npm run fmt"
     },
-    "author": "ThreeSigma",
+    "author": "ThreeSigma <info@threesigma.xyz>",
     "license": "(MIT AND Apache-2.0)",
     "homepage": "https://github.com/threesigmaxyz/starkexpress-ts-sdk",
     "repository": {
