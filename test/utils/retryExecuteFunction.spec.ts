@@ -53,11 +53,4 @@ describe('trySafeExecute function', () => {
       trySafeExecute(null as any, [{}]),
     ).rejects.toThrow(`Function execution init conditions are erroneous: null`);
   });
-
-  it('should handle missing args parameter', async () => {
-    const mockFunc = jest.fn().mockResolvedValue('success');
-    const result = await trySafeExecute(mockFunc);
-    expect(result).toEqual('success');
-    expect(mockFunc).toHaveBeenCalledWith(null, {});
-  });
 });

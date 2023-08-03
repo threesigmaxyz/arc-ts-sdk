@@ -104,13 +104,14 @@ export class VaultClient extends BaseClient implements IVaultClient {
   public async getAllVaults(
     filter: IGetAllVaultsFilter,
   ): Promise<ResponseData<IGetAllEntitiesResponse<IVault>>> {
-    const resp: Promise<AxiosResponse<VaultDtoPaginatedResponseDto, any>> =
-      this.vaultApi.getAllVaults(
-        filter.assetId,
-        filter.pageNumber,
-        filter.pageSize,
-        filter.sortBy,
-      );
+    const resp: Promise<
+      AxiosResponse<VaultDtoPaginatedResponseDto, undefined>
+    > = this.vaultApi.getAllVaults(
+      filter.assetId,
+      filter.pageNumber,
+      filter.pageSize,
+      filter.sortBy,
+    );
     return (await this.sanitizeResponse<VaultDtoPaginatedResponseDto>(
       resp,
     )) as ResponseData<IGetAllEntitiesResponse<IVault>>;

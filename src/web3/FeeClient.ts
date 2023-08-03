@@ -3,7 +3,7 @@ import { BaseClient } from './BaseClient';
 import { IStarkExpressAccount } from '../interfaces/IStarkExpressAccount';
 import { ResponseData } from '../interfaces/ResponseData';
 import { IFeeModel } from '../interfaces/IFeeModel';
-import { IFeeModelClient } from '../interfaces/IFeeModelClient';
+import { IFeeClient } from '../interfaces/IFeeClient';
 import { Configuration, ConfigureFeeModel, FeeApi } from '../gen';
 
 /**
@@ -11,9 +11,9 @@ import { Configuration, ConfigureFeeModel, FeeApi } from '../gen';
  *
  * @remarks
  * The FeeClient manages retrieving and setting fees. It extends the BaseClient
- * class and implements the IFeeModelClient interface.
+ * class and implements the IFeeClient interface.
  */
-export class FeeClient extends BaseClient implements IFeeModelClient {
+export class FeeClient extends BaseClient implements IFeeClient {
   private baseStarkExpressAccount?: IStarkExpressAccount;
   private feeApi: FeeApi;
 

@@ -55,9 +55,9 @@ export class BaseClient {
   }
 
   protected async sanitizeResponse<T>(
-    call: Promise<AxiosResponse<T, any>>,
+    call: Promise<AxiosResponse<T, undefined>>,
   ): Promise<ResponseData<T>> {
-    let resp: AxiosResponse<T, any> = null;
+    let resp: AxiosResponse<T, undefined> = null;
     try {
       resp = await call;
     } catch (error) {

@@ -4,14 +4,14 @@ import { IFeeModel } from './IFeeModel';
 import { ConfigureFeeModel } from '../gen';
 
 /**
- * Interface for IFeeModelClient object
+ * Interface for IFeeClient object
  *
  * @see setBaseAccount - set base account for wallet
  * @see getBaseAccount - get base account for wallet
  * @see getFeeModel - get a feel model
  * @see configureFeeModel - configure fee model
  */
-export interface IFeeModelClient {
+export interface IFeeClient {
   /**
    * Set the base account.
    *

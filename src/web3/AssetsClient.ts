@@ -125,7 +125,7 @@ export class AssetsClient extends BaseClient implements IAssetsClient {
     filter: IGetAllAssetsFilter,
   ): Promise<ResponseData<IGetAllEntitiesResponse<IAsset>>> {
     const resp: Promise<
-      AxiosResponse<TenantAssetDtoPaginatedResponseDto, any>
+      AxiosResponse<TenantAssetDtoPaginatedResponseDto, undefined>
     > = this.assetsApi.getAllAssets(
       filter.assetId,
       filter.assetType,

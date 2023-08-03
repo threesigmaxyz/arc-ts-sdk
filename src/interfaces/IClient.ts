@@ -1,6 +1,10 @@
 import { DefaultProviderUrls } from '../web3/ClientFactory';
+import { IAssetsClient } from './IAssetsClient';
+import { IFeeClient } from './IFeeClient';
+import { IOperationsClient } from './IOperationsClient';
 import { IProvider } from './IProvider';
 import { IUserClient } from './IUserClient';
+import { IVaultClient } from './IVaultClient';
 
 /**
  * Represents the client object.
@@ -11,12 +15,20 @@ import { IUserClient } from './IUserClient';
  * for StarkExpress's MAINNET, TESTNET.
  *
  * @see user() - user API client.
+ * @see assets() - assets API client.
+ * @see fees() -fees API client.
+ * @see operations() - operations API client.
+ * @see vault() - vault API client.
  * @see getProvider - A method for getting the current provider.
  * @see setCustomProviders - A method for setting a custom provider.
  * @see setDefaultProvider - A method for setting a new default provider.
  */
 export interface IClient {
   user(): IUserClient;
+  assets(): IAssetsClient;
+  fees(): IFeeClient;
+  operations(): IOperationsClient;
+  vault(): IVaultClient;
   getProvider(): IProvider;
   setCustomProvider(provider: IProvider): void;
   setDefaultProvider(defaultProvider: DefaultProviderUrls): void;

@@ -6,7 +6,7 @@ import { IClient } from '../interfaces/IClient';
 import { IUserClient } from '../interfaces/IUserClient';
 import { IAssetsClient } from '../interfaces/IAssetsClient';
 import { AssetsClient } from './AssetsClient';
-import { IFeeModelClient } from '../interfaces/IFeeModelClient';
+import { IFeeClient } from '../interfaces/IFeeClient';
 import { FeeClient } from './FeeClient';
 import { OperationsClient } from './OperationsClient';
 import { IOperationsClient } from '../interfaces/IOperationsClient';
@@ -70,9 +70,9 @@ export class Client implements IClient {
   /**
    * Get the fee-related methods.
    *
-   * @returns IFeeModelClient object.
+   * @returns IFeeClient object.
    */
-  public fees(): IFeeModelClient {
+  public fees(): IFeeClient {
     return this.feeClient;
   }
 

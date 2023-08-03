@@ -24,7 +24,6 @@ import {
 } from '@metamask/eth-sig-util';
 import { IRegisteredUser } from '../interfaces/IRegisteredUser';
 import { IStarkExpressAccount } from '../interfaces/IStarkExpressAccount';
-const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 import { IUserInfo } from '../interfaces/IUserInfo';
 import { IGetAllEntitiesResponse } from '../interfaces/IGetAllEntitiesResponse';
 import { ResponseData } from '../interfaces/ResponseData';
@@ -37,6 +36,7 @@ import {
 } from '../gen';
 import { AxiosResponse } from 'axios';
 import { IGetAllUsersFilter } from '../interfaces/IGetAllUsersFilter';
+const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 
 /**
  * A client class for interacting with the user API of StarkExpress.
@@ -100,7 +100,7 @@ export class UserClient extends BaseClient implements IUserClient {
   private async getEIP712SignableData<T extends MessageTypes>(
     queryParams: IEIP712SignableDataUrlParams,
   ): Promise<ResponseData<TypedMessage<T>>> {
-    const resp: Promise<AxiosResponse<RegisterDetailsDto, any>> =
+    const resp: Promise<AxiosResponse<RegisterDetailsDto, undefined>> =
       this.usersApi.eIP712Details(
         queryParams.username,
         queryParams.starkKey,
@@ -282,7 +282,7 @@ export class UserClient extends BaseClient implements IUserClient {
   public async getAllUsersInfo(
     filter: IGetAllUsersFilter,
   ): Promise<ResponseData<IGetAllEntitiesResponse<IRegisteredUser>>> {
-    const resp: Promise<AxiosResponse<UserDtoPaginatedResponseDto, any>> =
+    const resp: Promise<AxiosResponse<UserDtoPaginatedResponseDto, undefined>> =
       this.usersApi.getAllUsers(
         filter.username,
         filter.usernameComparison,
