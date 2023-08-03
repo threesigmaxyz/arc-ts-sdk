@@ -1,4 +1,6 @@
-# starkexpress-ts-sdk
+# starkexpress-ts-sdk ![Node CI](https://github.com/threesigmaxyz/starkexpress-ts-sdk/workflows/Node.js%20CI/badge.svg)
+
+![check-code-coverage](https://img.shields.io/badge/coverage-%25-red)
 
 `starkexpress-ts-sdk` is a TypeScript library that allow you to interact with the `StarkExpress` L2 blockchain and use all of its features.
 
@@ -29,10 +31,10 @@ In your code, once the script is fully loaded, just use `window.starkexpress` to
 <script>console.log("StarkExpress Client ", window.starkexpress);</script>
 ```
 
-### Requirements
-
--   NodeJS 16+
--   npm / yarn (see package.json)
+> **PREREQUISITES:**
+> 
+>    - NodeJS 16+
+>    - npm / yarn (see package.json)
 
 ### Web3 Client initialization
 
