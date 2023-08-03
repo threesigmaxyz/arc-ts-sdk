@@ -32,7 +32,7 @@
         "fmt:check": "npm run prettier && npm run lint",
         "doc": "typedoc src/index.ts --name starkexpress --out docs/documentation/html --tsconfig tsconfig.json",
         "prepare": "husky install",
-        "generate-openapi": "openapi-generator-cli generate -g typescript-axios -i swagger.json -o src/gen"
+        "generate-openapi": "openapi-generator-cli generate -g typescript-axios -i swagger.json -o src/gen && npm run fmt"
     },
     "author": "ThreeSigma",
     "license": "(MIT AND Apache-2.0)",
