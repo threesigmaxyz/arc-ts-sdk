@@ -190,8 +190,11 @@ TODO
 ### Vault API
 TODO
 
+### Orders API
+WIP
+
 ### Settlement API
-TODO
+WIP
 
 ## Contributing and testing
 
