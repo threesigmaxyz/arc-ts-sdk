@@ -84,6 +84,7 @@ export const AssetType = {
   Erc1155: 'Erc1155',
   MintableErc20: 'MintableErc20',
   MintableErc721: 'MintableErc721',
+  MintableErc1155: 'MintableErc1155',
 } as const;
 
 export type AssetType = (typeof AssetType)[keyof typeof AssetType];
@@ -149,6 +150,43 @@ export interface BigInteger {
    * @memberof BigInteger
    */
   signValue?: number;
+}
+/**
+ *
+ * @export
+ * @interface CalendarSystem
+ */
+export interface CalendarSystem {
+  /**
+   *
+   * @type {string}
+   * @memberof CalendarSystem
+   */
+  id?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof CalendarSystem
+   */
+  name?: string | null;
+  /**
+   *
+   * @type {number}
+   * @memberof CalendarSystem
+   */
+  minYear?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof CalendarSystem
+   */
+  maxYear?: number;
+  /**
+   *
+   * @type {Array<Era>}
+   * @memberof CalendarSystem
+   */
+  eras?: Array<Era> | null;
 }
 /**
  * Request model to configure the fee model for an operation.
@@ -353,6 +391,19 @@ export interface DepositDetailsModel {
 }
 
 /**
+ * Request model to enable an asset in the tenant system.
+ * @export
+ * @interface DisableAssetModel
+ */
+export interface DisableAssetModel {
+  /**
+   * The unique identifier of the asset to disable.
+   * @type {string}
+   * @memberof DisableAssetModel
+   */
+  assetId: string;
+}
+/**
  *
  * @export
  * @interface DomainDto
@@ -395,6 +446,19 @@ export interface EnableAssetModel {
    * @memberof EnableAssetModel
    */
   assetId: string;
+}
+/**
+ *
+ * @export
+ * @interface Era
+ */
+export interface Era {
+  /**
+   *
+   * @type {string}
+   * @memberof Era
+   */
+  name?: string | null;
 }
 /**
  *
@@ -490,6 +554,81 @@ export const FilterOptions = {
 } as const;
 
 export type FilterOptions = (typeof FilterOptions)[keyof typeof FilterOptions];
+
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export const IsoDayOfWeek = {
+  None: 'None',
+  Monday: 'Monday',
+  Tuesday: 'Tuesday',
+  Wednesday: 'Wednesday',
+  Thursday: 'Thursday',
+  Friday: 'Friday',
+  Saturday: 'Saturday',
+  Sunday: 'Sunday',
+} as const;
+
+export type IsoDayOfWeek = (typeof IsoDayOfWeek)[keyof typeof IsoDayOfWeek];
+
+/**
+ *
+ * @export
+ * @interface LocalDate
+ */
+export interface LocalDate {
+  /**
+   *
+   * @type {CalendarSystem}
+   * @memberof LocalDate
+   */
+  calendar?: CalendarSystem;
+  /**
+   *
+   * @type {number}
+   * @memberof LocalDate
+   */
+  year?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof LocalDate
+   */
+  month?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof LocalDate
+   */
+  day?: number;
+  /**
+   *
+   * @type {IsoDayOfWeek}
+   * @memberof LocalDate
+   */
+  dayOfWeek?: IsoDayOfWeek;
+  /**
+   *
+   * @type {number}
+   * @memberof LocalDate
+   */
+  yearOfEra?: number;
+  /**
+   *
+   * @type {Era}
+   * @memberof LocalDate
+   */
+  era?: Era;
+  /**
+   *
+   * @type {number}
+   * @memberof LocalDate
+   */
+  dayOfYear?: number;
+}
 
 /**
  *
@@ -1034,6 +1173,12 @@ export interface RegisterDetailsDto {
    * @memberof RegisterDetailsDto
    */
   domainRawValues?: Array<MemberValueDto> | null;
+  /**
+   * The signable payload.
+   * @type {string}
+   * @memberof RegisterDetailsDto
+   */
+  signablePayload?: string | null;
 }
 /**
  *
@@ -1344,6 +1489,18 @@ export interface TenantAssetDto {
    * @memberof TenantAssetDto
    */
   type?: AssetType;
+  /**
+   * Is the asset enabled for the given tenant
+   * @type {boolean}
+   * @memberof TenantAssetDto
+   */
+  enabled?: boolean;
+  /**
+   * Has the asset register transaction been confirmed in the Blockchain
+   * @type {boolean}
+   * @memberof TenantAssetDto
+   */
+  confirmed?: boolean;
 }
 
 /**
@@ -1370,6 +1527,82 @@ export interface TenantAssetDtoPaginatedResponseDto {
    * @memberof TenantAssetDtoPaginatedResponseDto
    */
   totalCount?: number;
+}
+/**
+ *
+ * @export
+ * @interface TimeSeriesCostsDto
+ */
+export interface TimeSeriesCostsDto {
+  /**
+   *
+   * @type {LocalDate}
+   * @memberof TimeSeriesCostsDto
+   */
+  key?: LocalDate;
+  /**
+   * Time series value (value axis).
+   * @type {number}
+   * @memberof TimeSeriesCostsDto
+   */
+  value?: number;
+}
+/**
+ *
+ * @export
+ * @interface TimeSeriesCostsResponseDto
+ */
+export interface TimeSeriesCostsResponseDto {
+  /**
+   * Total cost amount of elements in a given time interval
+   * @type {number}
+   * @memberof TimeSeriesCostsResponseDto
+   */
+  totalCost?: number;
+  /**
+   * The data necessary for the time series chart.
+   * @type {Array<TimeSeriesCostsDto>}
+   * @memberof TimeSeriesCostsResponseDto
+   */
+  data?: Array<TimeSeriesCostsDto> | null;
+}
+/**
+ *
+ * @export
+ * @interface TimeSeriesDto
+ */
+export interface TimeSeriesDto {
+  /**
+   *
+   * @type {LocalDate}
+   * @memberof TimeSeriesDto
+   */
+  key?: LocalDate;
+  /**
+   * Time series value (value axis).
+   * @type {number}
+   * @memberof TimeSeriesDto
+   */
+  value?: number;
+}
+/**
+ *
+ * @export
+ * @interface TimeSeriesResponseDto
+ */
+export interface TimeSeriesResponseDto {
+  /**
+   * Total amount of elements in a given time interval
+   * @type {number}
+   * @memberof TimeSeriesResponseDto
+   */
+  totalCount?: number;
+  /**
+   * The data necessary for the time series chart.
+   * @type {Array<TimeSeriesDto>}
+   * @memberof TimeSeriesResponseDto
+   */
+  data?: Array<TimeSeriesDto> | null;
 }
 /**
  *
@@ -1965,12 +2198,60 @@ export const AssetApiAxiosParamCreator = function (
         configuration,
       );
 
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        deployAssetModel,
+        localVarRequestOptions,
+        configuration,
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * This endpoint allows to disable an asset in the tenant system.
+     * @summary Disable Asset
+     * @param {DisableAssetModel} disableAssetModel The asset disabling request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    disableAsset: async (
+      disableAssetModel: DisableAssetModel,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'disableAssetModel' is not null or undefined
+      assertParamExists('disableAsset', 'disableAssetModel', disableAssetModel);
+      const localVarPath = `/api/v1/assets/disable`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'POST',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication apikey required
+      await setApiKeyToObject(
         localVarHeaderParameter,
-        'oauth2',
-        ['write:tenant_assets', 'write:smart-contracts'],
+        'x-api-key',
         configuration,
       );
 
@@ -1985,7 +2266,7 @@ export const AssetApiAxiosParamCreator = function (
         ...options.headers,
       };
       localVarRequestOptions.data = serializeDataIfNeeded(
-        deployAssetModel,
+        disableAssetModel,
         localVarRequestOptions,
         configuration,
       );
@@ -2031,15 +2312,6 @@ export const AssetApiAxiosParamCreator = function (
         configuration,
       );
 
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['write:tenant_assets'],
-        configuration,
-      );
-
       localVarHeaderParameter['Content-Type'] = 'application/json';
 
       setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -2055,6 +2327,60 @@ export const AssetApiAxiosParamCreator = function (
         localVarRequestOptions,
         configuration,
       );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * This endpoint allows for deploying an asset and enable it in the tenant system.
+     * @summary Estimate cost of the deployment for a new Asset
+     * @param {AssetType} assetType
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    estimateAssetDeployCost: async (
+      assetType: AssetType,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'assetType' is not null or undefined
+      assertParamExists('estimateAssetDeployCost', 'assetType', assetType);
+      const localVarPath = `/api/v1/assets/estimate-deploy`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'GET',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication apikey required
+      await setApiKeyToObject(
+        localVarHeaderParameter,
+        'x-api-key',
+        configuration,
+      );
+
+      if (assetType !== undefined) {
+        localVarQueryParameter['asset_type'] = assetType;
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
 
       return {
         url: toPathString(localVarUrlObj),
@@ -2106,15 +2432,6 @@ export const AssetApiAxiosParamCreator = function (
       await setApiKeyToObject(
         localVarHeaderParameter,
         'x-api-key',
-        configuration,
-      );
-
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['read:tenant_assets'],
         configuration,
       );
 
@@ -2204,15 +2521,6 @@ export const AssetApiAxiosParamCreator = function (
         configuration,
       );
 
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['read:tenant_assets'],
-        configuration,
-      );
-
       setSearchParams(localVarUrlObj, localVarQueryParameter);
       let headersFromBaseOptions =
         baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -2262,6 +2570,30 @@ export const AssetApiFp = function (configuration?: Configuration) {
       );
     },
     /**
+     * This endpoint allows to disable an asset in the tenant system.
+     * @summary Disable Asset
+     * @param {DisableAssetModel} disableAssetModel The asset disabling request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async disableAsset(
+      disableAssetModel: DisableAssetModel,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<TenantAssetDto>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.disableAsset(
+        disableAssetModel,
+        options,
+      );
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        BASE_PATH,
+        configuration,
+      );
+    },
+    /**
      * This endpoint allows to enable an asset in the tenant system.
      * @summary Enable Asset
      * @param {EnableAssetModel} enableAssetModel The asset enabling request.
@@ -2278,6 +2610,31 @@ export const AssetApiFp = function (configuration?: Configuration) {
         enableAssetModel,
         options,
       );
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        BASE_PATH,
+        configuration,
+      );
+    },
+    /**
+     * This endpoint allows for deploying an asset and enable it in the tenant system.
+     * @summary Estimate cost of the deployment for a new Asset
+     * @param {AssetType} assetType
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async estimateAssetDeployCost(
+      assetType: AssetType,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<TenantAssetDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.estimateAssetDeployCost(
+          assetType,
+          options,
+        );
       return createRequestFunction(
         localVarAxiosArgs,
         globalAxios,
@@ -2387,6 +2744,21 @@ export const AssetApiFactory = function (
         .then((request) => request(axios, basePath));
     },
     /**
+     * This endpoint allows to disable an asset in the tenant system.
+     * @summary Disable Asset
+     * @param {DisableAssetModel} disableAssetModel The asset disabling request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    disableAsset(
+      disableAssetModel: DisableAssetModel,
+      options?: any,
+    ): AxiosPromise<TenantAssetDto> {
+      return localVarFp
+        .disableAsset(disableAssetModel, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
      * This endpoint allows to enable an asset in the tenant system.
      * @summary Enable Asset
      * @param {EnableAssetModel} enableAssetModel The asset enabling request.
@@ -2399,6 +2771,21 @@ export const AssetApiFactory = function (
     ): AxiosPromise<TenantAssetDto> {
       return localVarFp
         .enableAsset(enableAssetModel, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * This endpoint allows for deploying an asset and enable it in the tenant system.
+     * @summary Estimate cost of the deployment for a new Asset
+     * @param {AssetType} assetType
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    estimateAssetDeployCost(
+      assetType: AssetType,
+      options?: any,
+    ): AxiosPromise<TenantAssetDto> {
+      return localVarFp
+        .estimateAssetDeployCost(assetType, options)
         .then((request) => request(axios, basePath));
     },
     /**
@@ -2480,6 +2867,23 @@ export class AssetApi extends BaseAPI {
   }
 
   /**
+   * This endpoint allows to disable an asset in the tenant system.
+   * @summary Disable Asset
+   * @param {DisableAssetModel} disableAssetModel The asset disabling request.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AssetApi
+   */
+  public disableAsset(
+    disableAssetModel: DisableAssetModel,
+    options?: AxiosRequestConfig,
+  ) {
+    return AssetApiFp(this.configuration)
+      .disableAsset(disableAssetModel, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
    * This endpoint allows to enable an asset in the tenant system.
    * @summary Enable Asset
    * @param {EnableAssetModel} enableAssetModel The asset enabling request.
@@ -2493,6 +2897,23 @@ export class AssetApi extends BaseAPI {
   ) {
     return AssetApiFp(this.configuration)
       .enableAsset(enableAssetModel, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * This endpoint allows for deploying an asset and enable it in the tenant system.
+   * @summary Estimate cost of the deployment for a new Asset
+   * @param {AssetType} assetType
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AssetApi
+   */
+  public estimateAssetDeployCost(
+    assetType: AssetType,
+    options?: AxiosRequestConfig,
+  ) {
+    return AssetApiFp(this.configuration)
+      .estimateAssetDeployCost(assetType, options)
       .then((request) => request(this.axios, this.basePath));
   }
 
@@ -2597,15 +3018,6 @@ export const DepositApiAxiosParamCreator = function (
       await setApiKeyToObject(
         localVarHeaderParameter,
         'x-api-key',
-        configuration,
-      );
-
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['read:vaults'],
         configuration,
       );
 
@@ -3019,15 +3431,6 @@ export const MintApiAxiosParamCreator = function (
       await setApiKeyToObject(
         localVarHeaderParameter,
         'x-api-key',
-        configuration,
-      );
-
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['mint:assets'],
         configuration,
       );
 
@@ -4026,15 +4429,6 @@ export const SettlementApiAxiosParamCreator = function (
         configuration,
       );
 
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['write:settlements'],
-        configuration,
-      );
-
       localVarHeaderParameter['Content-Type'] = 'application/json';
 
       setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -4210,15 +4604,6 @@ export const TransactionApiAxiosParamCreator = function (
         configuration,
       );
 
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        [],
-        configuration,
-      );
-
       if (transactionStatus !== undefined) {
         localVarQueryParameter['transaction_status'] = transactionStatus;
       }
@@ -4310,14 +4695,133 @@ export const TransactionApiAxiosParamCreator = function (
         configuration,
       );
 
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * This endpoint allows the client to render plots (time series) of the transactions costs.
+     * @summary Get transactions costs
+     * @param {StarkExOperation} [transactionType]
+     * @param {string} [startDate]
+     * @param {string} [endDate]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getTransactionCosts: async (
+      transactionType?: StarkExOperation,
+      startDate?: string,
+      endDate?: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/api/v1/transactions/time-series/costs`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'GET',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication apikey required
+      await setApiKeyToObject(
         localVarHeaderParameter,
-        'oauth2',
-        [],
+        'x-api-key',
         configuration,
       );
+
+      if (transactionType !== undefined) {
+        localVarQueryParameter['transaction_type'] = transactionType;
+      }
+
+      if (startDate !== undefined) {
+        localVarQueryParameter['start_date'] = startDate;
+      }
+
+      if (endDate !== undefined) {
+        localVarQueryParameter['end_date'] = endDate;
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * This endpoint allows the client to render plots (time series) of the transactions throughput by type.
+     * @summary Get transactions throughput by type
+     * @param {StarkExOperation} [transactionType]
+     * @param {string} [startDate]
+     * @param {string} [endDate]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getTransactionThroughput: async (
+      transactionType?: StarkExOperation,
+      startDate?: string,
+      endDate?: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/api/v1/transactions/time-series`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'GET',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication apikey required
+      await setApiKeyToObject(
+        localVarHeaderParameter,
+        'x-api-key',
+        configuration,
+      );
+
+      if (transactionType !== undefined) {
+        localVarQueryParameter['transaction_type'] = transactionType;
+      }
+
+      if (startDate !== undefined) {
+        localVarQueryParameter['start_date'] = startDate;
+      }
+
+      if (endDate !== undefined) {
+        localVarQueryParameter['end_date'] = endDate;
+      }
 
       setSearchParams(localVarUrlObj, localVarQueryParameter);
       let headersFromBaseOptions =
@@ -4420,6 +4924,74 @@ export const TransactionApiFp = function (configuration?: Configuration) {
         configuration,
       );
     },
+    /**
+     * This endpoint allows the client to render plots (time series) of the transactions costs.
+     * @summary Get transactions costs
+     * @param {StarkExOperation} [transactionType]
+     * @param {string} [startDate]
+     * @param {string} [endDate]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getTransactionCosts(
+      transactionType?: StarkExOperation,
+      startDate?: string,
+      endDate?: string,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (
+        axios?: AxiosInstance,
+        basePath?: string,
+      ) => AxiosPromise<TimeSeriesCostsResponseDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.getTransactionCosts(
+          transactionType,
+          startDate,
+          endDate,
+          options,
+        );
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        BASE_PATH,
+        configuration,
+      );
+    },
+    /**
+     * This endpoint allows the client to render plots (time series) of the transactions throughput by type.
+     * @summary Get transactions throughput by type
+     * @param {StarkExOperation} [transactionType]
+     * @param {string} [startDate]
+     * @param {string} [endDate]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getTransactionThroughput(
+      transactionType?: StarkExOperation,
+      startDate?: string,
+      endDate?: string,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (
+        axios?: AxiosInstance,
+        basePath?: string,
+      ) => AxiosPromise<TimeSeriesResponseDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.getTransactionThroughput(
+          transactionType,
+          startDate,
+          endDate,
+          options,
+        );
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        BASE_PATH,
+        configuration,
+      );
+    },
   };
 };
 
@@ -4491,6 +5063,44 @@ export const TransactionApiFactory = function (
         .getTransaction(transactionId, options)
         .then((request) => request(axios, basePath));
     },
+    /**
+     * This endpoint allows the client to render plots (time series) of the transactions costs.
+     * @summary Get transactions costs
+     * @param {StarkExOperation} [transactionType]
+     * @param {string} [startDate]
+     * @param {string} [endDate]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getTransactionCosts(
+      transactionType?: StarkExOperation,
+      startDate?: string,
+      endDate?: string,
+      options?: any,
+    ): AxiosPromise<TimeSeriesCostsResponseDto> {
+      return localVarFp
+        .getTransactionCosts(transactionType, startDate, endDate, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * This endpoint allows the client to render plots (time series) of the transactions throughput by type.
+     * @summary Get transactions throughput by type
+     * @param {StarkExOperation} [transactionType]
+     * @param {string} [startDate]
+     * @param {string} [endDate]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getTransactionThroughput(
+      transactionType?: StarkExOperation,
+      startDate?: string,
+      endDate?: string,
+      options?: any,
+    ): AxiosPromise<TimeSeriesResponseDto> {
+      return localVarFp
+        .getTransactionThroughput(transactionType, startDate, endDate, options)
+        .then((request) => request(axios, basePath));
+    },
   };
 };
 
@@ -4558,6 +5168,48 @@ export class TransactionApi extends BaseAPI {
       .getTransaction(transactionId, options)
       .then((request) => request(this.axios, this.basePath));
   }
+
+  /**
+   * This endpoint allows the client to render plots (time series) of the transactions costs.
+   * @summary Get transactions costs
+   * @param {StarkExOperation} [transactionType]
+   * @param {string} [startDate]
+   * @param {string} [endDate]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TransactionApi
+   */
+  public getTransactionCosts(
+    transactionType?: StarkExOperation,
+    startDate?: string,
+    endDate?: string,
+    options?: AxiosRequestConfig,
+  ) {
+    return TransactionApiFp(this.configuration)
+      .getTransactionCosts(transactionType, startDate, endDate, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * This endpoint allows the client to render plots (time series) of the transactions throughput by type.
+   * @summary Get transactions throughput by type
+   * @param {StarkExOperation} [transactionType]
+   * @param {string} [startDate]
+   * @param {string} [endDate]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof TransactionApi
+   */
+  public getTransactionThroughput(
+    transactionType?: StarkExOperation,
+    startDate?: string,
+    endDate?: string,
+    options?: AxiosRequestConfig,
+  ) {
+    return TransactionApiFp(this.configuration)
+      .getTransactionThroughput(transactionType, startDate, endDate, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 }
 
 /**
@@ -4601,15 +5253,6 @@ export const TransferApiAxiosParamCreator = function (
       await setApiKeyToObject(
         localVarHeaderParameter,
         'x-api-key',
-        configuration,
-      );
-
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['write:transfers'],
         configuration,
       );
 
@@ -4671,15 +5314,6 @@ export const TransferApiAxiosParamCreator = function (
       await setApiKeyToObject(
         localVarHeaderParameter,
         'x-api-key',
-        configuration,
-      );
-
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['write:transfers'],
         configuration,
       );
 
@@ -4906,15 +5540,6 @@ export const UserApiAxiosParamCreator = function (
         configuration,
       );
 
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['read:users'],
-        configuration,
-      );
-
       if (username !== undefined) {
         localVarQueryParameter['username'] = username;
       }
@@ -4986,15 +5611,6 @@ export const UserApiAxiosParamCreator = function (
       await setApiKeyToObject(
         localVarHeaderParameter,
         'x-api-key',
-        configuration,
-      );
-
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['read:users'],
         configuration,
       );
 
@@ -5084,15 +5700,6 @@ export const UserApiAxiosParamCreator = function (
         configuration,
       );
 
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['read:users'],
-        configuration,
-      );
-
       setSearchParams(localVarUrlObj, localVarQueryParameter);
       let headersFromBaseOptions =
         baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -5140,15 +5747,6 @@ export const UserApiAxiosParamCreator = function (
       await setApiKeyToObject(
         localVarHeaderParameter,
         'x-api-key',
-        configuration,
-      );
-
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['write:users'],
         configuration,
       );
 
@@ -5560,15 +6158,6 @@ export const VaultApiAxiosParamCreator = function (
         configuration,
       );
 
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        [],
-        configuration,
-      );
-
       localVarHeaderParameter['Content-Type'] = 'application/json';
 
       setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -5627,15 +6216,6 @@ export const VaultApiAxiosParamCreator = function (
       await setApiKeyToObject(
         localVarHeaderParameter,
         'x-api-key',
-        configuration,
-      );
-
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['read:vaults'],
         configuration,
       );
 
@@ -5705,15 +6285,6 @@ export const VaultApiAxiosParamCreator = function (
       await setApiKeyToObject(
         localVarHeaderParameter,
         'x-api-key',
-        configuration,
-      );
-
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        ['read:vaults'],
         configuration,
       );
 
@@ -5993,15 +6564,6 @@ export const WithdrawApiAxiosParamCreator = function (
       await setApiKeyToObject(
         localVarHeaderParameter,
         'x-api-key',
-        configuration,
-      );
-
-      // authentication oauth2 required
-      // oauth required
-      await setOAuthToObject(
-        localVarHeaderParameter,
-        'oauth2',
-        [],
         configuration,
       );
 
