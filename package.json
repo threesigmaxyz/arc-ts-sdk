@@ -24,6 +24,7 @@
         "test-fees": "ts-node ./examples/fees/index.ts",
         "test-operations": "ts-node ./examples/operations/index.ts",
         "test-vault": "ts-node ./examples/vault/index.ts",
+        "test-health": "ts-node ./examples/health/index.ts",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "prettier": "prettier --check .",

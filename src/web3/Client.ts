@@ -12,6 +12,8 @@ import { OperationsClient } from './OperationsClient';
 import { IOperationsClient } from '../interfaces/IOperationsClient';
 import { VaultClient } from './VaultClient';
 import { IVaultClient } from '../interfaces/IVaultClient';
+import { INetworkHealth } from '../interfaces/INetworkHealth';
+import axios, { AxiosRequestHeaders, AxiosResponse } from 'axios';
 
 /**
  * StarkExpress Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
@@ -92,6 +94,37 @@ export class Client implements IClient {
    */
   public vault(): IVaultClient {
     return this.vaultClient;
+  }
+
+  /**
+   * Check the health of the network.
+   *
+   * @returns INetworkHealth object.
+   */
+  public async health(): Promise<INetworkHealth> {
+    const headers = {
+      'Content-Type': 'application/json',
+    } as AxiosRequestHeaders;
+    let resp: AxiosResponse<string, any> = null;
+    try {
+      resp = await axios({
+        method: 'get',
+        url: `${this.clientConfig.provider.url}/healthz`,
+        headers: headers,
+      });
+    } catch (error) {
+      if (error.response) {
+        // The server responded with a status other than 2xx (e.g., 4xx, 5xx)
+        return INetworkHealth.DOWN;
+      } else if (error.request) {
+        // The request was made but no response was received
+        return INetworkHealth.UNKNOWN;
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        return INetworkHealth.DOWN;
+      }
+    }
+    return resp.data === 'Healthy' ? INetworkHealth.UP : INetworkHealth.UNKNOWN;
   }
 
   /**
