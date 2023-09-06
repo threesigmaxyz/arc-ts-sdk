@@ -16,6 +16,8 @@ import { INetworkHealth } from '../interfaces/INetworkHealth';
 import axios, { AxiosRequestHeaders, AxiosResponse } from 'axios';
 import { IMintClient } from '../interfaces/IMintClient';
 import { MintClient } from './MintClient';
+import { TransferClient } from './TransferClient';
+import { ITransferClient } from '../interfaces/ITransferClient';
 import { WithdrawClient } from './WithdrawClient';
 import { IWithdrawClient } from '../interfaces/IWithdrawClient';
 import { JsonRpcProvider } from 'ethers';
@@ -30,6 +32,7 @@ export class Client implements IClient {
   private operationsClient: OperationsClient;
   private vaultClient: VaultClient;
   private mintClient: MintClient;
+  private transferClient: TransferClient;
   private withdrawClient: WithdrawClient;
 
   /**
@@ -45,6 +48,7 @@ export class Client implements IClient {
     this.operationsClient = new OperationsClient(clientConfig);
     this.vaultClient = new VaultClient(clientConfig);
     this.mintClient = new MintClient(clientConfig);
+    this.transferClient = new TransferClient(clientConfig);
     this.withdrawClient = new WithdrawClient(clientConfig);
 
     // subclients
@@ -54,6 +58,7 @@ export class Client implements IClient {
     this.operations = this.operations.bind(this);
     this.vault = this.vault.bind(this);
     this.mints = this.mints.bind(this);
+    this.transfers = this.transfers.bind(this);
     this.withdraws = this.withdraws.bind(this);
     // setters
     this.setCustomProvider = this.setCustomProvider.bind(this);
@@ -118,6 +123,15 @@ export class Client implements IClient {
   }
 
   /**
+   * Get the transfer-related methods.
+   *
+   * @returns ITransferClient object.
+   */
+  public transfers(): ITransferClient {
+    return this.transferClient;
+  }
+
+  /**
    * Get the withdraw-related methods.
    *
    * @returns IWithdrawClient object.
@@ -168,6 +182,7 @@ export class Client implements IClient {
     this.feeClient.setProvider(provider);
     this.operationsClient.setProvider(provider);
     this.vaultClient.setProvider(provider);
+    this.transferClient.setProvider(provider);
     this.mintClient.setProvider(provider);
     this.withdrawClient.setProvider(provider);
   }
@@ -195,6 +210,7 @@ export class Client implements IClient {
     this.feeClient.setProvider(provider);
     this.operationsClient.setProvider(provider);
     this.vaultClient.setProvider(provider);
+    this.transferClient.setProvider(provider);
     this.mintClient.setProvider(provider);
     this.withdrawClient.setProvider(provider);
   }
