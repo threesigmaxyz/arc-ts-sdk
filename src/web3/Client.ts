@@ -14,6 +14,8 @@ import { VaultClient } from './VaultClient';
 import { IVaultClient } from '../interfaces/IVaultClient';
 import { INetworkHealth } from '../interfaces/INetworkHealth';
 import axios, { AxiosRequestHeaders, AxiosResponse } from 'axios';
+import { IMintClient } from '../interfaces/IMintClient';
+import { MintClient } from './MintClient';
 
 /**
  * StarkExpress Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
@@ -24,6 +26,7 @@ export class Client implements IClient {
   private feeClient: FeeClient;
   private operationsClient: OperationsClient;
   private vaultClient: VaultClient;
+  private mintClient: MintClient;
 
   /**
    * Constructor of the Client class.
@@ -37,6 +40,7 @@ export class Client implements IClient {
     this.feeClient = new FeeClient(clientConfig);
     this.operationsClient = new OperationsClient(clientConfig);
     this.vaultClient = new VaultClient(clientConfig);
+    this.mintClient = new MintClient(clientConfig);
 
     // subclients
     this.user = this.user.bind(this);
@@ -44,6 +48,7 @@ export class Client implements IClient {
     this.fees = this.fees.bind(this);
     this.operations = this.operations.bind(this);
     this.vault = this.vault.bind(this);
+    this.mints = this.mints.bind(this);
     // setters
     this.setCustomProvider = this.setCustomProvider.bind(this);
     this.setDefaultProvider = this.setDefaultProvider.bind(this);
@@ -94,6 +99,15 @@ export class Client implements IClient {
    */
   public vault(): IVaultClient {
     return this.vaultClient;
+  }
+
+  /**
+   * Get the mint-related methods.
+   *
+   * @returns IMintClient object.
+   */
+  public mints(): IMintClient {
+    return this.mintClient;
   }
 
   /**

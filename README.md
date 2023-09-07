@@ -62,8 +62,8 @@ The client exposes several APIs for accessing different parts of the StarkExpres
 starkExpressClient.user() -> sub-client for users api (interface: IUserClient)
 starkExpressClient.assets() -> sub-client for assets api (interface: IAssetsClient)
 starkExpressClient.fees() -> sub-client for fees api (interface: IFeeModelClient)
+starkExpressClient.mints() -> sub-client for mints api (interface: IMintClient)
 
-TODO
 
 ```
 
@@ -180,10 +180,49 @@ const feeModel: ResponseData<IFeeModel> = await starkExpressClient
 
 ```
 
-### Operations API
+### Mints API
+
+Client public API operations are accessible under the assets sub-client, which is accessible via the `mints()` method on the client.
+
+Example:
+
+```ts
+
+import {
+  ResponseData,
+  BatchMintRequestModel,
+  DataAvailabilityModes,
+  IVault
+} from "@threesigma/starkexpress-ts-sdk";
+
+// Mint assets
+const mintAsseets: ResponseData<{ [key: string]: Array<IVault> }> = await starkExpressClient
+    .mints()
+    .mintAssets({
+      users: [
+        {
+          userId: "842c0784-6825-4cdf-8cc2-a43d5a97d54c",
+          mints: [
+            {
+              mintingBlob: "0xdeadbeef",
+              assetId: "842c0785-6825-4cdf-8cc2-a43d5a97d54c",
+              amount: "100",
+              dataAvailabilityMode: DataAvailabilityModes.ZkRollup,
+            }
+          ]
+        }
+        ],
+    } as BatchMintRequestModel);
+```
+
+The token ID is encoded in a compressed form called the minting blob, which is required in order to withdraw on-chain.
+
+
+## Operations API
+// TODO Client public API operations are accessible under the assets sub-client, which is accessible via the `fees()` method on the client.
+
 TODO
 
-- Mint
 - Transfer
 - Transactional
 - Withdraw
