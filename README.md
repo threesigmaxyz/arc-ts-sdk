@@ -63,6 +63,7 @@ starkExpressClient.user() -> sub-client for users api (interface: IUserClient)
 starkExpressClient.assets() -> sub-client for assets api (interface: IAssetsClient)
 starkExpressClient.fees() -> sub-client for fees api (interface: IFeeModelClient)
 starkExpressClient.mints() -> sub-client for mints api (interface: IMintClient)
+starkExpressClient.withdraws() -> sub-client for withdraws api (interface: IMintClient)
 
 
 ```
@@ -217,6 +218,33 @@ const mintAsseets: ResponseData<{ [key: string]: Array<IVault> }> = await starkE
 
 The token ID is encoded in a compressed form called the minting blob, which is required in order to withdraw on-chain.
 
+### Withdraw API
+
+Client public API operations are accessible under the assets sub-client, which is accessible via the `withdraws()` method on the client.
+
+Example:
+
+```ts
+
+import {
+  ResponseData,
+  WithdrawDetailsDto,
+  WithdrawModel,
+} from "@threesigma/starkexpress-ts-sdk";
+
+// Withdraw asset off-chain
+const withdrawData: WithdrawModel = {
+  vaultId: '6554d7c3-364e-4536-9cd7-bb0ce8f7c600',
+  amount: '65350000',
+};
+
+const withdraw: ResponseData<WithdrawDetailsDto> = await starkExpressClient
+  .withdraws()
+  .withdraw(withdrawData);
+
+// on-chain Withdraw
+await starkExpressClient.withdraws().withdrawOnChain(withdraw.result);
+```
 
 ## Operations API
 // TODO Client public API operations are accessible under the assets sub-client, which is accessible via the `fees()` method on the client.
@@ -225,7 +253,6 @@ TODO
 
 - Transfer
 - Transactional
-- Withdraw
 - Deposit
 
 ### Vault API

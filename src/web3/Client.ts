@@ -16,6 +16,9 @@ import { INetworkHealth } from '../interfaces/INetworkHealth';
 import axios, { AxiosRequestHeaders, AxiosResponse } from 'axios';
 import { IMintClient } from '../interfaces/IMintClient';
 import { MintClient } from './MintClient';
+import { WithdrawClient } from './WithdrawClient';
+import { IWithdrawClient } from '../interfaces/IWithdrawClient';
+import { JsonRpcProvider } from 'ethers';
 
 /**
  * StarkExpress Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
@@ -27,6 +30,7 @@ export class Client implements IClient {
   private operationsClient: OperationsClient;
   private vaultClient: VaultClient;
   private mintClient: MintClient;
+  private withdrawClient: WithdrawClient;
 
   /**
    * Constructor of the Client class.
@@ -41,6 +45,7 @@ export class Client implements IClient {
     this.operationsClient = new OperationsClient(clientConfig);
     this.vaultClient = new VaultClient(clientConfig);
     this.mintClient = new MintClient(clientConfig);
+    this.withdrawClient = new WithdrawClient(clientConfig);
 
     // subclients
     this.user = this.user.bind(this);
@@ -49,9 +54,11 @@ export class Client implements IClient {
     this.operations = this.operations.bind(this);
     this.vault = this.vault.bind(this);
     this.mints = this.mints.bind(this);
+    this.withdraws = this.withdraws.bind(this);
     // setters
     this.setCustomProvider = this.setCustomProvider.bind(this);
     this.setDefaultProvider = this.setDefaultProvider.bind(this);
+    this.setJsonRpcProvider = this.setJsonRpcProvider.bind(this);
     // getters
     this.getProvider = this.getProvider.bind(this);
   }
@@ -111,6 +118,15 @@ export class Client implements IClient {
   }
 
   /**
+   * Get the withdraw-related methods.
+   *
+   * @returns IWithdrawClient object.
+   */
+  public withdraws(): IWithdrawClient {
+    return this.withdrawClient;
+  }
+
+  /**
    * Check the health of the network.
    *
    * @returns INetworkHealth object.
@@ -152,6 +168,8 @@ export class Client implements IClient {
     this.feeClient.setProvider(provider);
     this.operationsClient.setProvider(provider);
     this.vaultClient.setProvider(provider);
+    this.mintClient.setProvider(provider);
+    this.withdrawClient.setProvider(provider);
   }
 
   /**
@@ -177,5 +195,22 @@ export class Client implements IClient {
     this.feeClient.setProvider(provider);
     this.operationsClient.setProvider(provider);
     this.vaultClient.setProvider(provider);
+    this.mintClient.setProvider(provider);
+    this.withdrawClient.setProvider(provider);
+  }
+
+  /**
+   * Set JsonRpc provider.
+   *
+   * @param provider - a new custom provider to set.
+   */
+  public setJsonRpcProvider(provider: JsonRpcProvider): void {
+    this.userClient.setJsonRpcProvider(provider);
+    this.assetsClient.setJsonRpcProvider(provider);
+    this.feeClient.setJsonRpcProvider(provider);
+    this.operationsClient.setJsonRpcProvider(provider);
+    this.vaultClient.setJsonRpcProvider(provider);
+    this.mintClient.setJsonRpcProvider(provider);
+    this.withdrawClient.setJsonRpcProvider(provider);
   }
 }
