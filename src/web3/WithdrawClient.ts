@@ -103,7 +103,7 @@ export class WithdrawClient extends BaseClient implements IWithdrawClient {
       this.baseStarkExpressAccount.ethereumAccount.secretKey,
       this.getJsonRpcProvider(),
     );
-    const starkexContract = new ethers.Contract(
+    const arcContract = new ethers.Contract(
       withdrawDetails.operatorContractAddress,
       starkexAbi,
       signer,
@@ -112,20 +112,20 @@ export class WithdrawClient extends BaseClient implements IWithdrawClient {
     // Call on-chain withdraw function
     switch (withdrawDetails.withdrawFunction) {
       case 'withdraw':
-        await starkexContract.withdraw(
+        await arcContract.withdraw(
           withdrawDetails.starkKey,
           withdrawDetails.assetType,
         );
         break;
       case 'withdrawWithTokenId':
-        await starkexContract.withdrawWithTokenId(
+        await arcContract.withdrawWithTokenId(
           withdrawDetails.starkKey,
           withdrawDetails.assetType,
           withdrawDetails.tokenId,
         );
         break;
       case 'withdrawAndMint':
-        await starkexContract.withdrawAndMint(
+        await arcContract.withdrawAndMint(
           withdrawDetails.starkKey,
           withdrawDetails.assetType,
           withdrawDetails.mintingBlob,

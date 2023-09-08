@@ -22,6 +22,7 @@
         "noImplicitThis": false,
         "skipLibCheck": true,
         "strictNullChecks": false,
+        "resolveJsonModule": true,
         "downlevelIteration": true,
         "esModuleInterop": true,
         "outDir": "dist",

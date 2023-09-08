@@ -1,6 +1,7 @@
 import { IProvider } from '../interfaces/IProvider';
 import { Client } from './Client';
 import { IClientConfig } from '../interfaces/IClientConfig';
+import { JsonRpcProvider } from 'ethers';
 
 /** Global connection urls, for StarkExpress's MAINNET, TESTNET */
 export enum DefaultProviderUrls {
@@ -29,6 +30,7 @@ export class ClientFactory {
   public static async createDefaultClient(
     defaultProvider: DefaultProviderUrls,
     apiKey: string,
+    jsonRpcProvider: JsonRpcProvider,
   ): Promise<Client> {
     let publicProviderUrl = defaultProvider.toString();
 
@@ -39,6 +41,7 @@ export class ClientFactory {
     const client: Client = new Client({
       apiKey: apiKey,
       provider,
+      jsonRpcProvider,
     } as IClientConfig);
 
     return client;
@@ -48,18 +51,19 @@ export class ClientFactory {
    * Initializes a new client using a a provider and an api key.
    *
    * @param provider - A provider to be used by the client.
-   * @param retryStrategyOn - Whether to retry failed requests.
    * @param apiKey - An api key to be used by the client.
-   *
+   * @param jsonRpcProvider - The ethereum JSON-RPC provider
    * @returns A promise that resolves to a Client object.
    */
   public static async createCustomClient(
     provider: IProvider,
     apiKey: string,
+    jsonRpcProvider: JsonRpcProvider,
   ): Promise<Client> {
     const client: Client = new Client({
       apiKey,
       provider,
+      jsonRpcProvider,
     } as IClientConfig);
 
     return client;

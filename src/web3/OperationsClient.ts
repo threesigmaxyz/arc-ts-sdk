@@ -78,7 +78,7 @@ export class OperationsClient extends BaseClient implements IOperationsClient {
     // bound methods
     this.setBaseAccount = this.setBaseAccount.bind(this);
     this.getBaseAccount = this.getBaseAccount.bind(this);
-    this.getDepositDetailsFotAsset = this.getDepositDetailsFotAsset.bind(this);
+    this.getDepositDetailsForAsset = this.getDepositDetailsForAsset.bind(this);
   }
 
   /**
@@ -110,7 +110,7 @@ export class OperationsClient extends BaseClient implements IOperationsClient {
    *
    * @returns a promise that resolves to an object of `ResponseData<IDepositDetails>`.
    */
-  public async getDepositDetailsFotAsset(
+  public async getDepositDetailsForAsset(
     depositDetails: DepositDetailsModel,
   ): Promise<ResponseData<IDepositDetails>> {
     return await this.sanitizeResponse<IDepositDetails>(

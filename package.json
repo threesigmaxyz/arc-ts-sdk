@@ -25,6 +25,7 @@
         "test-operations": "ts-node ./examples/operations/index.ts",
         "test-mints": "ts-node ./examples/mints/index.ts",
         "test-withdraws": "ts-node ./examples/withdraws/index.ts",
+        "test-deposits": "ts-node ./examples/deposit/index.ts",
         "test-vault": "ts-node ./examples/vault/index.ts",
         "test-transfer": "ts-node ./examples/transfers/index.ts",
         "test-health": "ts-node ./examples/health/index.ts",

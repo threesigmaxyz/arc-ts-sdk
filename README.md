@@ -65,7 +65,7 @@ starkExpressClient.fees() -> sub-client for fees api (interface: IFeeModelClient
 starkExpressClient.mints() -> sub-client for mints api (interface: IMintClient)
 starkExpressClient.withdraws() -> sub-client for withdraws api (interface: IMintClient)
 starkExpressClient.transfers() -> sub-client for transfers api (interface: ITransferClient)
-
+starkExpressClient.deposits() -> sub-client for deposits api (interface: IDepositClient)
 
 ```
 
@@ -278,21 +278,34 @@ const transfer: ResponseData<Array<VaultDto>> = await starkExpressClient
   .transferAsset(transferData);;
 ```
 
-## Operations API
-// TODO Client public API operations are accessible under the assets sub-client, which is accessible via the `fees()` method on the client.
+### Deposits API
 
-TODO
+Client public API operations are accessible under the assets sub-client, which is accessible via the `deposits()` method on the client.
 
-- Transactional
-- Deposit
+Example:
+
+```ts
+
+import {
+  ResponseData,
+  DepositDetailsModel,
+  DataAvailabilityModes
+} from "@threesigma/starkexpress-ts-sdk";
+
+// Execute deposit
+const depositResponse = await starkExpressClient.deposit().depositAssets({
+  userId: '5a35dbab-02ba-4ed4-b799-59daa263488b',
+  dataAvailabilityMode: DataAvailabilityModes.Validium,
+  assetId: 'ba072cae-a82d-4c9b-b663-1f98cc8c38d1',
+  amount: '10000',
+} as DepositDetailsModel);
+```
+
 
 ### Vault API
 TODO
 
 ### Orders API
-WIP
-
-### Settlement API
 WIP
 
 ## Contributing and testing
