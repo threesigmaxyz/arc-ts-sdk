@@ -3,6 +3,7 @@ import { IClientConfig } from '../interfaces/IClientConfig';
 import { ResponseData } from '../interfaces/ResponseData';
 import { IRequestError } from '../interfaces/IRequestError';
 import { AxiosResponse } from 'axios';
+import { JsonRpcProvider } from 'ethers';
 
 /**
  * The Base Client object is the main entry point for interacting with the StarkExpress L2 chain.
@@ -28,7 +29,32 @@ export class BaseClient {
     // bind class methods
     this.getProvider = this.getProvider.bind(this);
     this.setProvider = this.setProvider.bind(this);
+    this.setJsonRpcProvider = this.setJsonRpcProvider.bind(this);
+    this.getJsonRpcProvider = this.getJsonRpcProvider.bind(this);
     this.sanitizeResponse = this.sanitizeResponse.bind(this);
+  }
+
+  /**
+   * Set new JsonRpc Provider as {@link JsonRpcProvider}.
+   *
+   * @privateRemarks
+   * This methods adds a JsonRpc provider
+   *
+   * @param nodeProvider - The new JsonRpcProvider
+   *
+   * @throws Will throw an error if no nodeProvider is included.
+   */
+  public setJsonRpcProvider(nodeProvider: JsonRpcProvider): void {
+    this.clientConfig.jsonRpcProvider = nodeProvider;
+  }
+
+  /**
+   * Returns the JsonRpc provider.
+   *
+   * @returns An JsonRpcProvider.
+   */
+  protected getJsonRpcProvider(): JsonRpcProvider {
+    return this.clientConfig.jsonRpcProvider;
   }
 
   /**
