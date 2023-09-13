@@ -25,7 +25,13 @@ jobs:
         env:
           GITHUB_REF: ${{ github.ref }}
 
-      - run: ./scripts/publish.sh ${{ steps.get_tag.outputs.TAG }}
+      - run: ./src/packages/crypto/scripts/publish.sh ${{ steps.get_tag.outputs.TAG }}
+        name: Publish crypto sdk
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
+
+      - run: ./src/packages/client/scripts/publish.sh ${{ steps.get_tag.outputs.TAG }}
+        name: Publish client sdk
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
 

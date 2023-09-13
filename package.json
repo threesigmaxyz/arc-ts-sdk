@@ -12,11 +12,7 @@
         "clean-dist": "rimraf dist/*",
         "build-esm": "tsc --project tsconfig.esm.json",
         "build-commonjs": "tsc --project tsconfig.commonjs.json",
-        "build-bundle": "webpack",
         "build": "npm-run-all clean-dist generate-openapi build-*",
-        "update-version-major": "npm version major",
-        "update-version-minor": "npm version minor",
-        "update-version-patch": "npm version patch",
         "test": "jest",
         "test:cov": "jest --coverage",
         "test-user": "ts-node ./examples/user/index.ts",
@@ -35,9 +31,9 @@
         "prettier:fix": "prettier --write .",
         "fmt": "npm run prettier:fix && npm run lint:fix",
         "fmt:check": "npm run prettier && npm run lint",
-        "doc": "typedoc src/index.ts --name starkexpress --out docs/documentation/html --tsconfig tsconfig.json",
+        "doc": "typedoc src/packages/client/index.ts --name starkexpress --out docs/documentation/html --tsconfig tsconfig.json",
         "prepare": "husky install",
-        "generate-openapi": "openapi-generator-cli generate -g typescript-axios -i swagger.json -o src/gen && npm run fmt"
+        "generate-openapi": "openapi-generator-cli generate -g typescript-axios -i swagger.json -o src/packages/client/gen && npm run fmt"
     },
     "author": "ThreeSigma <info@threesigma.xyz>",
     "license": "(MIT AND Apache-2.0)",
@@ -46,6 +42,10 @@
         "type": "git",
         "url": "git+https://github.com/threesigmaxyz/starkexpress-ts-sdk"
     },
+    "workspaces": [
+        "src/packages/client",
+        "src/packages/crypto"
+    ],
     "private": false,
     "publishConfig": {
         "access": "public",
@@ -55,7 +55,8 @@
         "web3",
         "ts",
         "sdk",
-        "starkexpress"
+        "starkexpress",
+        "arc"
     ],
     "files": [
         "dist",
@@ -63,6 +64,8 @@
         "bundle.min.js"
     ],
     "dependencies": {
+        "arc-client": "file:src/packages/client",
+        "arc-crypto-utils": "file:src/packages/crypto",
         "@metamask/eth-sig-util": "^6.0.0",
         "@starkware-industries/starkware-crypto-utils": "^0.1.1-dev.1",
         "assert": "^2.0.0",

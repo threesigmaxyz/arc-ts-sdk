@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as dotenv from 'dotenv';
-import { Client, IProvider } from '../../src';
-import { ClientFactory } from '../../src';
-import { IStarkExpressAccount } from '../../src';
-import { ResponseData } from '../../src';
 import {
+  Client,
+  ClientFactory,
   DataAvailabilityModes,
+  IProvider,
+  ResponseData,
+  TransferDetailsDto,
   TransferDetailsModel,
-  VaultDto,
-} from '../../src/gen';
+  TransferModel,
+} from '../../src/packages/client';
+import { CryptoUtils, ICryptoUtils } from '../../src/packages/crypto';
 
 const path = require('path');
 const chalk = require('chalk');
@@ -21,11 +23,6 @@ const apiKey = process.env.X_API_KEY;
 if (!apiKey) {
   throw new Error('Missing X_API_KEY in .env file');
 }
-const ethereumPrivateKey = process.env.ETHEREUM_PRIVATE_KEY;
-if (!ethereumPrivateKey) {
-  throw new Error('Missing ETHEREUM_PRIVATE_KEY in .env file');
-}
-
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
   console.log(header);
@@ -33,29 +30,18 @@ if (!ethereumPrivateKey) {
   console.log(header);
 
   try {
-    console.log('Ethereum Private Key ', ethereumPrivateKey);
     console.log('Api Key ', apiKey);
 
     // ===================================================================================
     // init stark express client
-    const starkExpressClient: Client = await ClientFactory.createCustomClient(
+    const arcClient: Client = await ClientFactory.createCustomClient(
       { url: 'https://localhost:57679' } as IProvider,
       apiKey,
     );
-    // generate a starkexpress account
-    const starkExpressAccount: IStarkExpressAccount = starkExpressClient
-      .user()
-      .generateStarkAccount(ethereumPrivateKey);
 
-    console.log(
-      `StarkExpress Account Generated: ${JSON.stringify(
-        starkExpressAccount,
-        null,
-        4,
-      )}`,
-    );
-    // set as base account
-    starkExpressClient.transfers().setBaseAccount(starkExpressAccount);
+    // init cryptoUtils
+    const cryptoUtils: ICryptoUtils = new CryptoUtils();
+    await cryptoUtils.init('some message');
 
     // transfer asset
     const transferData: TransferDetailsModel = {
@@ -67,15 +53,43 @@ if (!ethereumPrivateKey) {
       amount: '214159265350000',
     };
 
-    const transfer: ResponseData<Array<VaultDto>> = await starkExpressClient
-      .transfers()
-      .transferAsset(transferData);
+    const transferDetailsDtoResponseData: ResponseData<TransferDetailsDto> =
+      await arcClient.transfers().getTransferDetails(transferData);
 
-    if (transfer.error) {
-      throw new Error(JSON.stringify(transfer.error, null, 4));
+    if (transferDetailsDtoResponseData.error) {
+      throw new Error(
+        JSON.stringify(transferDetailsDtoResponseData.error, null, 4),
+      );
     }
 
-    console.log(`Transfer vaults: ${JSON.stringify(transfer.result, null, 4)}`);
+    const transferDetailsDto = transferDetailsDtoResponseData.result;
+
+    const signature = cryptoUtils.transfers().signTransfer(transferDetailsDto);
+
+    const transferModel: TransferModel = {
+      senderVaultId: transferDetailsDto.senderVaultId,
+      receiverVaultId: transferDetailsDto.receiverVaultId,
+      quantizedAmount: transferDetailsDto.quantizedAmount,
+      expirationTimestamp: transferDetailsDto.expirationTimestamp,
+      nonce: transferDetailsDto.nonce,
+      signature: signature,
+    };
+
+    const transferResponseData = await arcClient
+      .transfers()
+      .transferAsset(transferModel);
+
+    if (transferResponseData.error) {
+      throw new Error(JSON.stringify(transferResponseData.error, null, 4));
+    }
+
+    console.log(
+      `StarkExpress Transfer result: ${JSON.stringify(
+        transferResponseData.result,
+        null,
+        4,
+      )}`,
+    );
 
     process.exit(0);
   } catch (ex) {

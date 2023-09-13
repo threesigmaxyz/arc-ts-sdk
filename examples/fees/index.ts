@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as dotenv from 'dotenv';
-import { Client } from '../../src/web3/Client';
+import { ConfigureFeeModel, FeeAction } from '../../src/packages/client/gen';
 import {
+  Client,
   ClientFactory,
   DefaultProviderUrls,
-} from '../../src/web3/ClientFactory';
-import { ResponseData } from '../../src/interfaces/ResponseData';
-import { IFeeModel } from '../../src/interfaces/IFeeModel';
-import { ConfigureFeeModel, FeeAction } from '../../src/gen';
-import { ethers } from 'ethers';
+  IFeeModel,
+  ResponseData,
+} from 'arc-client';
 const path = require('path');
 const chalk = require('chalk');
 
@@ -20,10 +19,6 @@ const apiKey = process.env.X_API_KEY;
 if (!apiKey) {
   throw new Error('Missing X_API_KEY in .env file');
 }
-const jsonRpcProviderUrl = process.env.JSONRPC_PROVIDER_URL;
-if (!jsonRpcProviderUrl) {
-  throw new Error('Missing JSONRPC_PROVIDER_URL in .env file');
-}
 
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
@@ -33,17 +28,15 @@ if (!jsonRpcProviderUrl) {
 
   try {
     console.log('Api Key ', apiKey);
-    console.log('JsonRpc provider url ', jsonRpcProviderUrl);
 
     // init stark express client
-    const starkExpressClient: Client = await ClientFactory.createDefaultClient(
+    const arcClient: Client = await ClientFactory.createDefaultClient(
       DefaultProviderUrls.TESTNET,
       apiKey,
-      new ethers.JsonRpcProvider(jsonRpcProviderUrl),
     );
 
     // configure fee Model
-    const configuredFeeModel: ResponseData<IFeeModel> = await starkExpressClient
+    const configuredFeeModel: ResponseData<IFeeModel> = await arcClient
       .fees()
       .configureFeeModel({
         feeAction: FeeAction.Transfer,
@@ -63,7 +56,7 @@ if (!jsonRpcProviderUrl) {
     );
 
     // get fee model
-    const feeModel: ResponseData<IFeeModel> = await starkExpressClient
+    const feeModel: ResponseData<IFeeModel> = await arcClient
       .fees()
       .getFeeModel(configuredFeeModel.result?.feeId as string);
 

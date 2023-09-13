@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as dotenv from 'dotenv';
-import { Client, IProvider, IStarkExpressAccount } from '../../src';
-import { ClientFactory } from '../../src';
-import { ResponseData } from '../../src';
-import { WithdrawDetailsDto, WithdrawModel } from '../../src/gen';
-import { ethers } from 'ethers';
+import { Client, IProvider } from '../../src/packages/client';
+import { ClientFactory } from '../../src/packages/client';
+import { ResponseData } from '../../src/packages/client';
+import { WithdrawDetailsDto, WithdrawModel } from '../../src/packages/client';
+import { CryptoUtils, ICryptoUtils } from '../../src/packages/crypto';
 
 const path = require('path');
 const chalk = require('chalk');
@@ -18,11 +18,6 @@ if (!apiKey) {
   throw new Error('Missing X_API_KEY in .env file');
 }
 
-const ethereumPrivateKey = process.env.ETHEREUM_PRIVATE_KEY;
-if (!ethereumPrivateKey) {
-  throw new Error('Missing ETHEREUM_PRIVATE_KEY in .env file');
-}
-
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
   console.log(header);
@@ -30,31 +25,18 @@ if (!ethereumPrivateKey) {
   console.log(header);
 
   try {
-    console.log('Ethereum Private Key ', ethereumPrivateKey);
     console.log('Api Key ', apiKey);
 
     // ===================================================================================
     // init stark express client
-    const starkExpressClient: Client = await ClientFactory.createCustomClient(
+    const arcClient: Client = await ClientFactory.createCustomClient(
       { url: 'https://localhost:57679' } as IProvider,
       apiKey,
     );
 
-    // generate a starkexpress account
-    const starkExpressAccount: IStarkExpressAccount = starkExpressClient
-      .user()
-      .generateStarkAccount(ethereumPrivateKey);
-
-    console.log(
-      `StarkExpress Account Generated: ${JSON.stringify(
-        starkExpressAccount,
-        null,
-        4,
-      )}`,
-    );
-    // set as base account
-    starkExpressClient.setJsonRpcProvider(new ethers.JsonRpcProvider());
-    starkExpressClient.withdraws().setBaseAccount(starkExpressAccount);
+    // init cryptoUtils
+    const cryptoUtils: ICryptoUtils = new CryptoUtils();
+    await cryptoUtils.init('some message');
 
     // withdraw asset
     const withdrawData: WithdrawModel = {
@@ -62,7 +44,7 @@ if (!ethereumPrivateKey) {
       amount: '65350000',
     };
 
-    const withdraw: ResponseData<WithdrawDetailsDto> = await starkExpressClient
+    const withdraw: ResponseData<WithdrawDetailsDto> = await arcClient
       .withdraws()
       .withdraw(withdrawData);
 
@@ -75,7 +57,7 @@ if (!ethereumPrivateKey) {
     );
 
     // onchain withdraw
-    await starkExpressClient.withdraws().withdrawOnChain(withdraw.result);
+    await cryptoUtils.withdraws().withdrawOnChain(withdraw.result);
 
     process.exit(0);
   } catch (ex) {

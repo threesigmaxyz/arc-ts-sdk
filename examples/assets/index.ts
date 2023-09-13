@@ -1,15 +1,19 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import * as dotenv from 'dotenv';
-import { Client } from '../../src/web3/Client';
 import {
+  Client,
   ClientFactory,
   DefaultProviderUrls,
-} from '../../src/web3/ClientFactory';
-import { IGetAllEntitiesResponse } from '../../src/interfaces/IGetAllEntitiesResponse';
-import { ResponseData } from '../../src/interfaces/ResponseData';
-import { IAsset } from '../../src/interfaces/IAsset';
-import { IGetAllAssetsFilter } from '../../src/interfaces/IGetAllAssetsFilter';
-import { AssetType, DeployAssetModel, EnableAssetModel } from '../../src/gen';
+  IAsset,
+  IGetAllAssetsFilter,
+  IGetAllEntitiesResponse,
+  ResponseData,
+} from 'arc-client';
+import * as dotenv from 'dotenv';
+import {
+  AssetType,
+  DeployAssetModel,
+  EnableAssetModel,
+} from '../../src/packages/client/gen';
 const path = require('path');
 const chalk = require('chalk');
 
@@ -32,14 +36,14 @@ if (!apiKey) {
     console.log('Api Key ', apiKey);
 
     // init stark express client
-    const starkExpressClient: Client = await ClientFactory.createDefaultClient(
+    const arcClient: Client = await ClientFactory.createDefaultClient(
       DefaultProviderUrls.TESTNET,
       apiKey,
     );
 
     // get all assets with a filter
     const allAssetsInfo: ResponseData<IGetAllEntitiesResponse<IAsset>> =
-      await starkExpressClient.assets().getAllAssetsInfo({
+      await arcClient.assets().getAllAssetsInfo({
         assetType: AssetType.Erc20,
         pageNumber: 0,
         pageSize: 100,
@@ -54,7 +58,7 @@ if (!apiKey) {
     );
 
     // get asset id
-    const assetInfo: ResponseData<IAsset> = await starkExpressClient
+    const assetInfo: ResponseData<IAsset> = await arcClient
       .assets()
       .getAsset((allAssetsInfo.result?.data as [IAsset])[0].assetId as string);
 
@@ -67,7 +71,7 @@ if (!apiKey) {
     );
 
     // deploy asset
-    const deployedAsset: ResponseData<IAsset> = await starkExpressClient
+    const deployedAsset: ResponseData<IAsset> = await arcClient
       .assets()
       .deployAsset({
         name: 'Custom Asset',
@@ -89,7 +93,7 @@ if (!apiKey) {
     );
 
     // enable asset
-    const enabledAsset: ResponseData<IAsset> = await starkExpressClient
+    const enabledAsset: ResponseData<IAsset> = await arcClient
       .assets()
       .enableAsset({
         assetId: '8ecce465-0e58-4d14-914c-79241d7dc773',

@@ -1,11 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import { Client, ClientFactory, DefaultProviderUrls } from 'arc-client';
 import * as dotenv from 'dotenv';
-import { Client } from '../../src/web3/Client';
-import {
-  ClientFactory,
-  DefaultProviderUrls,
-} from '../../src/web3/ClientFactory';
-import { ethers } from 'ethers';
 const path = require('path');
 const chalk = require('chalk');
 
@@ -18,11 +13,6 @@ if (!apiKey) {
   throw new Error('Missing X_API_KEY in .env file');
 }
 
-const jsonRpcProviderUrl = process.env.JSONRPC_PROVIDER_URL;
-if (!jsonRpcProviderUrl) {
-  throw new Error('Missing JSONRPC_PROVIDER_URL in .env file');
-}
-
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
   console.log(header);
@@ -31,15 +21,13 @@ if (!jsonRpcProviderUrl) {
 
   try {
     console.log('Api Key ', apiKey);
-    console.log('JsonRpc provider url ', jsonRpcProviderUrl);
 
     // init stark express client
-    const starkExpressClient: Client = await ClientFactory.createDefaultClient(
+    const arcClient: Client = await ClientFactory.createDefaultClient(
       DefaultProviderUrls.MAINNET,
       apiKey,
-      new ethers.JsonRpcProvider(jsonRpcProviderUrl),
     );
-    const healthStatus = await starkExpressClient.health();
+    const healthStatus = await arcClient.health();
     console.log('Got health status: ', healthStatus);
 
     process.exit(0);

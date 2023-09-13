@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as dotenv from 'dotenv';
-import { Client } from '../../src/web3/Client';
+import { Client } from '../../src/packages/client';
+import { IRegisteredUser } from '../../src/packages/client';
+import { IUserInfo } from '../../src/packages/client';
+import { IGetAllEntitiesResponse } from '../../src/packages/client';
+import { ResponseData } from '../../src/packages/client';
+import { FilterOptions } from '../../src/packages/client';
 import {
-  ClientFactory,
-  DefaultProviderUrls,
-} from '../../src/web3/ClientFactory';
-import { IRegisteredUser } from '../../src/interfaces/IRegisteredUser';
-import { IStarkExpressAccount } from '../../src/interfaces/IStarkExpressAccount';
-import { IUserInfo } from '../../src/interfaces/IUserInfo';
-import { IGetAllUsersFilter } from '../../src/interfaces/IGetAllUsersFilter';
-import { IGetAllEntitiesResponse } from '../../src/interfaces/IGetAllEntitiesResponse';
-import { ResponseData } from '../../src/interfaces/ResponseData';
-import { FilterOptions } from '../../src/gen';
-import { ethers } from 'ethers';
-const path = require('path');
-const chalk = require('chalk');
+  MessageTypes,
+  TypedMessage,
+} from '@metamask/eth-sig-util/dist/sign-typed-data';
+import path from 'path';
+import chalk from 'chalk';
+import { ClientFactory, DefaultProviderUrls } from '../../src/packages/client';
+import { IGetAllUsersFilter } from '../../src/packages/client';
+import { CryptoUtils, ICryptoUtils } from 'arc-crypto-utils';
 
 dotenv.config({
   path: path.resolve(__dirname, '..', '.env'),
@@ -24,14 +24,6 @@ const apiKey = process.env.X_API_KEY;
 if (!apiKey) {
   throw new Error('Missing X_API_KEY in .env file');
 }
-const ethereumPrivateKey = process.env.ETHEREUM_PRIVATE_KEY;
-if (!ethereumPrivateKey) {
-  throw new Error('Missing ETHEREUM_PRIVATE_KEY in .env file');
-}
-const jsonRpcProviderUrl = process.env.JSONRPC_PROVIDER_URL;
-if (!jsonRpcProviderUrl) {
-  throw new Error('Missing JSONRPC_PROVIDER_URL in .env file');
-}
 
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
@@ -40,38 +32,35 @@ if (!jsonRpcProviderUrl) {
   console.log(header);
 
   try {
-    console.log('Ethereum Private Key ', ethereumPrivateKey);
     console.log('Api Key ', apiKey);
-    console.log('JsonRpc provider url ', jsonRpcProviderUrl);
 
     // ===================================================================================
     // init stark express client
-    const starkExpressClient: Client = await ClientFactory.createDefaultClient(
+    const arcClient: Client = await ClientFactory.createDefaultClient(
       DefaultProviderUrls.TESTNET,
       apiKey,
-      new ethers.JsonRpcProvider(jsonRpcProviderUrl),
     );
 
-    // generate a starkexpress account
-    const starkExpressAccount: IStarkExpressAccount = starkExpressClient
+    // init cryptoUtils
+    const cryptoUtils: ICryptoUtils = new CryptoUtils();
+    await cryptoUtils.init('some message');
+
+    // get register details
+    const registerDetails = (await arcClient.user().getEIP712SignableData({
+      username: 'evgenip',
+      starkKey: cryptoUtils.starkAccount.publicKey,
+      address: cryptoUtils.signer.address,
+    })) as TypedMessage<MessageTypes>;
+
+    // get signed register details
+    const registerModel = await cryptoUtils
       .user()
-      .generateStarkAccount(ethereumPrivateKey);
-
-    console.log(
-      `StarkExpress Account Generated: ${JSON.stringify(
-        starkExpressAccount,
-        null,
-        4,
-      )}`,
-    );
-    // set as base account
-    starkExpressClient.user().setBaseAccount(starkExpressAccount);
+      .signRegisterDetails('evgenip', registerDetails);
 
     // register a new user
-    const registeredUser: ResponseData<IRegisteredUser> =
-      await starkExpressClient
-        .user()
-        .registerStarkUser('evgenip', starkExpressAccount);
+    const registeredUser: ResponseData<IRegisteredUser> = await arcClient
+      .user()
+      .registerNewUser(registerModel);
 
     if (registeredUser.error) {
       throw new Error(JSON.stringify(registeredUser.error, null, 4));
@@ -86,7 +75,7 @@ if (!jsonRpcProviderUrl) {
     );
 
     // get user id
-    const userInfo: ResponseData<IUserInfo> = await starkExpressClient
+    const userInfo: ResponseData<IUserInfo> = await arcClient
       .user()
       .getUserInfo('ff41bed6-4eb7-49c4-adf5-a0122230948c');
 
@@ -100,7 +89,7 @@ if (!jsonRpcProviderUrl) {
 
     // get all users with a filter
     const usersInfo: ResponseData<IGetAllEntitiesResponse<IRegisteredUser>> =
-      await starkExpressClient.user().getAllUsersInfo({
+      await arcClient.user().getAllUsersInfo({
         username: 'evgenipirianov',
         usernameComparison: FilterOptions.Contains,
         pageNumber: 1,
