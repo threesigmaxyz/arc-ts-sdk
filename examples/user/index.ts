@@ -12,6 +12,7 @@ import { IGetAllUsersFilter } from '../../src/interfaces/IGetAllUsersFilter';
 import { IGetAllEntitiesResponse } from '../../src/interfaces/IGetAllEntitiesResponse';
 import { ResponseData } from '../../src/interfaces/ResponseData';
 import { FilterOptions } from '../../src/gen';
+import { ethers } from 'ethers';
 const path = require('path');
 const chalk = require('chalk');
 
@@ -27,6 +28,10 @@ const ethereumPrivateKey = process.env.ETHEREUM_PRIVATE_KEY;
 if (!ethereumPrivateKey) {
   throw new Error('Missing ETHEREUM_PRIVATE_KEY in .env file');
 }
+const jsonRpcProviderUrl = process.env.JSONRPC_PROVIDER_URL;
+if (!jsonRpcProviderUrl) {
+  throw new Error('Missing JSONRPC_PROVIDER_URL in .env file');
+}
 
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
@@ -37,13 +42,16 @@ if (!ethereumPrivateKey) {
   try {
     console.log('Ethereum Private Key ', ethereumPrivateKey);
     console.log('Api Key ', apiKey);
+    console.log('JsonRpc provider url ', jsonRpcProviderUrl);
 
     // ===================================================================================
     // init stark express client
     const starkExpressClient: Client = await ClientFactory.createDefaultClient(
       DefaultProviderUrls.TESTNET,
       apiKey,
+      new ethers.JsonRpcProvider(jsonRpcProviderUrl),
     );
+
     // generate a starkexpress account
     const starkExpressAccount: IStarkExpressAccount = starkExpressClient
       .user()
@@ -95,7 +103,7 @@ if (!ethereumPrivateKey) {
       await starkExpressClient.user().getAllUsersInfo({
         username: 'evgenipirianov',
         usernameComparison: FilterOptions.Contains,
-        pageNumber: 0,
+        pageNumber: 1,
         pageSize: 100,
       } as IGetAllUsersFilter);
 

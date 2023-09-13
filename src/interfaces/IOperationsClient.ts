@@ -44,7 +44,7 @@ export interface IOperationsClient {
    *
    * @returns a promise that resolves to an object of `ResponseData<IFeeModel>`.
    */
-  getDepositDetailsFotAsset(
+  getDepositDetailsForAsset(
     depositDetailsPayload: DepositDetailsModel,
   ): Promise<ResponseData<IDepositDetails>>;
 
