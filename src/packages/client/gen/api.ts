@@ -152,43 +152,6 @@ export interface BigInteger {
   signValue?: number;
 }
 /**
- *
- * @export
- * @interface CalendarSystem
- */
-export interface CalendarSystem {
-  /**
-   *
-   * @type {string}
-   * @memberof CalendarSystem
-   */
-  id?: string | null;
-  /**
-   *
-   * @type {string}
-   * @memberof CalendarSystem
-   */
-  name?: string | null;
-  /**
-   *
-   * @type {number}
-   * @memberof CalendarSystem
-   */
-  minYear?: number;
-  /**
-   *
-   * @type {number}
-   * @memberof CalendarSystem
-   */
-  maxYear?: number;
-  /**
-   *
-   * @type {Array<Era>}
-   * @memberof CalendarSystem
-   */
-  eras?: Array<Era> | null;
-}
-/**
  * Request model to configure the fee model for an operation.
  * @export
  * @interface ConfigureFeeModel
@@ -450,19 +413,6 @@ export interface EnableAssetModel {
 /**
  *
  * @export
- * @interface Era
- */
-export interface Era {
-  /**
-   *
-   * @type {string}
-   * @memberof Era
-   */
-  name?: string | null;
-}
-/**
- *
- * @export
  * @enum {string}
  */
 
@@ -554,81 +504,6 @@ export const FilterOptions = {
 } as const;
 
 export type FilterOptions = (typeof FilterOptions)[keyof typeof FilterOptions];
-
-/**
- *
- * @export
- * @enum {string}
- */
-
-export const IsoDayOfWeek = {
-  None: 'None',
-  Monday: 'Monday',
-  Tuesday: 'Tuesday',
-  Wednesday: 'Wednesday',
-  Thursday: 'Thursday',
-  Friday: 'Friday',
-  Saturday: 'Saturday',
-  Sunday: 'Sunday',
-} as const;
-
-export type IsoDayOfWeek = (typeof IsoDayOfWeek)[keyof typeof IsoDayOfWeek];
-
-/**
- *
- * @export
- * @interface LocalDate
- */
-export interface LocalDate {
-  /**
-   *
-   * @type {CalendarSystem}
-   * @memberof LocalDate
-   */
-  calendar?: CalendarSystem;
-  /**
-   *
-   * @type {number}
-   * @memberof LocalDate
-   */
-  year?: number;
-  /**
-   *
-   * @type {number}
-   * @memberof LocalDate
-   */
-  month?: number;
-  /**
-   *
-   * @type {number}
-   * @memberof LocalDate
-   */
-  day?: number;
-  /**
-   *
-   * @type {IsoDayOfWeek}
-   * @memberof LocalDate
-   */
-  dayOfWeek?: IsoDayOfWeek;
-  /**
-   *
-   * @type {number}
-   * @memberof LocalDate
-   */
-  yearOfEra?: number;
-  /**
-   *
-   * @type {Era}
-   * @memberof LocalDate
-   */
-  era?: Era;
-  /**
-   *
-   * @type {number}
-   * @memberof LocalDate
-   */
-  dayOfYear?: number;
-}
 
 /**
  *
@@ -1527,82 +1402,6 @@ export interface TenantAssetDtoPaginatedResponseDto {
    * @memberof TenantAssetDtoPaginatedResponseDto
    */
   totalCount?: number;
-}
-/**
- *
- * @export
- * @interface TimeSeriesCostsDto
- */
-export interface TimeSeriesCostsDto {
-  /**
-   *
-   * @type {LocalDate}
-   * @memberof TimeSeriesCostsDto
-   */
-  key?: LocalDate;
-  /**
-   * Time series value (value axis).
-   * @type {number}
-   * @memberof TimeSeriesCostsDto
-   */
-  value?: number;
-}
-/**
- *
- * @export
- * @interface TimeSeriesCostsResponseDto
- */
-export interface TimeSeriesCostsResponseDto {
-  /**
-   * Total cost amount of elements in a given time interval
-   * @type {number}
-   * @memberof TimeSeriesCostsResponseDto
-   */
-  totalCost?: number;
-  /**
-   * The data necessary for the time series chart.
-   * @type {Array<TimeSeriesCostsDto>}
-   * @memberof TimeSeriesCostsResponseDto
-   */
-  data?: Array<TimeSeriesCostsDto> | null;
-}
-/**
- *
- * @export
- * @interface TimeSeriesDto
- */
-export interface TimeSeriesDto {
-  /**
-   *
-   * @type {LocalDate}
-   * @memberof TimeSeriesDto
-   */
-  key?: LocalDate;
-  /**
-   * Time series value (value axis).
-   * @type {number}
-   * @memberof TimeSeriesDto
-   */
-  value?: number;
-}
-/**
- *
- * @export
- * @interface TimeSeriesResponseDto
- */
-export interface TimeSeriesResponseDto {
-  /**
-   * Total amount of elements in a given time interval
-   * @type {number}
-   * @memberof TimeSeriesResponseDto
-   */
-  totalCount?: number;
-  /**
-   * The data necessary for the time series chart.
-   * @type {Array<TimeSeriesDto>}
-   * @memberof TimeSeriesResponseDto
-   */
-  data?: Array<TimeSeriesDto> | null;
 }
 /**
  *
@@ -4709,134 +4508,6 @@ export const TransactionApiAxiosParamCreator = function (
         options: localVarRequestOptions,
       };
     },
-    /**
-     * This endpoint allows the client to render plots (time series) of the transactions costs.
-     * @summary Get transactions costs
-     * @param {StarkExOperation} [transactionType]
-     * @param {string} [startDate]
-     * @param {string} [endDate]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    getTransactionCosts: async (
-      transactionType?: StarkExOperation,
-      startDate?: string,
-      endDate?: string,
-      options: AxiosRequestConfig = {},
-    ): Promise<RequestArgs> => {
-      const localVarPath = `/api/v1/transactions/time-series/costs`;
-      // use dummy base URL string because the URL constructor only accepts absolute URLs.
-      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-      let baseOptions;
-      if (configuration) {
-        baseOptions = configuration.baseOptions;
-      }
-
-      const localVarRequestOptions = {
-        method: 'GET',
-        ...baseOptions,
-        ...options,
-      };
-      const localVarHeaderParameter = {} as any;
-      const localVarQueryParameter = {} as any;
-
-      // authentication apikey required
-      await setApiKeyToObject(
-        localVarHeaderParameter,
-        'x-api-key',
-        configuration,
-      );
-
-      if (transactionType !== undefined) {
-        localVarQueryParameter['transaction_type'] = transactionType;
-      }
-
-      if (startDate !== undefined) {
-        localVarQueryParameter['start_date'] = startDate;
-      }
-
-      if (endDate !== undefined) {
-        localVarQueryParameter['end_date'] = endDate;
-      }
-
-      setSearchParams(localVarUrlObj, localVarQueryParameter);
-      let headersFromBaseOptions =
-        baseOptions && baseOptions.headers ? baseOptions.headers : {};
-      localVarRequestOptions.headers = {
-        ...localVarHeaderParameter,
-        ...headersFromBaseOptions,
-        ...options.headers,
-      };
-
-      return {
-        url: toPathString(localVarUrlObj),
-        options: localVarRequestOptions,
-      };
-    },
-    /**
-     * This endpoint allows the client to render plots (time series) of the transactions throughput by type.
-     * @summary Get transactions throughput by type
-     * @param {StarkExOperation} [transactionType]
-     * @param {string} [startDate]
-     * @param {string} [endDate]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    getTransactionThroughput: async (
-      transactionType?: StarkExOperation,
-      startDate?: string,
-      endDate?: string,
-      options: AxiosRequestConfig = {},
-    ): Promise<RequestArgs> => {
-      const localVarPath = `/api/v1/transactions/time-series`;
-      // use dummy base URL string because the URL constructor only accepts absolute URLs.
-      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-      let baseOptions;
-      if (configuration) {
-        baseOptions = configuration.baseOptions;
-      }
-
-      const localVarRequestOptions = {
-        method: 'GET',
-        ...baseOptions,
-        ...options,
-      };
-      const localVarHeaderParameter = {} as any;
-      const localVarQueryParameter = {} as any;
-
-      // authentication apikey required
-      await setApiKeyToObject(
-        localVarHeaderParameter,
-        'x-api-key',
-        configuration,
-      );
-
-      if (transactionType !== undefined) {
-        localVarQueryParameter['transaction_type'] = transactionType;
-      }
-
-      if (startDate !== undefined) {
-        localVarQueryParameter['start_date'] = startDate;
-      }
-
-      if (endDate !== undefined) {
-        localVarQueryParameter['end_date'] = endDate;
-      }
-
-      setSearchParams(localVarUrlObj, localVarQueryParameter);
-      let headersFromBaseOptions =
-        baseOptions && baseOptions.headers ? baseOptions.headers : {};
-      localVarRequestOptions.headers = {
-        ...localVarHeaderParameter,
-        ...headersFromBaseOptions,
-        ...options.headers,
-      };
-
-      return {
-        url: toPathString(localVarUrlObj),
-        options: localVarRequestOptions,
-      };
-    },
   };
 };
 
@@ -4924,74 +4595,6 @@ export const TransactionApiFp = function (configuration?: Configuration) {
         configuration,
       );
     },
-    /**
-     * This endpoint allows the client to render plots (time series) of the transactions costs.
-     * @summary Get transactions costs
-     * @param {StarkExOperation} [transactionType]
-     * @param {string} [startDate]
-     * @param {string} [endDate]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    async getTransactionCosts(
-      transactionType?: StarkExOperation,
-      startDate?: string,
-      endDate?: string,
-      options?: AxiosRequestConfig,
-    ): Promise<
-      (
-        axios?: AxiosInstance,
-        basePath?: string,
-      ) => AxiosPromise<TimeSeriesCostsResponseDto>
-    > {
-      const localVarAxiosArgs =
-        await localVarAxiosParamCreator.getTransactionCosts(
-          transactionType,
-          startDate,
-          endDate,
-          options,
-        );
-      return createRequestFunction(
-        localVarAxiosArgs,
-        globalAxios,
-        BASE_PATH,
-        configuration,
-      );
-    },
-    /**
-     * This endpoint allows the client to render plots (time series) of the transactions throughput by type.
-     * @summary Get transactions throughput by type
-     * @param {StarkExOperation} [transactionType]
-     * @param {string} [startDate]
-     * @param {string} [endDate]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    async getTransactionThroughput(
-      transactionType?: StarkExOperation,
-      startDate?: string,
-      endDate?: string,
-      options?: AxiosRequestConfig,
-    ): Promise<
-      (
-        axios?: AxiosInstance,
-        basePath?: string,
-      ) => AxiosPromise<TimeSeriesResponseDto>
-    > {
-      const localVarAxiosArgs =
-        await localVarAxiosParamCreator.getTransactionThroughput(
-          transactionType,
-          startDate,
-          endDate,
-          options,
-        );
-      return createRequestFunction(
-        localVarAxiosArgs,
-        globalAxios,
-        BASE_PATH,
-        configuration,
-      );
-    },
   };
 };
 
@@ -5063,44 +4666,6 @@ export const TransactionApiFactory = function (
         .getTransaction(transactionId, options)
         .then((request) => request(axios, basePath));
     },
-    /**
-     * This endpoint allows the client to render plots (time series) of the transactions costs.
-     * @summary Get transactions costs
-     * @param {StarkExOperation} [transactionType]
-     * @param {string} [startDate]
-     * @param {string} [endDate]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    getTransactionCosts(
-      transactionType?: StarkExOperation,
-      startDate?: string,
-      endDate?: string,
-      options?: any,
-    ): AxiosPromise<TimeSeriesCostsResponseDto> {
-      return localVarFp
-        .getTransactionCosts(transactionType, startDate, endDate, options)
-        .then((request) => request(axios, basePath));
-    },
-    /**
-     * This endpoint allows the client to render plots (time series) of the transactions throughput by type.
-     * @summary Get transactions throughput by type
-     * @param {StarkExOperation} [transactionType]
-     * @param {string} [startDate]
-     * @param {string} [endDate]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    getTransactionThroughput(
-      transactionType?: StarkExOperation,
-      startDate?: string,
-      endDate?: string,
-      options?: any,
-    ): AxiosPromise<TimeSeriesResponseDto> {
-      return localVarFp
-        .getTransactionThroughput(transactionType, startDate, endDate, options)
-        .then((request) => request(axios, basePath));
-    },
   };
 };
 
@@ -5166,48 +4731,6 @@ export class TransactionApi extends BaseAPI {
   public getTransaction(transactionId: string, options?: AxiosRequestConfig) {
     return TransactionApiFp(this.configuration)
       .getTransaction(transactionId, options)
-      .then((request) => request(this.axios, this.basePath));
-  }
-
-  /**
-   * This endpoint allows the client to render plots (time series) of the transactions costs.
-   * @summary Get transactions costs
-   * @param {StarkExOperation} [transactionType]
-   * @param {string} [startDate]
-   * @param {string} [endDate]
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof TransactionApi
-   */
-  public getTransactionCosts(
-    transactionType?: StarkExOperation,
-    startDate?: string,
-    endDate?: string,
-    options?: AxiosRequestConfig,
-  ) {
-    return TransactionApiFp(this.configuration)
-      .getTransactionCosts(transactionType, startDate, endDate, options)
-      .then((request) => request(this.axios, this.basePath));
-  }
-
-  /**
-   * This endpoint allows the client to render plots (time series) of the transactions throughput by type.
-   * @summary Get transactions throughput by type
-   * @param {StarkExOperation} [transactionType]
-   * @param {string} [startDate]
-   * @param {string} [endDate]
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof TransactionApi
-   */
-  public getTransactionThroughput(
-    transactionType?: StarkExOperation,
-    startDate?: string,
-    endDate?: string,
-    options?: AxiosRequestConfig,
-  ) {
-    return TransactionApiFp(this.configuration)
-      .getTransactionThroughput(transactionType, startDate, endDate, options)
       .then((request) => request(this.axios, this.basePath));
   }
 }
@@ -6532,7 +6055,7 @@ export const WithdrawApiAxiosParamCreator = function (
 ) {
   return {
     /**
-     * This endpoint allows for withdrawing assets from Arc.
+     * This endpoint allows for withdrawing assets from StarkExpress.
      * @summary Withdraw Asset
      * @param {WithdrawModel} withdrawModel The withdraw request.
      * @param {*} [options] Override http request option.
@@ -6599,7 +6122,7 @@ export const WithdrawApiFp = function (configuration?: Configuration) {
   const localVarAxiosParamCreator = WithdrawApiAxiosParamCreator(configuration);
   return {
     /**
-     * This endpoint allows for withdrawing assets from Arc.
+     * This endpoint allows for withdrawing assets from StarkExpress.
      * @summary Withdraw Asset
      * @param {WithdrawModel} withdrawModel The withdraw request.
      * @param {*} [options] Override http request option.
@@ -6640,7 +6163,7 @@ export const WithdrawApiFactory = function (
   const localVarFp = WithdrawApiFp(configuration);
   return {
     /**
-     * This endpoint allows for withdrawing assets from Arc.
+     * This endpoint allows for withdrawing assets from StarkExpress.
      * @summary Withdraw Asset
      * @param {WithdrawModel} withdrawModel The withdraw request.
      * @param {*} [options] Override http request option.
@@ -6665,7 +6188,7 @@ export const WithdrawApiFactory = function (
  */
 export class WithdrawApi extends BaseAPI {
   /**
-   * This endpoint allows for withdrawing assets from Arc.
+   * This endpoint allows for withdrawing assets from StarkExpress.
    * @summary Withdraw Asset
    * @param {WithdrawModel} withdrawModel The withdraw request.
    * @param {*} [options] Override http request option.

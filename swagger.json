@@ -10,17 +10,17 @@
     },
     "version": "1.0",
     "x-logo": {
-      "url": "https://onarc.io/_next/static/media/arc-logo.c94e6c9d.svg",
+      "url": "https://www.onarc.io/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_arc.9cf6e0e6.svg&w=828&q=75",
       "altText": "Arc logo"
     }
   },
   "servers": [
     {
-      "url": "https://testnet-api.arc.io",
+      "url": "https://testnet-api.onarc.io",
       "description": "Testnet server (uses test data)."
     },
     {
-      "url": "https://api.arc.io",
+      "url": "https://api.onarc.io",
       "description": "Mainnet server (uses live data)."
     }
   ],
@@ -1145,134 +1145,6 @@
         ]
       }
     },
-    "/api/v1/transactions/time-series": {
-      "get": {
-        "tags": [
-          "Transaction"
-        ],
-        "summary": "Get transactions throughput by type",
-        "description": "This endpoint allows the client to render plots (time series) of the transactions throughput by type.",
-        "operationId": "GetTransactionThroughput",
-        "parameters": [
-          {
-            "name": "transaction_type",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/StarkExOperation"
-            }
-          },
-          {
-            "name": "start_date",
-            "in": "query",
-            "schema": {
-              "title": "Start date",
-              "type": "string",
-              "description": "Start date of the time series.",
-              "format": "string"
-            }
-          },
-          {
-            "name": "end_date",
-            "in": "query",
-            "schema": {
-              "title": "End date",
-              "type": "string",
-              "description": "End date of the time series.",
-              "format": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Returns a time series model.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TimeSeriesResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden."
-          }
-        },
-        "security": [
-          {
-            "apikey": [
-              "read:transactions"
-            ]
-          }
-        ]
-      }
-    },
-    "/api/v1/transactions/time-series/costs": {
-      "get": {
-        "tags": [
-          "Transaction"
-        ],
-        "summary": "Get transactions costs",
-        "description": "This endpoint allows the client to render plots (time series) of the transactions costs.",
-        "operationId": "GetTransactionCosts",
-        "parameters": [
-          {
-            "name": "transaction_type",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/StarkExOperation"
-            }
-          },
-          {
-            "name": "start_date",
-            "in": "query",
-            "schema": {
-              "title": "Start date",
-              "type": "string",
-              "description": "Start date of the time series.",
-              "format": "string"
-            }
-          },
-          {
-            "name": "end_date",
-            "in": "query",
-            "schema": {
-              "title": "End date",
-              "type": "string",
-              "description": "End date of the time series.",
-              "format": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Returns a time series model",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TimeSeriesCostsResponseDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden."
-          }
-        },
-        "security": [
-          {
-            "apikey": [
-              "read:transactions"
-            ]
-          }
-        ]
-      }
-    },
     "/api/v1/transfers": {
       "post": {
         "tags": [
@@ -1977,7 +1849,7 @@
           "Withdraw"
         ],
         "summary": "Withdraw Asset",
-        "description": "This endpoint allows for withdrawing assets from Arc.",
+        "description": "This endpoint allows for withdrawing assets from StarkExpress.",
         "operationId": "Withdraw",
         "requestBody": {
           "description": "The withdraw request.",
@@ -2146,40 +2018,6 @@
           "signValue": {
             "type": "integer",
             "format": "int32",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CalendarSystem": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "minYear": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "maxYear": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "eras": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Era"
-            },
-            "nullable": true,
             "readOnly": true
           }
         },
@@ -2466,17 +2304,6 @@
         "additionalProperties": false,
         "description": "Request model to enable an asset in the tenant system."
       },
-      "Era": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
       "FeeAction": {
         "enum": [
           "Transfer",
@@ -2548,56 +2375,6 @@
           "IsNotEqualTo"
         ],
         "type": "string"
-      },
-      "IsoDayOfWeek": {
-        "enum": [
-          "None",
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday"
-        ],
-        "type": "string"
-      },
-      "LocalDate": {
-        "type": "object",
-        "properties": {
-          "calendar": {
-            "$ref": "#/components/schemas/CalendarSystem"
-          },
-          "year": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "month": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "day": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "dayOfWeek": {
-            "$ref": "#/components/schemas/IsoDayOfWeek"
-          },
-          "yearOfEra": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "era": {
-            "$ref": "#/components/schemas/Era"
-          },
-          "dayOfYear": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
       },
       "MemberDescriptionDto": {
         "type": "object",
@@ -3481,78 +3258,6 @@
             "type": "integer",
             "description": "The total count of results available.",
             "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TimeSeriesCostsDto": {
-        "type": "object",
-        "properties": {
-          "key": {
-            "$ref": "#/components/schemas/LocalDate"
-          },
-          "value": {
-            "title": "Value",
-            "type": "number",
-            "description": "Time series value (value axis).",
-            "format": "decimal"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TimeSeriesCostsResponseDto": {
-        "type": "object",
-        "properties": {
-          "totalCost": {
-            "title": "TotalCost",
-            "type": "number",
-            "description": "Total cost amount of elements in a given time interval",
-            "format": "decimal"
-          },
-          "data": {
-            "title": "Data",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TimeSeriesCostsDto"
-            },
-            "description": "The data necessary for the time series chart.",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "TimeSeriesDto": {
-        "type": "object",
-        "properties": {
-          "key": {
-            "$ref": "#/components/schemas/LocalDate"
-          },
-          "value": {
-            "title": "Value",
-            "type": "integer",
-            "description": "Time series value (value axis).",
-            "format": "int64"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TimeSeriesResponseDto": {
-        "type": "object",
-        "properties": {
-          "totalCount": {
-            "title": "TotalCount",
-            "type": "integer",
-            "description": "Total amount of elements in a given time interval",
-            "format": "int64"
-          },
-          "data": {
-            "title": "Data",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TimeSeriesDto"
-            },
-            "description": "The data necessary for the time series chart.",
-            "nullable": true
           }
         },
         "additionalProperties": false
