@@ -6,7 +6,7 @@ import { IFeeClient } from '../interfaces/IFeeClient';
 import { Configuration, ConfigureFeeModel, FeeApi } from '../gen';
 
 /**
- * A client class for interacting with the fee API of StarkExpress.
+ * A client class for interacting with the fee API of Arc.
  *
  * @remarks
  * The FeeClient manages retrieving and setting fees. It extends the BaseClient

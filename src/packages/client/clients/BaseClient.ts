@@ -5,7 +5,7 @@ import { IRequestError } from '../interfaces/IRequestError';
 import { AxiosResponse } from 'axios';
 
 /**
- * The Base Client object is the main entry point for interacting with the StarkExpress L2 chain.
+ * The Base Client object is the main entry point for interacting with the Arc L2 chain.
  *
  * @remarks
  * The `BaseClient` class should not be instantiated directly; instead, it should

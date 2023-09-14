@@ -15,7 +15,7 @@ import {
 import { AxiosResponse } from 'axios';
 
 /**
- * A client class for interacting with the assets API of StarkExpress.
+ * A client class for interacting with the assets API of Arc.
  *
  * @remarks
  * The AssetClient manages retrieving and enabling assets. It extends the BaseClient

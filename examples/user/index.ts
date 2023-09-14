@@ -28,7 +28,7 @@ if (!apiKey) {
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
   console.log(header);
-  console.log(`${chalk.green.bold('StarkExpress User Client Example')}`);
+  console.log(`${chalk.green.bold('Arc User Client Example')}`);
   console.log(header);
 
   try {
@@ -67,11 +67,7 @@ if (!apiKey) {
     }
 
     console.log(
-      `StarkExpress Registered User: ${JSON.stringify(
-        registeredUser.result,
-        null,
-        4,
-      )}`,
+      `Arc Registered User: ${JSON.stringify(registeredUser.result, null, 4)}`,
     );
 
     // get user id
@@ -83,9 +79,7 @@ if (!apiKey) {
       throw new Error(JSON.stringify(userInfo.error, null, 4));
     }
 
-    console.log(
-      `StarkExpress User Info: ${JSON.stringify(userInfo.result, null, 4)}`,
-    );
+    console.log(`Arc User Info: ${JSON.stringify(userInfo.result, null, 4)}`);
 
     // get all users with a filter
     const usersInfo: ResponseData<IGetAllEntitiesResponse<IRegisteredUser>> =
@@ -100,9 +94,7 @@ if (!apiKey) {
       throw new Error(JSON.stringify(usersInfo.error, null, 4));
     }
 
-    console.log(
-      `StarkExpress Users Info: ${JSON.stringify(usersInfo.result, null, 4)}`,
-    );
+    console.log(`Arc Users Info: ${JSON.stringify(usersInfo.result, null, 4)}`);
 
     process.exit(0);
   } catch (ex) {

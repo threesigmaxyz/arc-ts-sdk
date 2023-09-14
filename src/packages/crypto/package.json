@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/threesigmaxyz/starkexpress-ts-sdk.git"
+    "url": "git+https://github.com/threesigmaxyz/arc-ts-sdk.git"
   },
   "private": false,
   "publishConfig": {
@@ -31,9 +31,9 @@
   "author": "ThreeSigma <info@threesigma.xyz>",
   "license": "(MIT AND Apache-2.0)",
   "bugs": {
-    "url": "https://github.com/threesigmaxyz/starkexpress-ts-sdk/issues"
+    "url": "https://github.com/threesigmaxyz/arc-ts-sdk/issues"
   },
-  "homepage": "https://github.com/threesigmaxyz/starkexpress-ts-sdk#readme",
+  "homepage": "https://github.com/threesigmaxyz/arc-ts-sdk#readme",
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^18.13.0"

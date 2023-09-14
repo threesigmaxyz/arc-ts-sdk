@@ -10,7 +10,7 @@ import { TypedDataDomain } from 'ethers/lib.commonjs/hash/typed-data';
 import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 
 /**
- * A client class for interacting with the user API of StarkExpress.
+ * A client class for interacting with the user API of Arc.
  *
  * @remarks
  * The UserClient manages creating and registering new stark users as well as retrieving information on existing ones. It extends the BaseClient

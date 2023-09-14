@@ -32,7 +32,7 @@ export interface IAssetsClient {
   /**
    * Gets asset information.
    *
-   * @param assetId - StarkExpress asset id.
+   * @param assetId - Arc asset id.
    *
    * @returns An object of type IAsset.
    */

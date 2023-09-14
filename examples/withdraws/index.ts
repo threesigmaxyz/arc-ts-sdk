@@ -21,7 +21,7 @@ if (!apiKey) {
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
   console.log(header);
-  console.log(`${chalk.green.bold('StarkExpress Withdraw Client Example')}`);
+  console.log(`${chalk.green.bold('Arc Withdraw Client Example')}`);
   console.log(header);
 
   try {

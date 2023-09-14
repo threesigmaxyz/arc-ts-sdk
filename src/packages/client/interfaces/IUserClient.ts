@@ -23,7 +23,7 @@ export interface IUserClient {
   ): Promise<ResponseData<TypedMessage<T>>>;
 
   /**
-   * Registers a new StarkExpress user.
+   * Registers a new Arc user.
    *
    *
    * @returns An object of type IRegisteredUser.
@@ -36,7 +36,7 @@ export interface IUserClient {
   /**
    * Gets user information.
    *
-   * @param userId - StarkExpress Username.
+   * @param userId - Arc Username.
    *
    * @returns An object of type IUserInfo.
    */

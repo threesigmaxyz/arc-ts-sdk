@@ -13,7 +13,7 @@ import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 import { ethers } from 'ethers';
 
 /**
- * StarkExpress Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
+ * Arc Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
  */
 export class CryptoUtils implements ICryptoUtils {
   private isInit: boolean;

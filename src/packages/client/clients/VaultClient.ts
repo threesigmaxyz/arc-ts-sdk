@@ -14,7 +14,7 @@ import { AxiosResponse } from 'axios';
 import { IVaultClient } from '../interfaces/IVaultClient';
 
 /**
- * A client class for interacting with the vault API of StarkExpress.
+ * A client class for interacting with the vault API of Arc.
  *
  * @remarks
  * The VaultClient manages retrieving and setting fees. It extends the BaseClient

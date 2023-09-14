@@ -24,7 +24,7 @@ if (!apiKey) {
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
   console.log(header);
-  console.log(`${chalk.green.bold('StarkExpress Mint Client Example')}`);
+  console.log(`${chalk.green.bold('Arc Mint Client Example')}`);
   console.log(header);
 
   try {

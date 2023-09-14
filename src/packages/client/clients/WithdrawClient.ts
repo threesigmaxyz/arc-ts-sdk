@@ -11,7 +11,7 @@ import { IWithdrawClient } from '../interfaces/IWithdrawClient';
 import { ResponseData } from '../interfaces/ResponseData';
 require('@starkware-industries/starkware-crypto-utils');
 /**
- * A client class for interacting with the user API of StarkExpress.
+ * A client class for interacting with the user API of Arc.
  *
  * @remarks
  * The UserClient manages creating and registering new stark users as well as retrieving information on existing ones. It extends the BaseClient

@@ -1,22 +1,22 @@
-# Contributing to starkexpress-ts-sdk
+# Contributing to arc-ts-sdk
 
-Thank you for considering contributing to starkexpress-ts-sdk!
+Thank you for considering contributing to arc-ts-sdk!
 
 ## Reporting Bugs
 
-If you discover a bug, please create a [new issue](https://github.com/threesigmaxyz/starkexpress-ts-sdk/issues/new?assignees=&labels=issue) on our GitHub repository.
+If you discover a bug, please create a [new issue](https://github.com/threesigmaxyz/arc-ts-sdk/issues/new?assignees=&labels=issue) on our GitHub repository.
 
 In your issue, please include a clear and concise description of the bug, any relevant code snippets, error messages, and steps to reproduce the issue.
 
 ## Installation
 
-To start developing with starkexpress-ts-sdk, you must install all the necessary dev dependencies. You can do so by running the following command:
+To start developing with arc-ts-sdk, you must install all the necessary dev dependencies. You can do so by running the following command:
 
 ```sh
 npm install
 ```
 
-This will install all the required packages listed in the package.json file, allowing you to update, fix, or improve starkexpress-ts-sdk in any way you see fit.
+This will install all the required packages listed in the package.json file, allowing you to update, fix, or improve arc-ts-sdk in any way you see fit.
 
 ## Contributing Code
 
@@ -24,21 +24,21 @@ We welcome contributions in the form of bug fixes, enhancements, and new feature
 
 To contribute code, please follow these steps:
 
-1. Fork the starkexpress-ts-sdk repository to your own account.
+1. Fork the arc-ts-sdk repository to your own account.
 2. Create a new branch from the `main` branch for your changes.
 3. Make your changes and commit them to your branch.
 4. Push your branch to your fork.
-5. Create a pull request from your branch to the develop branch of the starkexpress-ts-sdk repository.
+5. Create a pull request from your branch to the develop branch of the arc-ts-sdk repository.
 
 >  **NOTE:** When creating a pull request, please include a clear and concise title and description of your changes, as well as any relevant context or background information.
 
 ## Contributing Namespaces
 
-Namespaces are used in starkexpress-ts-sdk to group related functions and objects together, making it easier for developers to find and use them in their contracts. All namespaces are located in the `src` directory, and each namespace is in its own subdirectory.
+Namespaces are used in arc-ts-sdk to group related functions and objects together, making it easier for developers to find and use them in their contracts. All namespaces are located in the `src` directory, and each namespace is in its own subdirectory.
 
 ### Using existing namespaces
 
-When contributing to starkexpress-ts-sdk, make sure you add new features to the correct namespace. Before adding a new feature, it's a good idea to check if there's an existing namespace that contains related functions or objects. By adding to an existing namespace, you can help ensure that your code is well-organized and easy to find.
+When contributing to arc-ts-sdk, make sure you add new features to the correct namespace. Before adding a new feature, it's a good idea to check if there's an existing namespace that contains related functions or objects. By adding to an existing namespace, you can help ensure that your code is well-organized and easy to find.
 
 ### Creating new namespaces
 
@@ -78,11 +78,11 @@ npm run test
 
 ## License
 
-By contributing to starkexpress-ts-sdk, you agree that your contributions will be licensed under the MIT License.
+By contributing to arc-ts-sdk, you agree that your contributions will be licensed under the MIT License.
 
 ## Documentation
 
-starkexpress-ts-sdk provides complete documentation of all available functions and objects.
+arc-ts-sdk provides complete documentation of all available functions and objects.
 
 To generate the documentation for a specific branch, run the following command:
 

@@ -1,26 +1,26 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "StarkExpress API Docs",
-    "description": "An API for the StarkExpress platform.",
-    "termsOfService": "https://starkexpress.io/terms",
+    "title": "Arc API Docs",
+    "description": "An API for the Arc platform.",
+    "termsOfService": "https://onarc.io/terms",
     "license": {
       "name": "License",
-      "url": "https://starkexpress.io/license"
+      "url": "https://onarc.io/license"
     },
     "version": "1.0",
     "x-logo": {
-      "url": "https://starkexpress.io/_next/static/media/starkexpress-logo.c94e6c9d.svg",
-      "altText": "StarkExpress logo"
+      "url": "https://onarc.io/_next/static/media/arc-logo.c94e6c9d.svg",
+      "altText": "Arc logo"
     }
   },
   "servers": [
     {
-      "url": "https://testnet-api.starkexpress.io",
+      "url": "https://testnet-api.arc.io",
       "description": "Testnet server (uses test data)."
     },
     {
-      "url": "https://api.starkexpress.io",
+      "url": "https://api.arc.io",
       "description": "Mainnet server (uses live data)."
     }
   ],
@@ -1977,7 +1977,7 @@
           "Withdraw"
         ],
         "summary": "Withdraw Asset",
-        "description": "This endpoint allows for withdrawing assets from StarkExpress.",
+        "description": "This endpoint allows for withdrawing assets from Arc.",
         "operationId": "Withdraw",
         "requestBody": {
           "description": "The withdraw request.",

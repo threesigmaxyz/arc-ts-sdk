@@ -26,7 +26,7 @@ import { IWithdrawDetails } from '../interfaces/IWithdrawDetails';
 import { IWithdrawAsset } from '../interfaces/IWithdrawAsset';
 
 /**
- * A client class for interacting with the operations API of StarkExpress.
+ * A client class for interacting with the operations API of Arc.
  *
  * @remarks
  * The OperationsClient manages deposits, mints, transactions, transfers, withdraws. It extends the BaseClient

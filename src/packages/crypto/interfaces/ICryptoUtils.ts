@@ -11,7 +11,7 @@ import { IStarkAccount } from './IStarkAccount';
  * @remarks
  * This interface is used to get handles to different APIs. It also provides methods for setting
  * custom and default providers. The default providers are the global connection URLs
- * for StarkExpress's MAINNET, TESTNET.
+ * for Arc's MAINNET, TESTNET.
  *
  * @see user() - user API client.
  * @see assets() - assets API client.

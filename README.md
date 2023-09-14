@@ -1,16 +1,16 @@
-# starkexpress-ts-sdk ![Node CI](https://github.com/threesigmaxyz/starkexpress-ts-sdk/workflows/Node.js%20CI/badge.svg)
+# arc-ts-sdk ![Node CI](https://github.com/threesigmaxyz/arc-ts-sdk/workflows/Node.js%20CI/badge.svg)
 
 ![check-code-coverage](https://img.shields.io/badge/coverage-%25-red)
 
-`starkexpress-ts-sdk` is a TypeScript library that allow you to interact with the `StarkExpress` L2 blockchain and use all of its features.
+`arc-ts-sdk` is a TypeScript library that allow you to interact with the `Arc` L2 blockchain and use all of its features.
 
 ## Usage
 
-`starkexpress-ts-sdk` could be used as a library for frameworks or as a stand-alone bundled js file which can be easily loaded into the browser.
+`arc-ts-sdk` could be used as a library for frameworks or as a stand-alone bundled js file which can be easily loaded into the browser.
 
 ### Library (Node.js/React/Vue.js) usage
 
-> npm install @threesigma/starkexpress-ts-sdk
+> npm install @threesigma/arc-ts-sdk
 
 ### Browser usage
 
@@ -19,16 +19,16 @@ Add the following script to your html file:
 ```ts
 <script
     type="text/javascript"
-    src="https://cdn.jsdelivr.net/npm/@threesigma/starkexpress-ts-sdk@x.x.x/bundle.js"
+    src="https://cdn.jsdelivr.net/npm/@threesigma/arc-ts-sdk@x.x.x/bundle.js"
 ></script>
 ```
 
 whereby the x.x.x is one of the available released versions
 
-In your code, once the script is fully loaded, just use `window.starkexpress` to access all `starkexpress-ts-sdk` exports.
+In your code, once the script is fully loaded, just use `window.arc` to access all `arc-ts-sdk` exports.
 
 ```ts
-<script>console.log("StarkExpress Client ", window.starkexpress);</script>
+<script>console.log("Arc Client ", window.arc);</script>
 ```
 
 > **PREREQUISITES:**
@@ -42,7 +42,7 @@ In your code, once the script is fully loaded, just use `window.starkexpress` to
 ```ts
 import {
     ClientFactory, DefaultProviderUrls
-} from "@threesigma/starkexpress-ts-sdk";
+} from "@threesigma/arc-ts-sdk";
 
 const API_KEY = "xxxxxxx";
 
@@ -56,7 +56,7 @@ const starkExpressClient: Client = await ClientFactory.createDefaultClient(
 
 ### Client Exposed APIs
 
-The client exposes several APIs for accessing different parts of the StarkExpress domain:
+The client exposes several APIs for accessing different parts of the Arc domain:
 
 ```ts
 starkExpressClient.user() -> sub-client for users api (interface: IUserClient)
@@ -78,18 +78,18 @@ Example:
 ```ts
 import {
    IRegisteredUser,
-   IStarkExpressAccount,
+   IArcAccount,
    IUserInfo,
    IGetAllEntitiesResponse,
    ITEM_COMPARISON,
    IGetAllUsersFilter,
    ResponseData
-} from "@threesigma/starkexpress-ts-sdk";
+} from "@threesigma/arc-ts-sdk";
 
-// generate a new starkexpress account using ethereum private key
-const starkExpressAccount: IStarkExpressAccount = starkExpressClient.user().generateStarkAccount("ETHEREUM_PRIVATE_KEY");
+// generate a new arc account using ethereum private key
+const starkExpressAccount: IArcAccount = starkExpressClient.user().generateStarkAccount("ETHEREUM_PRIVATE_KEY");
 
-// register a new starkexpress user
+// register a new arc user
 const registeredUser: ResponseData<IRegisteredUser> = await starkExpressClient.user().registerStarkUser("STAREX_USERNAME", starkExpressAccount);
 
 // get full user info by id
@@ -120,7 +120,7 @@ import {
    IGetAllAssetsFilter,
    ResponseData,
    IDeployAssetPayload
-} from "@threesigma/starkexpress-ts-sdk";
+} from "@threesigma/arc-ts-sdk";
 
 // get all assets with a filter
 const allAssetsInfo: ResponseData<IGetAllEntitiesResponse<IAsset>> = await starkExpressClient.assets().getAllAssetsInfo({
@@ -165,7 +165,7 @@ import {
    FeeAction,
    ResponseData,
    IFeeModel
-} from "@threesigma/starkexpress-ts-sdk";
+} from "@threesigma/arc-ts-sdk";
 
 // configure fee Model
 const configuredFeeModel: ResponseData<IFeeModel> = await starkExpressClient
@@ -195,7 +195,7 @@ import {
   BatchMintRequestModel,
   DataAvailabilityModes,
   IVault
-} from "@threesigma/starkexpress-ts-sdk";
+} from "@threesigma/arc-ts-sdk";
 
 // Mint assets
 const mintAsseets: ResponseData<{ [key: string]: Array<IVault> }> = await starkExpressClient
@@ -231,7 +231,7 @@ import {
   ResponseData,
   WithdrawDetailsDto,
   WithdrawModel,
-} from "@threesigma/starkexpress-ts-sdk";
+} from "@threesigma/arc-ts-sdk";
 
 // Withdraw asset off-chain
 const withdrawData: WithdrawModel = {
@@ -260,7 +260,7 @@ import {
   TransferDetailsModel,
   DataAvailabilityModes,
   VaultDto
-} from "@threesigma/starkexpress-ts-sdk";
+} from "@threesigma/arc-ts-sdk";
 
 // Transfer asset model
 const transferData: TransferDetailsModel = {
@@ -290,7 +290,7 @@ import {
   ResponseData,
   DepositDetailsModel,
   DataAvailabilityModes
-} from "@threesigma/starkexpress-ts-sdk";
+} from "@threesigma/arc-ts-sdk";
 
 // Execute deposit
 const depositResponse = await starkExpressClient.deposit().depositAssets({

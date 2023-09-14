@@ -20,7 +20,7 @@ if (!apiKey) {
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
   console.log(header);
-  console.log(`${chalk.green.bold('StarkExpress Operations Client Example')}`);
+  console.log(`${chalk.green.bold('Arc Operations Client Example')}`);
   console.log(header);
 
   try {

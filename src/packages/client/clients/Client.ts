@@ -24,7 +24,7 @@ import { WithdrawClient } from './WithdrawClient';
 import { IWithdrawClient } from '../interfaces/IWithdrawClient';
 
 /**
- * StarkExpress Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
+ * Arc Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
  */
 export class Client implements IClient {
   private userClient: UserClient;

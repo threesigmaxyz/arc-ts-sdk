@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * StarkExpress API Docs
- * An API for the StarkExpress platform.
+ * Arc API Docs
+ * An API for the Arc platform.
  *
  * The version of the OpenAPI document: 1.0
  *

@@ -29,7 +29,7 @@ if (!apiKey) {
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
   console.log(header);
-  console.log(`${chalk.green.bold('StarkExpress Assets Client Example')}`);
+  console.log(`${chalk.green.bold('Arc Assets Client Example')}`);
   console.log(header);
 
   try {
@@ -66,9 +66,7 @@ if (!apiKey) {
       throw new Error(JSON.stringify(assetInfo.error, null, 4));
     }
 
-    console.log(
-      `StarkExpress Asset Info: ${JSON.stringify(assetInfo.result, null, 4)}`,
-    );
+    console.log(`Arc Asset Info: ${JSON.stringify(assetInfo.result, null, 4)}`);
 
     // deploy asset
     const deployedAsset: ResponseData<IAsset> = await arcClient
@@ -85,11 +83,7 @@ if (!apiKey) {
     }
 
     console.log(
-      `StarkExpress Deployed Asset: ${JSON.stringify(
-        deployedAsset.result,
-        null,
-        4,
-      )}`,
+      `Arc Deployed Asset: ${JSON.stringify(deployedAsset.result, null, 4)}`,
     );
 
     // enable asset
@@ -104,11 +98,7 @@ if (!apiKey) {
     }
 
     console.log(
-      `StarkExpress Enabled Asset: ${JSON.stringify(
-        enabledAsset.result,
-        null,
-        4,
-      )}`,
+      `Arc Enabled Asset: ${JSON.stringify(enabledAsset.result, null, 4)}`,
     );
 
     process.exit(0);

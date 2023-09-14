@@ -23,7 +23,7 @@ if (!apiKey) {
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
   console.log(header);
-  console.log(`${chalk.green.bold('StarkExpress Fees Client Example')}`);
+  console.log(`${chalk.green.bold('Arc Fees Client Example')}`);
   console.log(header);
 
   try {
@@ -65,11 +65,7 @@ if (!apiKey) {
     }
 
     console.log(
-      `StarkExpress Fee Model Info: ${JSON.stringify(
-        feeModel.result,
-        null,
-        4,
-      )}`,
+      `Arc Fee Model Info: ${JSON.stringify(feeModel.result, null, 4)}`,
     );
 
     process.exit(0);

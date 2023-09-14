@@ -2,15 +2,15 @@ import { IProvider } from '../interfaces/IProvider';
 import { Client } from './Client';
 import { IClientConfig } from '../interfaces/IClientConfig';
 
-/** Global connection urls, for StarkExpress's MAINNET, TESTNET */
+/** Global connection urls, for Arc's MAINNET, TESTNET */
 export enum DefaultProviderUrls {
   MAINNET = 'https://api.onarc.io',
   TESTNET = 'https://testnet-api.onarc.io',
 }
 
 /**
- * StarkExpress Web3 ClientFactory class allows you to easily initialize a client to
- * connect to the StarkExpress blockchain.
+ * Arc Web3 ClientFactory class allows you to easily initialize a client to
+ * connect to the Arc blockchain.
  *
  * @remarks
  * The client can be initialized using a default provider (MAINNET, TESTNET)

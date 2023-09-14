@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * StarkExpress API Docs
- * An API for the StarkExpress platform.
+ * Arc API Docs
+ * An API for the Arc platform.
  *
  * The version of the OpenAPI document: 1.0
  *
@@ -18,10 +18,7 @@ import type { Configuration } from './configuration';
 import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 
-export const BASE_PATH = 'https://testnet-api.starkexpress.io'.replace(
-  /\/+$/,
-  '',
-);
+export const BASE_PATH = 'https://testnet-api.arc.io'.replace(/\/+$/, '');
 
 /**
  *

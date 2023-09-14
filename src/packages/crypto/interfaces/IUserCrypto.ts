@@ -11,10 +11,10 @@ import {
  */
 export interface IUserCrypto {
   /**
-   * Registers a new StarkExpress user.
+   * Registers a new Arc user.
    *
-   * @param username - StarkExpress Username.
-   * @param starkExpressAccount - starkExpress account of type IStarkExpressAccount.
+   * @param username - Arc Username.
+   * @param starkExpressAccount - starkExpress account of type IArcAccount.
    *
    * @returns An object of type IRegisteredUser.
    */

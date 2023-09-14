@@ -26,7 +26,7 @@ if (!apiKey) {
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
   console.log(header);
-  console.log(`${chalk.green.bold('StarkExpress Transfer Client Example')}`);
+  console.log(`${chalk.green.bold('Arc Transfer Client Example')}`);
   console.log(header);
 
   try {
@@ -84,7 +84,7 @@ if (!apiKey) {
     }
 
     console.log(
-      `StarkExpress Transfer result: ${JSON.stringify(
+      `Arc Transfer result: ${JSON.stringify(
         transferResponseData.result,
         null,
         4,

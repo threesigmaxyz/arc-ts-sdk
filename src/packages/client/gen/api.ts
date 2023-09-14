@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * StarkExpress API Docs
- * An API for the StarkExpress platform.
+ * Arc API Docs
+ * An API for the Arc platform.
  *
  * The version of the OpenAPI document: 1.0
  *
@@ -6532,7 +6532,7 @@ export const WithdrawApiAxiosParamCreator = function (
 ) {
   return {
     /**
-     * This endpoint allows for withdrawing assets from StarkExpress.
+     * This endpoint allows for withdrawing assets from Arc.
      * @summary Withdraw Asset
      * @param {WithdrawModel} withdrawModel The withdraw request.
      * @param {*} [options] Override http request option.
@@ -6599,7 +6599,7 @@ export const WithdrawApiFp = function (configuration?: Configuration) {
   const localVarAxiosParamCreator = WithdrawApiAxiosParamCreator(configuration);
   return {
     /**
-     * This endpoint allows for withdrawing assets from StarkExpress.
+     * This endpoint allows for withdrawing assets from Arc.
      * @summary Withdraw Asset
      * @param {WithdrawModel} withdrawModel The withdraw request.
      * @param {*} [options] Override http request option.
@@ -6640,7 +6640,7 @@ export const WithdrawApiFactory = function (
   const localVarFp = WithdrawApiFp(configuration);
   return {
     /**
-     * This endpoint allows for withdrawing assets from StarkExpress.
+     * This endpoint allows for withdrawing assets from Arc.
      * @summary Withdraw Asset
      * @param {WithdrawModel} withdrawModel The withdraw request.
      * @param {*} [options] Override http request option.
@@ -6665,7 +6665,7 @@ export const WithdrawApiFactory = function (
  */
 export class WithdrawApi extends BaseAPI {
   /**
-   * This endpoint allows for withdrawing assets from StarkExpress.
+   * This endpoint allows for withdrawing assets from Arc.
    * @summary Withdraw Asset
    * @param {WithdrawModel} withdrawModel The withdraw request.
    * @param {*} [options] Override http request option.
