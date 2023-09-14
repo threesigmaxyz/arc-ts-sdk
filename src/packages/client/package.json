@@ -1,7 +1,7 @@
 {
   "name": "arc-client",
   "version": "0.0.1",
-  "description": "HTTP client to integreate with the Arc API",
+  "description": "HTTP client to integrate with the Arc API",
   "main": "index.js",
   "scripts": {
     "test": "jest",
