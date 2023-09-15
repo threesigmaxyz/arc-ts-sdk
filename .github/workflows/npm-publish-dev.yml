@@ -17,6 +17,11 @@ jobs:
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org
-      - run: ./scripts/publish-dev.sh
+      - run: ./src/packages/crypto/scripts/publish-dev.sh
+        name: Publish crypto sdk
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
+      - run: ./src/packages/client/scripts/publish-dev.sh
+        name: Publish client sdk
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npm_token }}

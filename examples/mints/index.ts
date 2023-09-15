@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as dotenv from 'dotenv';
-import { Client, IProvider } from '../../src';
-import { ClientFactory } from '../../src';
-import { ResponseData } from '../../src';
+import { Client, IProvider } from '../../src/packages/client';
+import { ClientFactory } from '../../src/packages/client';
+import { ResponseData } from '../../src/packages/client';
 import {
   BatchMintRequestModel,
   DataAvailabilityModes,
   VaultDto,
-} from '../../src/gen';
+} from '../../src/packages/client/gen';
 
 const path = require('path');
 const chalk = require('chalk');
@@ -24,7 +24,7 @@ if (!apiKey) {
 (async () => {
   const header = '='.repeat(process.stdout.columns - 1);
   console.log(header);
-  console.log(`${chalk.green.bold('StarkExpress Mint Client Example')}`);
+  console.log(`${chalk.green.bold('Arc Mint Client Example')}`);
   console.log(header);
 
   try {
@@ -32,7 +32,7 @@ if (!apiKey) {
 
     // ===================================================================================
     // init stark express client
-    const starkExpressClient: Client = await ClientFactory.createCustomClient(
+    const arcClient: Client = await ClientFactory.createCustomClient(
       { url: 'https://localhost:57679' } as IProvider,
       apiKey,
     );
@@ -54,8 +54,9 @@ if (!apiKey) {
       ],
     };
 
-    const mint: ResponseData<{ [p: string]: Array<VaultDto> }> =
-      await starkExpressClient.mints().mintAssets(mintData);
+    const mint: ResponseData<{ [p: string]: Array<VaultDto> }> = await arcClient
+      .mints()
+      .mintAssets(mintData);
 
     if (mint.error) {
       throw new Error(JSON.stringify(mint.error, null, 4));

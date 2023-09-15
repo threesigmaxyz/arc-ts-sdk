@@ -1,7 +1,7 @@
-import { trySafeExecute } from '../../src/utils/retryExecuteFunction';
-import { wait } from '../../src/utils/time';
+import { trySafeExecute } from '../../src/packages/client/utils/retryExecuteFunction';
+import { wait } from '../../src/packages/client/utils/time';
 
-jest.mock('../../src/utils/time');
+jest.mock('../../src/packages/client/utils/time');
 
 describe('trySafeExecute function', () => {
   beforeAll(() => {

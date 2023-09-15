@@ -3,7 +3,7 @@ import {
   Interval,
   wait,
   withTimeoutRejection,
-} from '../../src/utils/time';
+} from '../../src/packages/client/utils/time';
 
 describe('Timer utilities', () => {
   jest.useFakeTimers();

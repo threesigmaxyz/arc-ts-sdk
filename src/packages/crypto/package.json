@@ -1,0 +1,41 @@
+{
+  "name": "arc-crypto-utils",
+  "version": "0.0.1",
+  "description": "SDK with cryptographic operations usefull to integrate with the Arc ecosystem",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "npm-run-all clean-dist build-*",
+    "clean-dist": "rimraf dist/*",
+    "build-bundle": "webpack",
+    "build-esm": "tsc --project tsconfig.esm.json",
+    "build-commonjs": "tsc --project tsconfig.commonjs.json",
+    "update-version-major": "npm version major",
+    "update-version-minor": "npm version minor",
+    "update-version-patch": "npm version patch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/threesigmaxyz/arc-ts-sdk.git"
+  },
+  "private": false,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [
+    "Arc",
+    "crypto",
+    "web3"
+  ],
+  "author": "ThreeSigma <info@threesigma.xyz>",
+  "license": "(MIT AND Apache-2.0)",
+  "bugs": {
+    "url": "https://github.com/threesigmaxyz/arc-ts-sdk/issues"
+  },
+  "homepage": "https://github.com/threesigmaxyz/arc-ts-sdk#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^18.13.0"
+  }
+}
