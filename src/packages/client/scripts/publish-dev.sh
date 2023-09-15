@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+cd "src/packages/client"
+
 npm ci
 npm run build
 npm version --preid dev --no-git-tag-version --no-commit-hooks prepatch

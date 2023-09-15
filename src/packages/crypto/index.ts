@@ -16,6 +16,6 @@ if (typeof window !== 'undefined') {
 }
 
 // crypto
-export { ICryptoUtils } from '../crypto/interfaces/ICryptoUtils';
-export { CryptoUtils } from '../crypto/clients/CryptoUtils';
-export { IStarkAccount } from '../crypto/interfaces/IStarkAccount';
+export { ICryptoUtils } from './interfaces/ICryptoUtils';
+export { CryptoUtils } from './utils/CryptoUtils';
+export { IStarkAccount } from './interfaces/IStarkAccount';
