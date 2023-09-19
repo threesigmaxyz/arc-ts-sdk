@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+cd "src/packages/client"
+
 npm ci
 npm run build
 

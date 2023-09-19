@@ -55,8 +55,8 @@
         "esnext",
         "esnext.asynciterable"
     ],
-    "files": ["./node_modules/@types/node/index.d.ts"],
-    "include": ["./src/**/*.ts"],
+    "files": ["./../../../node_modules/@types/node/index.d.ts"],
+    "include": ["./**/*.ts"],
     "exclude": [
         "./node_modules/**/*",
         "typings/browser.d.ts",
