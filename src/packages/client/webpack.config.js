@@ -23,7 +23,7 @@ const baseConfig = {
       path: false,
     },
     // Extensions that are used to resolve modules
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.tsx'],
   },
 
   // Configuration for source maps

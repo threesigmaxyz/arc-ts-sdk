@@ -3,12 +3,12 @@
         "experimentalResolver": true
     },
     "compilerOptions": {
-        "target": "ES2020",
-        "module": "commonjs",
+        "target": "es5",
+        "module": "es6",
         "declaration": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
-        "jsx": "preserve",
+        "jsx": "react",
         "allowJs": true,
         "importHelpers": true,
         "alwaysStrict": true,
