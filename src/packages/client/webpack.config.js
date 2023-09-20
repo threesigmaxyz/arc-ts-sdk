@@ -56,7 +56,7 @@ const baseConfigUmd = {
     rules: [
       {
         // Regular expression that matches the file extensions that this rule applies to
-        test: /\.ts$/,
+        test: /\.ts?$/,
         // The loader that should be used for the files that match the test regular expression
         loader: 'ts-loader',
         // A condition that must not be met to use this rule
