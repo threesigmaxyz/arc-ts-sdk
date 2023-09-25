@@ -11,6 +11,8 @@ import starkwareCrypto from '@starkware-industries/starkware-crypto-utils';
 import { IStarkAccount } from '../interfaces/IStarkAccount';
 import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 import { ethers } from 'ethers';
+import { ISettlementCrypto } from '../interfaces/ISettlementCrypto';
+import { SettlementCrypto } from './SettlementCrypto';
 
 /**
  * Arc Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
@@ -21,6 +23,7 @@ export class CryptoUtils implements ICryptoUtils {
   private depositClient: DepositCrypto;
   private transferClient: TransferCrypto;
   private withdrawClient: WithdrawCrypto;
+  private settlementClient: SettlementCrypto;
   public starkAccount: IStarkAccount;
   public signer: JsonRpcSigner;
 
@@ -39,6 +42,7 @@ export class CryptoUtils implements ICryptoUtils {
     this.deposits = this.deposits.bind(this);
     this.transfers = this.transfers.bind(this);
     this.withdraws = this.withdraws.bind(this);
+    this.settlements = this.settlements.bind(this);
   }
 
   /**
@@ -77,6 +81,7 @@ export class CryptoUtils implements ICryptoUtils {
     this.depositClient = new DepositCrypto(this.signer);
     this.transferClient = new TransferCrypto(this.starkAccount);
     this.withdrawClient = new WithdrawCrypto(this.signer);
+    this.settlementClient = new SettlementCrypto(this.starkAccount);
 
     this.isInit = true;
   }
@@ -131,5 +136,18 @@ export class CryptoUtils implements ICryptoUtils {
     }
 
     return this.withdrawClient;
+  }
+
+  /**
+   * Get the settlement-related methods.
+   *
+   * @returns ISettlementCrypto object.
+   */
+  public settlements(): ISettlementCrypto {
+    if (!this.isInit) {
+      throw new Error(`Client must be initialized first`);
+    }
+
+    return this.settlementClient;
   }
 }

@@ -4,6 +4,7 @@ import { ITransferCrypto } from './ITransferCrypto';
 import { IWithdrawCrypto } from './IWithdrawCrypto';
 import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 import { IStarkAccount } from './IStarkAccount';
+import { ISettlementCrypto } from './ISettlementCrypto';
 
 /**
  * Represents the client object.
@@ -23,6 +24,7 @@ export interface ICryptoUtils {
   deposits(): IDepositCrypto;
   transfers(): ITransferCrypto;
   withdraws(): IWithdrawCrypto;
+  settlements(): ISettlementCrypto;
   signer: JsonRpcSigner;
   starkAccount: IStarkAccount;
 }

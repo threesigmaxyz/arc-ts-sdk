@@ -24,6 +24,7 @@
         "test-deposits": "ts-node ./examples/deposit/index.ts",
         "test-vault": "ts-node ./examples/vault/index.ts",
         "test-transfer": "ts-node ./examples/transfers/index.ts",
+        "test-settlements": "ts-node ./examples/settlements/index.ts",
         "test-health": "ts-node ./examples/health/index.ts",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",

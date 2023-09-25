@@ -113,6 +113,27 @@ Example:
 await cryptoUtils.deposits().deposit(depositDetails);
 ```
 
+### Settlements API
+
+Client public API operations are accessible under the assets sub-client, which is accessible via the `settlementss()` method on the client.
+
+Example:
+
+```ts
+const orderData: OrderDataDto = {
+  sellQuantizedAmount: '21415926535',
+  buyQuantizedAmount: '1',
+  sellVaultChainId: 1,
+  buyVaultChainId: 2,
+  expirationTimestamp: 123123123,
+  nonce: 123,
+  assetBuy: '0x123abcafff',
+  assetSell: '0x123abca123',
+};
+
+await cryptoUtils.settlements().signOrder(orderData);
+```
+
 ## Contributing and testing
 
 1. Run `npm run install` to install all deps
