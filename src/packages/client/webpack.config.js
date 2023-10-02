@@ -1,5 +1,6 @@
 // Require the path module from Node.js
 const path = require('path');
+const webpack = require('webpack');
 
 // Base configuration
 const baseConfig = {
@@ -31,6 +32,14 @@ const baseConfig = {
 
   // The mode to use for the webpack build
   mode: 'development',
+
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development'),
+      },
+    }),
+  ],
 };
 
 // Base configuration

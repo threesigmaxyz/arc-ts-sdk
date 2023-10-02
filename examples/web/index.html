@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Bundler Tester App"
+    />
+    <script
+      type="text/javascript"
+      src="./arcClientBundle.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="./cryptoUtilsBundle.js"
+    ></script>
+    <script>
+      console.log("Arc Client ", window.arcClient);
+      console.assert(window.arcClient !== null && window.arcClient !== undefined);
+    </script>
+    <script>
+      console.log("Arc Crypto Utils ", window.arcCryptoUtils);
+      console.assert(window.arcCryptoUtils !== null && window.arcCryptoUtils !== undefined);
+    </script>
+    <title>Bundler Tester App</title>
+  </head>
+  <body>
+    <p>This is a tester app for the arc js bundles.</p>
+  </body>
+</html>

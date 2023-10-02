@@ -15,6 +15,7 @@
         "build": "npm-run-all clean-dist generate-openapi build-*",
         "test": "jest",
         "test:cov": "jest --coverage",
+        "test-web": "cp ./src/packages/client/bundle.js ./examples/web/arcClientBundle.js && cp ./src/packages/crypto/bundle.js ./examples/web/cryptoUtilsBundle.js && python3 -m http.server -d ./examples/web 3001",
         "test-user": "ts-node ./examples/user/index.ts",
         "test-assets": "ts-node ./examples/assets/index.ts",
         "test-fees": "ts-node ./examples/fees/index.ts",
