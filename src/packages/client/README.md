@@ -26,10 +26,10 @@ Add the following script to your html file:
 
 whereby the x.x.x is one of the available released versions
 
-In your code, once the script is fully loaded, just use `window.arc` to access all `arc-client` exports.
+In your code, once the script is fully loaded, just use `window.arc` to access all `arcClient` exports.
 
 ```ts
-<script>console.log("Arc Client ", window.arc);</script>
+<script>console.log("Arc Client ", window.arcClient);</script>
 ```
 
 > **PREREQUISITES:**
@@ -47,7 +47,7 @@ import {
 
 const API_KEY = "xxxxxxx";
 
-// init stark express client
+// init arc client
 const arcClient: Client = await ClientFactory.createDefaultClient(
     DefaultProviderUrls.TESTNET,
     API_KEY,
@@ -60,13 +60,13 @@ const arcClient: Client = await ClientFactory.createDefaultClient(
 The client exposes several APIs for accessing different parts of the Arc domain:
 
 ```ts
-starkExpressClient.user() -> sub-client for users api (interface: IUserClient)
-starkExpressClient.assets() -> sub-client for assets api (interface: IAssetsClient)
-starkExpressClient.fees() -> sub-client for fees api (interface: IFeeModelClient)
-starkExpressClient.mints() -> sub-client for mints api (interface: IMintClient)
-starkExpressClient.withdraws() -> sub-client for withdraws api (interface: IMintClient)
-starkExpressClient.transfers() -> sub-client for transfers api (interface: ITransferClient)
-starkExpressClient.deposits() -> sub-client for deposits api (interface: IDepositClient)
+arcClient.user() -> sub-client for users api (interface: IUserClient)
+arcClient.assets() -> sub-client for assets api (interface: IAssetsClient)
+arcClient.fees() -> sub-client for fees api (interface: IFeeModelClient)
+arcClient.mints() -> sub-client for mints api (interface: IMintClient)
+arcClient.withdraws() -> sub-client for withdraws api (interface: IMintClient)
+arcClient.transfers() -> sub-client for transfers api (interface: ITransferClient)
+arcClient.deposits() -> sub-client for deposits api (interface: IDepositClient)
 
 ```
 
@@ -130,20 +130,20 @@ import {
 } from "@threesigma/arc-client";
 
 // get all assets with a filter
-const allAssetsInfo: ResponseData<IGetAllEntitiesResponse<IAsset>> = await starkExpressClient.assets().getAllAssetsInfo({
+const allAssetsInfo: ResponseData<IGetAllEntitiesResponse<IAsset>> = await arcClient.assets().getAllAssetsInfo({
     assetType: ASSET_TYPE.ERC_721,
     pageNumber: 0,
     pageSize: 100,
 } as IGetAllAssetsFilter);
 
 // get full asset info by id
-const assetInfo: ResponseData<IAsset> = await starkExpressClient
+const assetInfo: ResponseData<IAsset> = await arcClient
     .assets()
     .getAsset((allAssetsInfo.result?.data as [IAsset])[0].assetId);
 
 
 // deploy asset
-const createdAsset: ResponseData<IAsset> = await starkExpressClient
+const createdAsset: ResponseData<IAsset> = await arcClient
     .assets()
     .deployAsset({
     name: "Custom Asset",
@@ -153,7 +153,7 @@ const createdAsset: ResponseData<IAsset> = await starkExpressClient
     } as IDeployAssetPayload);
 
 // enable asset
-const enabledAsset: ResponseData<IAsset> = await starkExpressClient
+const enabledAsset: ResponseData<IAsset> = await arcClient
     .assets()
     .enableAsset("8ecce465-0e58-4d14-914c-79241d7dc773");
 
@@ -175,7 +175,7 @@ import {
 } from "@threesigma/arc-client";
 
 // configure fee Model
-const configuredFeeModel: ResponseData<IFeeModel> = await starkExpressClient
+const configuredFeeModel: ResponseData<IFeeModel> = await arcClient
     .fees()
     .configureFeeModel({
     feeAction: FeeAction.TRANSFER,
@@ -183,7 +183,7 @@ const configuredFeeModel: ResponseData<IFeeModel> = await starkExpressClient
     } as IConfigureFeeModelPayload);
 
 // get fee model
-const feeModel: ResponseData<IFeeModel> = await starkExpressClient
+const feeModel: ResponseData<IFeeModel> = await arcClient
     .fees()
     .getFeeModel(configuredFeeModel.result?.feeId as string);
 
@@ -205,7 +205,7 @@ import {
 } from "@threesigma/arc-client";
 
 // Mint assets
-const mintAsseets: ResponseData<{ [key: string]: Array<IVault> }> = await starkExpressClient
+const mintAsseets: ResponseData<{ [key: string]: Array<IVault> }> = await arcClient
     .mints()
     .mintAssets({
       users: [

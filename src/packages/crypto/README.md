@@ -2,8 +2,7 @@
 
 ![check-code-coverage](https://img.shields.io/badge/coverage-%25-red)
 
-`arc-crypto-utils` is a TypeScript library that allow you to interact with the `Arc` L2 blockchain
-and use all of its features.
+`arc-crypto-utils` is a TypeScript library that exposes crypto-related functionalities required by the `Arc` L2 blockchain.
 
 ## Usage
 
@@ -26,10 +25,10 @@ Add the following script to your html file:
 
 whereby the x.x.x is one of the available released versions
 
-In your code, once the script is fully loaded, just use `window.arc` to access all `arc-crypto-utils` exports.
+In your code, once the script is fully loaded, just use `window.arc` to access all `arcCryptoUtils` exports.
 
 ```ts
-<script>console.log("Arc Client ", window.arc);</script>
+<script>console.log("Arc Crypto Utils ", window.arcCryptoUtils);</script>
 ```
 
 > **PREREQUISITES:**
