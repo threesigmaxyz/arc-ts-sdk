@@ -8,7 +8,7 @@
         "declaration": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
-        "jsx": "preserve",
+        "jsx": "react",
         "allowJs": true,
         "importHelpers": true,
         "alwaysStrict": true,
@@ -39,7 +39,11 @@
             "es2020",
             "es2021",
             "esnext",
-            "esnext.asynciterable"
+            "esnext.asynciterable",
+            "DOM",
+            "DOM.Iterable",
+            "ScriptHost",
+            "ES2016.Array.Include"
         ]
     },
     "files": ["./../../../node_modules/@types/node/index.d.ts"],
