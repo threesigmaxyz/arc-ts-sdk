@@ -24,7 +24,7 @@ const baseConfig = {
       path: false,
     },
     // Extensions that are used to resolve modules
-    extensions: ['.ts', '.js', '.jsx', '.tsx'],
+    extensions: ['.ts', '.js', '.tsx', '.jsx'],
   },
 
   // Configuration for source maps
@@ -63,7 +63,7 @@ const baseConfigUmd = {
   module: {
     // Array of rules that are used to find and load modules
     rules: [
-      {
+      /*      {
         // Regular expression that matches the file extensions that this rule applies to
         test: /\.ts?$/,
         // The loader that should be used for the files that match the test regular expression
@@ -74,6 +74,7 @@ const baseConfigUmd = {
           configFile: 'tsconfig.commonjs.json',
         },
       },
+      */
       {
         test: /\.(ts|tsx|js|jsx)$/,
         exclude: /node_modules/,
