@@ -28,7 +28,7 @@ const baseConfig = {
   },
 
   // Configuration for source maps
-  devtool: 'source-map',
+  // devtool: 'source-map',
 
   // The mode to use for the webpack build
   mode: 'development',
@@ -72,7 +72,7 @@ const baseConfigUmd = {
         // A condition that must not be met to use this rule
         exclude: /node_modules/,
         options: {
-          configFile: 'tsconfig.commonjs.json',
+          configFile: 'tsconfig.esm.json',
         },
       },
       */
@@ -83,6 +83,7 @@ const baseConfigUmd = {
           loader: 'babel-loader',
           options: {
             presets: [
+              '@babel/preset-env',
               '@babel/preset-react',
               '@babel/preset-typescript',
               '@babel/preset-flow',

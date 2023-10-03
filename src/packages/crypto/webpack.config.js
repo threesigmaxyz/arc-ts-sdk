@@ -28,7 +28,7 @@ const baseConfig = {
   },
 
   // Configuration for source maps
-  devtool: 'source-map',
+  // devtool: 'source-map',
 
   // The mode to use for the webpack build
   mode: 'development',
@@ -63,7 +63,7 @@ const baseConfigUmd = {
   module: {
     // Array of rules that are used to find and load modules
     rules: [
-      /*      {
+      {
         // Regular expression that matches the file extensions that this rule applies to
         test: /\.ts?$/,
         // The loader that should be used for the files that match the test regular expression
@@ -71,10 +71,10 @@ const baseConfigUmd = {
         // A condition that must not be met to use this rule
         exclude: /node_modules/,
         options: {
-          configFile: 'tsconfig.commonjs.json',
+          configFile: 'tsconfig.esm.json',
         },
       },
-      */
+      /* 
       {
         test: /\.(ts|tsx|js|jsx)$/,
         exclude: /node_modules/,
@@ -82,6 +82,7 @@ const baseConfigUmd = {
           loader: 'babel-loader',
           options: {
             presets: [
+              '@babel/preset-env',
               '@babel/preset-react',
               '@babel/preset-typescript',
               '@babel/preset-flow',
@@ -89,6 +90,7 @@ const baseConfigUmd = {
           },
         },
       },
+      */
     ],
   },
 };
