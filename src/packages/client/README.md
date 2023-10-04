@@ -67,6 +67,7 @@ arcClient.mints() -> sub-client for mints api (interface: IMintClient)
 arcClient.withdraws() -> sub-client for withdraws api (interface: IMintClient)
 arcClient.transfers() -> sub-client for transfers api (interface: ITransferClient)
 arcClient.deposits() -> sub-client for deposits api (interface: IDepositClient)
+arcClient.marketplace() -> sub-client for marketplace api (interface: IMarkeplaceClient)
 
 ```
 
@@ -320,6 +321,81 @@ const depositDetailsModel: DepositDetailsModel = {
 const depositDetails = await arcClient
   .deposit()
   .getDepositDetails(depositDetailsModel);
+```
+
+### Marketplace API
+
+Client public API operations are accessible under the assets sub-client, which is accessible via the `marketplace()` method on the client.
+
+Example:
+
+```ts
+
+import {
+  BuyOrderDetailsModel,
+  RegisterBuyOrderModel,
+  RegisterSellOfferModel,
+  SellOfferDetailsModel
+} from "@threesigma/arc-client";
+
+// Get sell offer details
+const sellOfferDetails: SellOfferDetailsModel = {
+  sellerId: '5a35dbab-02ba-4ed4-b799-59daa263488b',
+  assetId: '5a35dbab-02ba-4ed4-b799-59daa263488c',
+  quantity: '1',
+  tokenId: '0xdeadbeef',
+  currencyId: '5a35dbab-02ba-4ed4-b799-59daa263488d',
+  dataAvailabilityMode: DataAvailabilityModes.Validium,
+  price: '10000',
+};
+
+const sellOfferDetailsResponse = await arcClient
+  .marketplace()
+  .getSellOfferDetails(sellOfferDetails);
+
+// Submit sell offer
+const sellOffer: RegisterSellOfferModel = {
+  sellerId: '5a35dbab-02ba-4ed4-b799-59daa263488b',
+  productVaultId: '5a35dbab-02ba-4ed4-b799-59daa263488c',
+  productAmount: '1',
+  currencyVaultId: '5a35dbab-02ba-4ed4-b799-59daa263488d',
+  currencyAmount: '10000',
+  expirationTimestamp: 1231231,
+  nonce: 123,
+  productName: "some name",
+  productDescription: "some description",
+  signature: sellerSignature
+};
+
+const sellOfferResponse = await arcClient
+  .marketplace()
+  .submitSellOffer(sellOffer);
+
+// Fetch buy order details
+const buyOrderDetails: BuyOrderDetailsModel = {
+  buyerId: '5a35dbab-02ba-4ed4-b799-59daa263488f',
+  offerId: offerDto.offerId,
+  dataAvailabilityMode: DataAvailabilityModes.Validium
+};
+
+const buyOrderDetailsResponse = await arcClient
+  .marketplace()
+  .getBuyOrderDetails(buyOrderDetails);
+
+// Submit buy order
+const buyOrder: RegisterBuyOrderModel = {
+  buyerId: '5a35dbab-02ba-4ed4-b799-59daa263488f',
+  offerId: offerDto.offerId,
+  productVaultId: buyOrderData.buyVaultId,
+  currencyVaultId: buyOrderData.sellVaultChainId,
+  expirationTimestamp: buyOrderData.expirationTimestamp,
+  nonce: buyOrderData.nonce,
+  signature: buyerSignature,
+};
+
+const buyOrderResponse = await arcClient
+  .marketplace()
+  .submitBuyOrder(buyOrder);
 ```
 
 

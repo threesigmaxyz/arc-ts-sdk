@@ -22,6 +22,8 @@ import { TransferClient } from './TransferClient';
 import { ITransferClient } from '../interfaces/ITransferClient';
 import { WithdrawClient } from './WithdrawClient';
 import { IWithdrawClient } from '../interfaces/IWithdrawClient';
+import { IMarketplaceClient } from '../interfaces/IMarketplaceClient';
+import { MarketplaceClient } from './MarketplaceClient';
 
 /**
  * Arc Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
@@ -36,6 +38,7 @@ export class Client implements IClient {
   private mintClient: MintClient;
   private transferClient: TransferClient;
   private withdrawClient: WithdrawClient;
+  private marketplaceClient: MarketplaceClient;
 
   /**
    * Constructor of the Client class.
@@ -53,6 +56,7 @@ export class Client implements IClient {
     this.mintClient = new MintClient(clientConfig);
     this.transferClient = new TransferClient(clientConfig);
     this.withdrawClient = new WithdrawClient(clientConfig);
+    this.marketplaceClient = new MarketplaceClient(clientConfig);
 
     // subclients
     this.user = this.user.bind(this);
@@ -64,6 +68,7 @@ export class Client implements IClient {
     this.mints = this.mints.bind(this);
     this.transfers = this.transfers.bind(this);
     this.withdraws = this.withdraws.bind(this);
+    this.marketplace = this.marketplace.bind(this);
     // setters
     this.setCustomProvider = this.setCustomProvider.bind(this);
     this.setDefaultProvider = this.setDefaultProvider.bind(this);
@@ -150,6 +155,15 @@ export class Client implements IClient {
    */
   public withdraws(): IWithdrawClient {
     return this.withdrawClient;
+  }
+
+  /**
+   * Get the marketplace-related methods.
+   *
+   * @returns IMarketplaceClient object.
+   */
+  public marketplace(): IMarketplaceClient {
+    return this.marketplaceClient;
   }
 
   /**

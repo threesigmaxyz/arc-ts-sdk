@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1",
+  "version": "0.1.0",
   "name": "@threesigmaxyz/arc-client",
   "description": "HTTP client to integrate with the Arc API",
   "main": "dist/esm/index.js",

@@ -15,6 +15,8 @@ import { ISettlementCrypto } from '../interfaces/ISettlementCrypto';
 import { SettlementCrypto } from './SettlementCrypto';
 import { IEthereumWallet } from '../interfaces/IEthereumWallet';
 const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
+import { IMarketplaceCrypto } from '../interfaces/IMarketplaceCrypto';
+import { MarketplaceCrypto } from './MarketplaceCrypto';
 
 /**
  * Arc Web3 CryptoUtils client object wraps all user, deposit, transfer, withdraw, and settlement functionalities.
@@ -26,6 +28,7 @@ export class CryptoUtils implements ICryptoUtils {
   private transferClient: TransferCrypto;
   private withdrawClient: WithdrawCrypto;
   private settlementClient: SettlementCrypto;
+  private marketplaceClient: MarketplaceCrypto;
   public starkAccount: IStarkAccount;
   public signer: JsonRpcSigner;
 
@@ -45,6 +48,7 @@ export class CryptoUtils implements ICryptoUtils {
     this.transfers = this.transfers.bind(this);
     this.withdraws = this.withdraws.bind(this);
     this.settlements = this.settlements.bind(this);
+    this.marketplace = this.marketplace.bind(this);
   }
 
   /**
@@ -97,6 +101,7 @@ export class CryptoUtils implements ICryptoUtils {
     this.transferClient = new TransferCrypto(this.starkAccount);
     this.withdrawClient = new WithdrawCrypto(this.signer);
     this.settlementClient = new SettlementCrypto(this.starkAccount);
+    this.marketplaceClient = new MarketplaceCrypto(this.starkAccount);
 
     this.isInit = true;
   }
@@ -164,5 +169,13 @@ export class CryptoUtils implements ICryptoUtils {
     }
 
     return this.settlementClient;
+  }
+
+  public marketplace(): IMarketplaceCrypto {
+    if (!this.isInit) {
+      throw new Error(`Client must be initialized first`);
+    }
+
+    return this.marketplaceClient;
   }
 }

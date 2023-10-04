@@ -132,6 +132,18 @@ const orderData: OrderDataDto = {
 await cryptoUtils.settlements().signOrder(orderData);
 ```
 
+### Marketplace API
+
+Client public API operations are accessible under the assets sub-client, which is accessible via the `marketplace()` method on the client.
+
+Example:
+
+```ts
+
+// orderData is fetched from the marketplace details endpoints
+const signature = cryptoUtils.marketplace().signOrder(orderData);
+```
+
 ## Contributing and testing
 
 1. Run `npm run install` to install all deps
