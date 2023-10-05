@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { ICryptoUtils } from '../interfaces/ICryptoUtils';
 import { UserCrypto } from './UserCrypto';
 import { DepositCrypto } from './DepositCrypto';
@@ -7,7 +8,8 @@ import { IDepositCrypto } from '../interfaces/IDepositCrypto';
 import { IUserCrypto } from '../interfaces/IUserCrypto';
 import { ITransferCrypto } from '../interfaces/ITransferCrypto';
 import { IWithdrawCrypto } from '../interfaces/IWithdrawCrypto';
-import starkwareCrypto from '@starkware-industries/starkware-crypto-utils';
+// import starkwareCrypto from '@starkware-industries/starkware-crypto-utils';
+const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 import { IStarkAccount } from '../interfaces/IStarkAccount';
 import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 import { ethers } from 'ethers';

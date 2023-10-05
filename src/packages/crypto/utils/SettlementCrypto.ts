@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { SignatureModel } from '../../client/gen';
 import { ISettlementCrypto } from '../interfaces/ISettlementCrypto';
-import starkwareCrypto, {
-  ec,
-  sign,
-} from '@starkware-industries/starkware-crypto-utils';
+// import starkwareCrypto, {
+//  ec,
+//  sign,
+// } from '@starkware-industries/starkware-crypto-utils';
+const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 import { IStarkAccount } from '../interfaces/IStarkAccount';
 import { OrderDataDto } from '../dtos/OrderDataDto';
 
@@ -29,7 +31,10 @@ export class SettlementCrypto implements ISettlementCrypto {
 
   public signOrder(orderData: OrderDataDto): SignatureModel {
     // Sign transfer message
-    const keyPair = ec.keyFromPrivate(this.starkAccount.secretKey, 'hex');
+    const keyPair = starkwareCrypto.ec.keyFromPrivate(
+      this.starkAccount.secretKey,
+      'hex',
+    );
 
     let signablePayload = '';
 
@@ -60,7 +65,7 @@ export class SettlementCrypto implements ISettlementCrypto {
       );
     }
 
-    const starkSignature = sign(keyPair, signablePayload);
+    const starkSignature = starkwareCrypto.sign(keyPair, signablePayload);
 
     return {
       r: starkSignature.r.toString('hex'),
