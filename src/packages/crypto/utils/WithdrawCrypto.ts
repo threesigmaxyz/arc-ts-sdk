@@ -4,7 +4,7 @@ import { IWithdrawCrypto } from '../interfaces/IWithdrawCrypto';
 import { ethers } from 'ethers';
 import { starkexAbi } from '../abi/starkex';
 import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
-require('@starkware-industries/starkware-crypto-utils');
+
 /**
  * A client class for interacting with the user API of Arc.
  *
