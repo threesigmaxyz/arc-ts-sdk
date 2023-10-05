@@ -54,6 +54,12 @@ export class CryptoUtils implements ICryptoUtils {
     // A Web3Provider wraps a standard Web3 provider, which is
     // what MetaMask injects as window.ethereum into each page
     const { ethereum } = window as any;
+    if (!ethereum) {
+      const msg =
+        'Metamask is not available. Ethereum object does not exist under window';
+      console.error(msg);
+      throw new Error(msg);
+    }
     const provider = new ethers.BrowserProvider(ethereum);
 
     // MetaMask requires requesting permission to connect users accounts

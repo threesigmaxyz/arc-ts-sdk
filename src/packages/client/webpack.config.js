@@ -63,7 +63,6 @@ const baseConfigUmd = {
   module: {
     // Array of rules that are used to find and load modules
     rules: [
-      /*
       {
         // Regular expression that matches the file extensions that this rule applies to
         test: /\.ts?$/,
@@ -75,7 +74,7 @@ const baseConfigUmd = {
           configFile: 'tsconfig.esm.json',
         },
       },
-      */
+      /*
       {
         test: /\.(ts|tsx|js|jsx)$/,
         exclude: /node_modules/,
@@ -91,6 +90,7 @@ const baseConfigUmd = {
           },
         },
       },
+      */
     ],
   },
 };
