@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { SignatureModel, TransferDetailsDto } from '../../client/gen';
 import { ITransferCrypto } from '../interfaces/ITransferCrypto';
-// import { ec, sign } from '@starkware-industries/starkware-crypto-utils';
 const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 import { IStarkAccount } from '../interfaces/IStarkAccount';
 

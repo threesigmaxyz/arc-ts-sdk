@@ -8,13 +8,12 @@ import { IDepositCrypto } from '../interfaces/IDepositCrypto';
 import { IUserCrypto } from '../interfaces/IUserCrypto';
 import { ITransferCrypto } from '../interfaces/ITransferCrypto';
 import { IWithdrawCrypto } from '../interfaces/IWithdrawCrypto';
-// import starkwareCrypto from '@starkware-industries/starkware-crypto-utils';
-const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 import { IStarkAccount } from '../interfaces/IStarkAccount';
 import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 import { ethers } from 'ethers';
 import { ISettlementCrypto } from '../interfaces/ISettlementCrypto';
 import { SettlementCrypto } from './SettlementCrypto';
+const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 
 /**
  * Arc Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.

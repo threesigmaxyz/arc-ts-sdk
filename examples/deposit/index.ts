@@ -3,8 +3,8 @@ import {
   Client,
   ClientFactory,
   DataAvailabilityModes,
+  DefaultProviderUrls,
   DepositDetailsModel,
-  IProvider,
 } from 'arc-client';
 import { CryptoUtils, ICryptoUtils } from 'arc-crypto-utils';
 import * as dotenv from 'dotenv';
@@ -31,8 +31,8 @@ if (!apiKey) {
 
     // ===================================================================================
     // init arc client
-    const arcClient: Client = await ClientFactory.createCustomClient(
-      { url: 'https://localhost:57679' } as IProvider,
+    const arcClient: Client = await ClientFactory.createDefaultClient(
+      DefaultProviderUrls.TESTNET,
       apiKey,
     );
 
