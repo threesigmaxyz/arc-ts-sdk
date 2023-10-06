@@ -51,7 +51,7 @@
     "jest": "^29.5.0"
   },
   "dependencies": {
-    "rimraf": "^5.0.1",
+    "rimraf": "^5.0.5",
     "assert": "^2.0.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
