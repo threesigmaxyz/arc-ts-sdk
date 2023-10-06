@@ -4,10 +4,10 @@
   
     "compilerOptions": {
         // Specifies the module system for the output bundle. "ESNext" refers to the latest version of ECMAScript (JavaScript).
-        "module": "ES6",
+        "module": "es6",
   
         // The version of JavaScript that the compiler will output. "ESNext" means the latest version.
-        "target": "ES6",
+        "target": "es6",
   
         // The location where the output files will be placed.
         "outDir": "./dist/esm/",
