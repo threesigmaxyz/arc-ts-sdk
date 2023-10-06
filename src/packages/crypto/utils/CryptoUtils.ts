@@ -13,6 +13,7 @@ import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 import { ethers } from 'ethers';
 import { ISettlementCrypto } from '../interfaces/ISettlementCrypto';
 import { SettlementCrypto } from './SettlementCrypto';
+import { IEthereumWallet } from '../interfaces/IEthereumWallet';
 const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 
 /**
@@ -51,25 +52,33 @@ export class CryptoUtils implements ICryptoUtils {
    *
    * @returns IWithdrawCrypto object.
    */
-  public async init(message: string): Promise<void> {
-    // A Web3Provider wraps a standard Web3 provider, which is
-    // what MetaMask injects as window.ethereum into each page
-    const { ethereum } = window as any;
-    if (!ethereum) {
-      const msg =
-        'Metamask is not available. Ethereum object does not exist under window';
-      console.error(msg);
-      throw new Error(msg);
+  public async init(
+    message: string,
+    ethereumWallet?: IEthereumWallet,
+  ): Promise<void> {
+    let provider: ethers.JsonRpcProvider | ethers.BrowserProvider = undefined;
+    if (ethereumWallet) {
+      provider = new ethers.JsonRpcProvider(ethereumWallet.providerUrl);
+      this.signer = await provider.getSigner(ethereumWallet.privateKey);
+    } else {
+      // A Web3Provider wraps a standard Web3 provider, which is
+      // what MetaMask injects as window.ethereum into each page
+      const { ethereum } = window as any;
+      if (!ethereum) {
+        const msg =
+          'Metamask is not available. Ethereum object does not exist under window';
+        console.error(msg);
+        throw new Error(msg);
+      }
+      provider = new ethers.BrowserProvider(ethereum);
+      // The MetaMask plugin also allows signing transactions to
+      // send ether and pay to change state within the blockchain.
+      // For this, you need the account signer...
+      this.signer = await provider.getSigner();
     }
-    const provider = new ethers.BrowserProvider(ethereum);
 
     // MetaMask requires requesting permission to connect users accounts
     await provider.send('eth_requestAccounts', []);
-
-    // The MetaMask plugin also allows signing transactions to
-    // send ether and pay to change state within the blockchain.
-    // For this, you need the account signer...
-    this.signer = await provider.getSigner();
 
     // Generate Stark keys
     const ethSignature = await this.signer.signMessage(message);

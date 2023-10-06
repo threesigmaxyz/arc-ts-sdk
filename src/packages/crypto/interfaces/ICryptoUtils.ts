@@ -5,6 +5,7 @@ import { IWithdrawCrypto } from './IWithdrawCrypto';
 import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 import { IStarkAccount } from './IStarkAccount';
 import { ISettlementCrypto } from './ISettlementCrypto';
+import { IEthereumWallet } from './IEthereumWallet';
 
 /**
  * Represents the client object.
@@ -19,7 +20,7 @@ import { ISettlementCrypto } from './ISettlementCrypto';
  * @see fees() -fees API client.
  */
 export interface ICryptoUtils {
-  init(message: string): Promise<void>;
+  init(message: string, ethereumWallet?: IEthereumWallet): Promise<void>;
   user(): IUserCrypto;
   deposits(): IDepositCrypto;
   transfers(): ITransferCrypto;
