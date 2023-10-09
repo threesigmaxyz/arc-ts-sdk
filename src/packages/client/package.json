@@ -2,7 +2,9 @@
   "version": "0.0.1",
   "name": "@threesigmaxyz/arc-client",
   "description": "HTTP client to integrate with the Arc API",
-  "main": "index.js",
+  "main": "dist/cmd/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
   "scripts": {
     "test": "jest",
     "clean-dist": "rimraf dist/*",

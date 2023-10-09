@@ -2,7 +2,9 @@
   "version": "0.0.4-dev.20230915152734",
   "name": "@threesigmaxyz/arc-crypto-utils",
   "description": "SDK with cryptographic operations usefull to integrate with the Arc ecosystem",
-  "main": "index.js",
+  "main": "dist/cmd/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
   "scripts": {
     "test": "jest",
     "clean-dist": "rimraf dist/*",
