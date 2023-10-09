@@ -76,7 +76,7 @@ const baseConfigUmd = {
         // A condition that must not be met to use this rule
         exclude: /node_modules/,
         options: {
-          configFile: 'tsconfig.esm.json',
+          configFile: 'tsconfig.commonjs.json',
         },
       },
       /*
