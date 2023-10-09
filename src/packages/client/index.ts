@@ -3,44 +3,44 @@
 // common
 export { ClientFactory, DefaultProviderUrls } from './clients/ClientFactory';
 export { Client } from './clients/Client';
-export { IAccount } from './interfaces/IAccount';
-export { IClientConfig } from './interfaces/IClientConfig';
-export { IPagination } from './interfaces/IPagination';
-export { IClient } from './interfaces/IClient';
-export { IProvider } from './interfaces/IProvider';
-export { ResponseData } from './interfaces/ResponseData';
-export { IGetAllEntitiesResponse } from './interfaces/IGetAllEntitiesResponse';
+export { type IAccount } from './interfaces/IAccount';
+export { type IClientConfig } from './interfaces/IClientConfig';
+export { type IPagination } from './interfaces/IPagination';
+export { type IClient } from './interfaces/IClient';
+export { type IProvider } from './interfaces/IProvider';
+export { type ResponseData } from './interfaces/ResponseData';
+export { type IGetAllEntitiesResponse } from './interfaces/IGetAllEntitiesResponse';
 export {
-  FilterOptions,
-  DataAvailabilityModes,
-  DepositDetailsModel,
-  TransferDetailsDto,
-  TransferDetailsModel,
-  TransferModel,
-  WithdrawDetailsDto,
-  WithdrawModel,
+  type FilterOptions,
+  type DataAvailabilityModes,
+  type DepositDetailsModel,
+  type TransferDetailsDto,
+  type TransferDetailsModel,
+  type TransferModel,
+  type WithdrawDetailsDto,
+  type WithdrawModel,
 } from './gen';
 
 // users
-export { IUserInfo } from './interfaces/IUserInfo';
-export { IRegisteredUser } from './interfaces/IRegisteredUser';
-export { IGetAllUsersFilter } from './interfaces/IGetAllUsersFilter';
+export { type IUserInfo } from './interfaces/IUserInfo';
+export { type IRegisteredUser } from './interfaces/IRegisteredUser';
+export { type IGetAllUsersFilter } from './interfaces/IGetAllUsersFilter';
 
 // assets
-export { IAsset } from './interfaces/IAsset';
-export { IGetAllAssetsFilter } from './interfaces/IGetAllAssetsFilter';
+export { type IAsset } from './interfaces/IAsset';
+export { type IGetAllAssetsFilter } from './interfaces/IGetAllAssetsFilter';
 
 // fees
-export { IFeeModel } from './interfaces/IFeeModel';
+export { type IFeeModel } from './interfaces/IFeeModel';
 
 // operations
-export { IDepositDetails } from './interfaces/IDepositDetails';
-export { ITransferDetails } from './interfaces/ITransferDetails';
-export { ITransactionDetails } from './interfaces/ITransactionDetails';
-export { IWithdrawAsset } from './interfaces/IWithdrawAsset';
-export { IWithdrawDetails } from './interfaces/IWithdrawDetails';
-export { IGetAllTransactionsFilter } from './interfaces/IGetAllTransactionsFilter';
+export { type IDepositDetails } from './interfaces/IDepositDetails';
+export { type ITransferDetails } from './interfaces/ITransferDetails';
+export { type ITransactionDetails } from './interfaces/ITransactionDetails';
+export { type IWithdrawAsset } from './interfaces/IWithdrawAsset';
+export { type IWithdrawDetails } from './interfaces/IWithdrawDetails';
+export { type IGetAllTransactionsFilter } from './interfaces/IGetAllTransactionsFilter';
 
 // vaults
-export { IVault } from './interfaces/IVault';
-export { IGetAllVaultsFilter } from './interfaces/IGetAllVaultsFilter';
+export { type IVault } from './interfaces/IVault';
+export { type IGetAllVaultsFilter } from './interfaces/IGetAllVaultsFilter';

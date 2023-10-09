@@ -4,17 +4,13 @@
   
     "compilerOptions": {
         // Specifies the module system for the output bundle. "ESNext" refers to the latest version of ECMAScript (JavaScript).
-        "module": "es6",
-  
+        "module": "esnext",
         // The version of JavaScript that the compiler will output. "ESNext" means the latest version.
-        "target": "es6",
-  
+        "target": "es5",
         // The location where the output files will be placed.
         "outDir": "./dist/esm/",
-  
         // If enabled (true), generates corresponding '.d.ts' file alongside the output file.
         "declaration": true,
-  
         // If enabled, only declaration files will be emitted and no JavaScript files will be output.
         // Currently commented out, so JavaScript files are being output as well.
         // "emitDeclarationOnly": true

@@ -5,7 +5,7 @@ const webpack = require('webpack');
 // Base configuration
 const baseConfig = {
   // The entry point of the package
-  entry: './index.ts',
+  entry: path.join(__dirname, 'index.ts'),
 
   // Configuration for module resolution
   resolve: {
@@ -50,7 +50,7 @@ const baseConfigUmd = {
   output: {
     // The filename of the output file will be specified in each config
     // The path to the output directory, __dirname is the directory of the current module
-    path: path.resolve(__dirname, '.'),
+    path: path.resolve(__dirname, 'dist'),
     // The type of the exported library
     libraryTarget: 'window', // for UMD we use window
     // The name of the library as it should be exposed in the global scope
@@ -63,6 +63,7 @@ const baseConfigUmd = {
   module: {
     // Array of rules that are used to find and load modules
     rules: [
+      /*
       {
         // Regular expression that matches the file extensions that this rule applies to
         test: /\.ts?$/,
@@ -74,7 +75,7 @@ const baseConfigUmd = {
           configFile: 'tsconfig.esm.json',
         },
       },
-      /*
+      */
       {
         test: /\.(ts|tsx|js|jsx)$/,
         exclude: /node_modules/,
@@ -90,7 +91,6 @@ const baseConfigUmd = {
           },
         },
       },
-      */
     ],
   },
 };
