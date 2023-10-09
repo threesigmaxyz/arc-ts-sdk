@@ -50,7 +50,7 @@ const baseConfigUmd = {
   output: {
     // The filename of the output file will be specified in each config
     // The path to the output directory, __dirname is the directory of the current module
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '.'),
     // The type of the exported library
     libraryTarget: 'window', // for UMD we use window
     // The name of the library as it should be exposed in the global scope

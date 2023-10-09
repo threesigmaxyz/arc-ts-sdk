@@ -8,7 +8,7 @@
         "declaration": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
-        "jsx": "react",
+        "jsx": "react-jsx",
         "allowJs": true,
         "importHelpers": true,
         "alwaysStrict": true,
