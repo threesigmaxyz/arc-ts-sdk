@@ -12,7 +12,7 @@ export { type ResponseData } from './interfaces/ResponseData';
 export { type IGetAllEntitiesResponse } from './interfaces/IGetAllEntitiesResponse';
 export {
   type FilterOptions,
-  type DataAvailabilityModes,
+  DataAvailabilityModes,
   type DepositDetailsModel,
   type TransferDetailsDto,
   type TransferDetailsModel,
