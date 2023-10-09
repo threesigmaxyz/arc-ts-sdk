@@ -61,6 +61,11 @@ const baseConfigUmd = {
 
   // Configuration for modules
   module: {
+    parser: {
+      javascript: {
+        reexportExportsPresence: false,
+      },
+    },
     // Array of rules that are used to find and load modules
     rules: [
       /*
