@@ -82,7 +82,7 @@ const baseConfigUmd = {
       },
       */
       {
-        test: /\.(ts|js)$/,
+        test: /\.(ts|tsx|js|jsx)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -102,6 +102,18 @@ const baseConfigUmd = {
 
 // Export the webpack configuration object
 module.exports = [
+  // UMD minified
+  {
+    ...baseConfigUmd,
+    output: {
+      ...baseConfigUmd.output,
+      filename: 'bundle.min.js',
+    },
+    optimization: {
+      minimize: true,
+    },
+  },
+
   // UMD - non-minified
   {
     ...baseConfigUmd,
