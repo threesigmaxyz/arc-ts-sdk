@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as dotenv from 'dotenv';
-import { Client, IProvider } from '../../src/packages/client';
+import { Client, DefaultProviderUrls } from '../../src/packages/client';
 import { ClientFactory } from '../../src/packages/client';
 import { ResponseData } from '../../src/packages/client';
 import { WithdrawDetailsDto, WithdrawModel } from '../../src/packages/client';
@@ -29,8 +29,8 @@ if (!apiKey) {
 
     // ===================================================================================
     // init stark express client
-    const arcClient: Client = await ClientFactory.createCustomClient(
-      { url: 'https://localhost:57679' } as IProvider,
+    const arcClient: Client = await ClientFactory.createDefaultClient(
+      DefaultProviderUrls.TESTNET,
       apiKey,
     );
 

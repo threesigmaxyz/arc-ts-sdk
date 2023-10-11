@@ -10,7 +10,7 @@ export interface IDepositCrypto {
    *
    * @param depositData - The data for depositing assets, that can be fetch through the aux endpoints on Arc
    *
-   * @returns a promise that resolves to an object of `ResponseData<IDepositDetails>`.
+   * @returns a promise that resolves to void.
    */
   deposit(depositData: DepositDetailsDto): Promise<void>;
 }

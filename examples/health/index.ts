@@ -24,7 +24,7 @@ if (!apiKey) {
 
     // init stark express client
     const arcClient: Client = await ClientFactory.createDefaultClient(
-      DefaultProviderUrls.MAINNET,
+      DefaultProviderUrls.TESTNET,
       apiKey,
     );
     const healthStatus = await arcClient.health();

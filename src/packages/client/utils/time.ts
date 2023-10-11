@@ -23,7 +23,7 @@ export class Timeout {
   }
   private isCleared: boolean;
   private isCalled: boolean;
-  private timeoutHook: NodeJS.Timer;
+  private timeoutHook: any;
 
   /**
    * Clears the timeout so that the callback function is not called.
@@ -62,7 +62,7 @@ export class Interval {
   }
   private isCleared: boolean;
   private isCalled: boolean;
-  private intervalHook: NodeJS.Timer;
+  private intervalHook: any;
 
   /**
    * Clears the interval so that the callback function is not called anymore.

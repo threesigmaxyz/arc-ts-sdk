@@ -1,24 +1,21 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { SignatureModel } from '../../client/gen';
 import { ISettlementCrypto } from '../interfaces/ISettlementCrypto';
-import starkwareCrypto, {
-  ec,
-  sign,
-} from '@starkware-industries/starkware-crypto-utils';
+const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 import { IStarkAccount } from '../interfaces/IStarkAccount';
 import { OrderDataDto } from '../dtos/OrderDataDto';
 
 /**
- * A client class for interacting with the Deposit Assets API of Arc.
+ * A client class for interacting with the Settlements API of Arc.
  *
  * @remarks
- * The DepositClient manages deposits. It extends the BaseClient
- * class and implements the IDepositClient interface.
+ * The SettlementCrypto manages settlements. It implements the ISettlementCrypto interface.
  */
 export class SettlementCrypto implements ISettlementCrypto {
   private starkAccount: IStarkAccount;
 
   /**
-   * Constructor of the {@link DepositCrypto} class.
+   * Constructor of the {@link SettlementCrypto} class.
    *
    */
   public constructor(starkAccount: IStarkAccount) {
@@ -29,7 +26,10 @@ export class SettlementCrypto implements ISettlementCrypto {
 
   public signOrder(orderData: OrderDataDto): SignatureModel {
     // Sign transfer message
-    const keyPair = ec.keyFromPrivate(this.starkAccount.secretKey, 'hex');
+    const keyPair = starkwareCrypto.ec.keyFromPrivate(
+      this.starkAccount.secretKey,
+      'hex',
+    );
 
     let signablePayload = '';
 
@@ -60,7 +60,7 @@ export class SettlementCrypto implements ISettlementCrypto {
       );
     }
 
-    const starkSignature = sign(keyPair, signablePayload);
+    const starkSignature = starkwareCrypto.sign(keyPair, signablePayload);
 
     return {
       r: starkSignature.r.toString('hex'),

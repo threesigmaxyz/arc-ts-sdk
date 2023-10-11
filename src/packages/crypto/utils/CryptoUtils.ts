@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { ICryptoUtils } from '../interfaces/ICryptoUtils';
 import { UserCrypto } from './UserCrypto';
 import { DepositCrypto } from './DepositCrypto';
@@ -7,15 +8,16 @@ import { IDepositCrypto } from '../interfaces/IDepositCrypto';
 import { IUserCrypto } from '../interfaces/IUserCrypto';
 import { ITransferCrypto } from '../interfaces/ITransferCrypto';
 import { IWithdrawCrypto } from '../interfaces/IWithdrawCrypto';
-import starkwareCrypto from '@starkware-industries/starkware-crypto-utils';
 import { IStarkAccount } from '../interfaces/IStarkAccount';
 import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 import { ethers } from 'ethers';
 import { ISettlementCrypto } from '../interfaces/ISettlementCrypto';
 import { SettlementCrypto } from './SettlementCrypto';
+import { IEthereumWallet } from '../interfaces/IEthereumWallet';
+const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 
 /**
- * Arc Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
+ * Arc Web3 CryptoUtils client object wraps all user, deposit, transfer, withdraw, and settlement functionalities.
  */
 export class CryptoUtils implements ICryptoUtils {
   private isInit: boolean;
@@ -28,7 +30,7 @@ export class CryptoUtils implements ICryptoUtils {
   public signer: JsonRpcSigner;
 
   /**
-   * Constructor of the Client class.
+   * Constructor of the CryptoUtils class.
    *
    * @param clientConfig - client configuration object.
    * @param baseAccount - base account to use for signing transactions (optional).
@@ -46,23 +48,36 @@ export class CryptoUtils implements ICryptoUtils {
   }
 
   /**
-   * Initialize the client sdk with the user's wallet.
+   * Initialize the CryptoUtils sdk with the user's wallet and a message to sign
    *
-   * @returns IWithdrawCrypto object.
    */
-  public async init(message: string): Promise<void> {
-    // A Web3Provider wraps a standard Web3 provider, which is
-    // what MetaMask injects as window.ethereum into each page
-    const { ethereum } = window as any;
-    const provider = new ethers.BrowserProvider(ethereum);
+  public async init(
+    message: string,
+    ethereumWallet?: IEthereumWallet,
+  ): Promise<void> {
+    let provider: ethers.JsonRpcProvider | ethers.BrowserProvider = undefined;
+    if (ethereumWallet) {
+      provider = new ethers.JsonRpcProvider(ethereumWallet.providerUrl);
+      this.signer = await provider.getSigner(ethereumWallet.privateKey);
+    } else {
+      // A Web3Provider wraps a standard Web3 provider, which is
+      // what MetaMask injects as window.ethereum into each page
+      const { ethereum } = window as any;
+      if (!ethereum) {
+        const msg =
+          'Metamask is not available. Ethereum object does not exist under window';
+        console.error(msg);
+        throw new Error(msg);
+      }
+      provider = new ethers.BrowserProvider(ethereum);
+      // The MetaMask plugin also allows signing transactions to
+      // send ether and pay to change state within the blockchain.
+      // For this, you need the account signer...
+      this.signer = await provider.getSigner();
+    }
 
     // MetaMask requires requesting permission to connect users accounts
     await provider.send('eth_requestAccounts', []);
-
-    // The MetaMask plugin also allows signing transactions to
-    // send ether and pay to change state within the blockchain.
-    // For this, you need the account signer...
-    this.signer = await provider.getSigner();
 
     // Generate Stark keys
     const ethSignature = await this.signer.signMessage(message);

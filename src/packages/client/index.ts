@@ -1,5 +1,3 @@
-/** Exposed interfaces */
-
 // common
 export { ClientFactory, DefaultProviderUrls } from './clients/ClientFactory';
 export { Client } from './clients/Client';
