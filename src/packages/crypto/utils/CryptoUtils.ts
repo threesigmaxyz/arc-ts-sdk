@@ -17,7 +17,7 @@ import { IEthereumWallet } from '../interfaces/IEthereumWallet';
 const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 
 /**
- * Arc Web3 Client object wraps all user, asset, mint, transfer, transaction, withdraw, vault, fee, deposit and settlement functionalities.
+ * Arc Web3 CryptoUtils client object wraps all user, deposit, transfer, withdraw, and settlement functionalities.
  */
 export class CryptoUtils implements ICryptoUtils {
   private isInit: boolean;
@@ -30,7 +30,7 @@ export class CryptoUtils implements ICryptoUtils {
   public signer: JsonRpcSigner;
 
   /**
-   * Constructor of the Client class.
+   * Constructor of the CryptoUtils class.
    *
    * @param clientConfig - client configuration object.
    * @param baseAccount - base account to use for signing transactions (optional).
@@ -48,9 +48,8 @@ export class CryptoUtils implements ICryptoUtils {
   }
 
   /**
-   * Initialize the client sdk with the user's wallet.
+   * Initialize the CryptoUtils sdk with the user's wallet and a message to sign
    *
-   * @returns IWithdrawCrypto object.
    */
   public async init(
     message: string,

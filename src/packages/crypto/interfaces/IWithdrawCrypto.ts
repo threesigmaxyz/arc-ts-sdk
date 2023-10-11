@@ -1,10 +1,9 @@
 import { WithdrawDetailsDto } from '../../client/gen';
 
 /**
- * Interface for IWithdrawClient object
+ * Interface for IWithdrawCrypto object
  *
- * @see setBaseAccount - set base account for wallet
- * @see getBaseAccount - get base account for wallet
+ * @see withdrawOnChain - set base account for wallet
  */
 export interface IWithdrawCrypto {
   /**

@@ -54,6 +54,13 @@ export class BaseClient {
     return this.clientConfig.provider;
   }
 
+  /**
+   * Sanitizes the http response
+   *
+   * @param call - The axios data to sanitize
+   *
+   * @returns An object of ResponseData.
+   */
   protected async sanitizeResponse<T>(
     call: Promise<AxiosResponse<T, undefined>>,
   ): Promise<ResponseData<T>> {

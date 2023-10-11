@@ -1,9 +1,9 @@
 import { SignatureModel, TransferDetailsDto } from '../../client/gen';
 
 /**
- * Interface for ITransferClient object
+ * Interface for ITransferCrypto object
  *
- * @see transferAsset - Transfer an asset to another user
+ * @see signTransfer() - Transfer an asset to another user
  */
 export interface ITransferCrypto {
   /**
@@ -11,7 +11,7 @@ export interface ITransferCrypto {
    *
    * @param transferData - The data for transferring an asset to another user
    *
-   * @returns a promise that resolves to an object of `ResponseData<Array<VaultDto>>`.
+   * @returns a promise that resolves to an object of type `SignatureModel`.
    */
   signTransfer(transferData: TransferDetailsDto): SignatureModel;
 }

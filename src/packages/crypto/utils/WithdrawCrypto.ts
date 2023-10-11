@@ -6,11 +6,10 @@ import { starkexAbi } from '../abi/starkex';
 import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 
 /**
- * A client class for interacting with the user API of Arc.
+ * A client class for interacting with the withdraws API of Arc.
  *
  * @remarks
- * The UserClient manages creating and registering new stark users as well as retrieving information on existing ones. It extends the BaseClient
- * class and implements the IUserClient interface.
+ * The WithdrawCrypto manages withdraws and implements the IWithdrawCrypto interface.
  */
 export class WithdrawCrypto implements IWithdrawCrypto {
   private signer: JsonRpcSigner;

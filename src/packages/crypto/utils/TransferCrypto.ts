@@ -8,8 +8,7 @@ import { IStarkAccount } from '../interfaces/IStarkAccount';
  * A client class for interacting with the Transfer API of Arc.
  *
  * @remarks
- * The TransferClient manages transfers. It extends the BaseClient
- * class and implements the ITransferClient interface.
+ * The TransferCrypto manages transfers and implements the ITransferCrypto interface.
  */
 export class TransferCrypto implements ITransferCrypto {
   private starkAccount: IStarkAccount;
@@ -30,7 +29,7 @@ export class TransferCrypto implements ITransferCrypto {
    *
    * @param transferData - The details to complete a transfer
    *
-   * @returns a promise that resolves to an object of `ResponseData<{ Array<VaultDto> }>`.
+   * @returns a promise that resolves to an object of `SignatureModel`.
    */
   public signTransfer(transferData: TransferDetailsDto): SignatureModel {
     // Sign transfer message

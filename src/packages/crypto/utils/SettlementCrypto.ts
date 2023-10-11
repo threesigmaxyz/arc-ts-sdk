@@ -6,17 +6,16 @@ import { IStarkAccount } from '../interfaces/IStarkAccount';
 import { OrderDataDto } from '../dtos/OrderDataDto';
 
 /**
- * A client class for interacting with the Deposit Assets API of Arc.
+ * A client class for interacting with the Settlements API of Arc.
  *
  * @remarks
- * The DepositClient manages deposits. It extends the BaseClient
- * class and implements the IDepositClient interface.
+ * The SettlementCrypto manages settlements. It implements the ISettlementCrypto interface.
  */
 export class SettlementCrypto implements ISettlementCrypto {
   private starkAccount: IStarkAccount;
 
   /**
-   * Constructor of the {@link DepositCrypto} class.
+   * Constructor of the {@link SettlementCrypto} class.
    *
    */
   public constructor(starkAccount: IStarkAccount) {

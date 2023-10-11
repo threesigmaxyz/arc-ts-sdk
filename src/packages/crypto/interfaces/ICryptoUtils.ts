@@ -8,16 +8,16 @@ import { ISettlementCrypto } from './ISettlementCrypto';
 import { IEthereumWallet } from './IEthereumWallet';
 
 /**
- * Represents the client object.
+ * Represents the ICryptoUtils Wrapper object.
  *
  * @remarks
- * This interface is used to get handles to different APIs. It also provides methods for setting
- * custom and default providers. The default providers are the global connection URLs
- * for Arc's MAINNET, TESTNET.
+ * This interface is used to provide a wrapper around various crypto-related subclients
  *
- * @see user() - user API client.
- * @see assets() - assets API client.
- * @see fees() -fees API client.
+ * @see user() - user client.
+ * @see deposits() - deposits client.
+ * @see transfers() -transfers client.
+ * @see withdraws() -withdraws client.
+ * @see settlements() -settlements client.
  */
 export interface ICryptoUtils {
   init(message: string, ethereumWallet?: IEthereumWallet): Promise<void>;
