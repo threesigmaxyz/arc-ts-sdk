@@ -4,7 +4,7 @@ import {
   Client,
   ClientFactory,
   DataAvailabilityModes,
-  IProvider,
+  DefaultProviderUrls,
   ResponseData,
   TransferDetailsDto,
   TransferDetailsModel,
@@ -34,8 +34,8 @@ if (!apiKey) {
 
     // ===================================================================================
     // init stark express client
-    const arcClient: Client = await ClientFactory.createCustomClient(
-      { url: 'https://localhost:57679' } as IProvider,
+    const arcClient: Client = await ClientFactory.createDefaultClient(
+      DefaultProviderUrls.TESTNET,
       apiKey,
     );
 

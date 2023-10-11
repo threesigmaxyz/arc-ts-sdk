@@ -8,11 +8,10 @@ import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 import { ethers } from 'ethers';
 
 /**
- * A client class for interacting with the Deposit Assets API of Arc.
+ * A client class for interacting with the Deposit API of Arc.
  *
  * @remarks
- * The DepositClient manages deposits. It extends the BaseClient
- * class and implements the IDepositClient interface.
+ * The DepositCrypto manages deposits. It implements the IDepositCrypto interface.
  */
 export class DepositCrypto implements IDepositCrypto {
   private signer: JsonRpcSigner;

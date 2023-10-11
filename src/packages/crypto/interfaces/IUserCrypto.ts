@@ -5,18 +5,18 @@ import {
 } from '@metamask/eth-sig-util/dist/sign-typed-data';
 
 /**
- * Interface for IUserClient object
+ * Interface for IUserCrypto object
  *
- * @see signRegisterDetails - get a given user info by userId
+ * @see signRegisterDetails() - registers a new Arc user
  */
 export interface IUserCrypto {
   /**
    * Registers a new Arc user.
    *
    * @param username - Arc Username.
-   * @param starkExpressAccount - starkExpress account of type IArcAccount.
+   * @param registerDetails - register details payload of type `TypedMessage<MessageTypes>`.
    *
-   * @returns An object of type IRegisteredUser.
+   * @returns An object of type `IRegisteredUser`.
    */
   signRegisterDetails(
     username: string,

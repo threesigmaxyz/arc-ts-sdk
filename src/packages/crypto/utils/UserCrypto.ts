@@ -4,17 +4,15 @@ import { IStarkAccount } from '../interfaces/IStarkAccount';
 import { stripHexPrefix } from 'ethereumjs-util';
 import { MessageTypes, TypedMessage } from '@metamask/eth-sig-util';
 import { RegisterUserModel } from '../../client/gen';
-import starkwareCrypto from '@starkware-industries/starkware-crypto-utils';
-import { ec } from '@starkware-industries/starkware-crypto-utils/dist/src/js/signature';
 import { TypedDataDomain } from 'ethers/lib.commonjs/hash/typed-data';
 import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
+const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 
 /**
- * A client class for interacting with the user API of Arc.
+ * A client class for interacting with the users API of Arc.
  *
  * @remarks
- * The UserClient manages creating and registering new stark users as well as retrieving information on existing ones. It extends the BaseClient
- * class and implements the IUserClient interface.
+ * The UserCrypto manages creating and registering new stark users as well as retrieving information on existing ones. It implements the IUserClient interface.
  */
 export class UserCrypto implements IUserCrypto {
   private signer: JsonRpcSigner;
@@ -58,7 +56,10 @@ export class UserCrypto implements IUserCrypto {
     );
 
     // Sign the Ethereum address => create stark signature
-    const keyPair = ec.keyFromPrivate(this.starkAccount.secretKey, 'hex');
+    const keyPair = starkwareCrypto.ec.keyFromPrivate(
+      this.starkAccount.secretKey,
+      'hex',
+    );
     const starkSignature = starkwareCrypto.sign(
       keyPair,
       starkwareCrypto.pedersen([stripHexPrefix(this.signer.address)]),

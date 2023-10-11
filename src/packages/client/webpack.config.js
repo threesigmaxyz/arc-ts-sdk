@@ -1,10 +1,11 @@
 // Require the path module from Node.js
 const path = require('path');
+const webpack = require('webpack');
 
 // Base configuration
 const baseConfig = {
   // The entry point of the package
-  entry: './index.ts',
+  entry: path.join(__dirname, 'index.ts'),
 
   // Configuration for module resolution
   resolve: {
@@ -23,14 +24,22 @@ const baseConfig = {
       path: false,
     },
     // Extensions that are used to resolve modules
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.tsx', '.jsx'],
   },
 
   // Configuration for source maps
-  devtool: 'source-map',
+  // devtool: 'source-map',
 
   // The mode to use for the webpack build
   mode: 'development',
+
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development'),
+      },
+    }),
+  ],
 };
 
 // Base configuration
@@ -45,18 +54,23 @@ const baseConfigUmd = {
     // The type of the exported library
     libraryTarget: 'window', // for UMD we use window
     // The name of the library as it should be exposed in the global scope
-    library: 'arc-client',
+    library: 'arcClient',
     // The global object in which the library will be assigned to
     globalObject: 'this',
   },
 
   // Configuration for modules
   module: {
+    parser: {
+      javascript: {
+        reexportExportsPresence: false,
+      },
+    },
     // Array of rules that are used to find and load modules
     rules: [
       {
         // Regular expression that matches the file extensions that this rule applies to
-        test: /\.ts$/,
+        test: /\.ts?$/,
         // The loader that should be used for the files that match the test regular expression
         loader: 'ts-loader',
         // A condition that must not be met to use this rule
