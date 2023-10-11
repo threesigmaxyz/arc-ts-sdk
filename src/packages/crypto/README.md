@@ -25,7 +25,7 @@ Add the following script to your html file:
 
 whereby the x.x.x is one of the available released versions
 
-In your code, once the script is fully loaded, just use `window.arc` to access all `arcCryptoUtils` exports.
+In your code, once the script is fully loaded, just use `window.arcCryptoUtils` to access all `arcCryptoUtils` exports.
 
 ```ts
 <script>console.log("Arc Crypto Utils ", window.arcCryptoUtils);</script>
@@ -37,7 +37,6 @@ In your code, once the script is fully loaded, just use `window.arc` to access a
 >    - npm / yarn (see package.json)
 
 ### Web3 Client initialization
-
 
 ```ts
 import {

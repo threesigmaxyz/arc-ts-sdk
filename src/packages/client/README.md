@@ -26,7 +26,7 @@ Add the following script to your html file:
 
 whereby the x.x.x is one of the available released versions
 
-In your code, once the script is fully loaded, just use `window.arc` to access all `arcClient` exports.
+In your code, once the script is fully loaded, just use `window.arcClient` to access all `arcClient` exports.
 
 ```ts
 <script>console.log("Arc Client ", window.arcClient);</script>
