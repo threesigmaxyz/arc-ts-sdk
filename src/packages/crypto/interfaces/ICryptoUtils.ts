@@ -6,6 +6,7 @@ import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 import { IStarkAccount } from './IStarkAccount';
 import { ISettlementCrypto } from './ISettlementCrypto';
 import { IEthereumWallet } from './IEthereumWallet';
+import { IMarketplaceCrypto } from './IMarketplaceCrypto';
 
 /**
  * Represents the ICryptoUtils Wrapper object.
@@ -26,6 +27,7 @@ export interface ICryptoUtils {
   transfers(): ITransferCrypto;
   withdraws(): IWithdrawCrypto;
   settlements(): ISettlementCrypto;
+  marketplace(): IMarketplaceCrypto;
   signer: JsonRpcSigner;
   starkAccount: IStarkAccount;
 }

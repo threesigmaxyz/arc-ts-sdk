@@ -152,6 +152,32 @@ export interface BigInteger {
   signValue?: number;
 }
 /**
+ *
+ * @export
+ * @interface BuyOrderDetailsModel
+ */
+export interface BuyOrderDetailsModel {
+  /**
+   * The unique identifier of the user who is placing the buy order.
+   * @type {string}
+   * @memberof BuyOrderDetailsModel
+   */
+  buyerId: string;
+  /**
+   * The unique identifier of the offer that is being bought.
+   * @type {string}
+   * @memberof BuyOrderDetailsModel
+   */
+  offerId: string;
+  /**
+   *
+   * @type {DataAvailabilityModes}
+   * @memberof BuyOrderDetailsModel
+   */
+  dataAvailabilityMode: DataAvailabilityModes;
+}
+
+/**
  * Request model to configure the fee model for an operation.
  * @export
  * @interface ConfigureFeeModel
@@ -508,6 +534,68 @@ export type FilterOptions = (typeof FilterOptions)[keyof typeof FilterOptions];
 /**
  *
  * @export
+ * @interface MarketplaceOrderDto
+ */
+export interface MarketplaceOrderDto {
+  /**
+   * The ID of the order.
+   * @type {string}
+   * @memberof MarketplaceOrderDto
+   */
+  id?: string;
+  /**
+   * The ID of the product.
+   * @type {string}
+   * @memberof MarketplaceOrderDto
+   */
+  productId?: string;
+  /**
+   * Quantity of the product order.
+   * @type {number}
+   * @memberof MarketplaceOrderDto
+   */
+  quantity?: number;
+  /**
+   * The price on the product order.
+   * @type {number}
+   * @memberof MarketplaceOrderDto
+   */
+  price?: number;
+  /**
+   * The date of the product order.
+   * @type {string}
+   * @memberof MarketplaceOrderDto
+   */
+  date?: string;
+}
+/**
+ *
+ * @export
+ * @interface MarketplaceOrderDtoPaginatedResponseDto
+ */
+export interface MarketplaceOrderDtoPaginatedResponseDto {
+  /**
+   * The data in the paginated response.
+   * @type {Array<MarketplaceOrderDto>}
+   * @memberof MarketplaceOrderDtoPaginatedResponseDto
+   */
+  data?: Array<MarketplaceOrderDto> | null;
+  /**
+   *
+   * @type {PaginationDto}
+   * @memberof MarketplaceOrderDtoPaginatedResponseDto
+   */
+  pagination?: PaginationDto;
+  /**
+   * The total count of results available.
+   * @type {number}
+   * @memberof MarketplaceOrderDtoPaginatedResponseDto
+   */
+  totalCount?: number;
+}
+/**
+ *
+ * @export
  * @interface MemberDescriptionDto
  */
 export interface MemberDescriptionDto {
@@ -622,6 +710,89 @@ export interface MintRequestDataModel {
 /**
  *
  * @export
+ * @interface OfferDto
+ */
+export interface OfferDto {
+  /**
+   * The ID of the offer.
+   * @type {string}
+   * @memberof OfferDto
+   */
+  offerId?: string;
+  /**
+   * The ID of the product.
+   * @type {string}
+   * @memberof OfferDto
+   */
+  productId?: string;
+  /**
+   * Quantity of the product offer.
+   * @type {number}
+   * @memberof OfferDto
+   */
+  quantity?: number;
+  /**
+   * The price on the product offer.
+   * @type {number}
+   * @memberof OfferDto
+   */
+  price?: number;
+  /**
+   * The date of creation of the product offer.
+   * @type {string}
+   * @memberof OfferDto
+   */
+  creationDate?: string;
+  /**
+   * The date of closure of the product offer.
+   * @type {string}
+   * @memberof OfferDto
+   */
+  closingDate?: string | null;
+}
+/**
+ *
+ * @export
+ * @interface OfferDtoPaginatedResponseDto
+ */
+export interface OfferDtoPaginatedResponseDto {
+  /**
+   * The data in the paginated response.
+   * @type {Array<OfferDto>}
+   * @memberof OfferDtoPaginatedResponseDto
+   */
+  data?: Array<OfferDto> | null;
+  /**
+   *
+   * @type {PaginationDto}
+   * @memberof OfferDtoPaginatedResponseDto
+   */
+  pagination?: PaginationDto;
+  /**
+   * The total count of results available.
+   * @type {number}
+   * @memberof OfferDtoPaginatedResponseDto
+   */
+  totalCount?: number;
+}
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+
+export const OfferStatus = {
+  Open: 'Open',
+  Cancelled: 'Cancelled',
+  Closed: 'Closed',
+  Expired: 'Expired',
+} as const;
+
+export type OfferStatus = (typeof OfferStatus)[keyof typeof OfferStatus];
+
+/**
+ *
+ * @export
  * @interface OrderDetailsDto
  */
 export interface OrderDetailsDto {
@@ -655,6 +826,18 @@ export interface OrderDetailsDto {
    * @memberof OrderDetailsDto
    */
   buyVaultChainId?: string;
+  /**
+   * The vault ID for the asset being sold.
+   * @type {string}
+   * @memberof OrderDetailsDto
+   */
+  sellVaultId?: string;
+  /**
+   * The vault ID for the asset being bought.
+   * @type {string}
+   * @memberof OrderDetailsDto
+   */
+  buyVaultId?: string;
   /**
    *
    * @type {FeeDto}
@@ -1015,6 +1198,55 @@ export interface ProblemDetails {
 /**
  *
  * @export
+ * @interface RegisterBuyOrderModel
+ */
+export interface RegisterBuyOrderModel {
+  /**
+   * The unique identifier of the marketplace offer.
+   * @type {string}
+   * @memberof RegisterBuyOrderModel
+   */
+  offerId: string;
+  /**
+   * The unique identifier of the user who is placing the buy order.
+   * @type {string}
+   * @memberof RegisterBuyOrderModel
+   */
+  buyerId: string;
+  /**
+   * The unique identifier of the product vault.
+   * @type {string}
+   * @memberof RegisterBuyOrderModel
+   */
+  productVaultId: string;
+  /**
+   * The unique identifier of the currency vault.
+   * @type {string}
+   * @memberof RegisterBuyOrderModel
+   */
+  currencyVaultId: string;
+  /**
+   * The timestamp at which this transfer becomes invalid, in seconds since the Unix epoch.
+   * @type {number}
+   * @memberof RegisterBuyOrderModel
+   */
+  expirationTimestamp: number;
+  /**
+   * The unique nonce for the settlement.
+   * @type {number}
+   * @memberof RegisterBuyOrderModel
+   */
+  nonce: number;
+  /**
+   *
+   * @type {SignatureModel}
+   * @memberof RegisterBuyOrderModel
+   */
+  signature: SignatureModel;
+}
+/**
+ *
+ * @export
  * @interface RegisterDetailsDto
  */
 export interface RegisterDetailsDto {
@@ -1058,6 +1290,73 @@ export interface RegisterDetailsDto {
 /**
  *
  * @export
+ * @interface RegisterSellOfferModel
+ */
+export interface RegisterSellOfferModel {
+  /**
+   * The unique identifier of the user who is placing the sell offer.
+   * @type {string}
+   * @memberof RegisterSellOfferModel
+   */
+  sellerId: string;
+  /**
+   * The unique identifier of the product vault.
+   * @type {string}
+   * @memberof RegisterSellOfferModel
+   */
+  productVaultId: string;
+  /**
+   * The quantized amount of the product being sold.
+   * @type {string}
+   * @memberof RegisterSellOfferModel
+   */
+  productAmount: string;
+  /**
+   * The unique identifier of the currency vault.
+   * @type {string}
+   * @memberof RegisterSellOfferModel
+   */
+  currencyVaultId: string;
+  /**
+   * The quantized amount of the currency for which the product is being sold.
+   * @type {string}
+   * @memberof RegisterSellOfferModel
+   */
+  currencyAmount: string;
+  /**
+   * The timestamp at which this settlement becomes invalid, in seconds since the Unix epoch.
+   * @type {number}
+   * @memberof RegisterSellOfferModel
+   */
+  expirationTimestamp: number;
+  /**
+   * The unique nonce for the transfer.
+   * @type {number}
+   * @memberof RegisterSellOfferModel
+   */
+  nonce: number;
+  /**
+   * The product name if the product hasn\'t been listed before in the marketplace.
+   * @type {string}
+   * @memberof RegisterSellOfferModel
+   */
+  productName?: string | null;
+  /**
+   * The product description if the product hasn\'t been listed before in the marketplace.
+   * @type {string}
+   * @memberof RegisterSellOfferModel
+   */
+  productDescription?: string | null;
+  /**
+   *
+   * @type {SignatureModel}
+   * @memberof RegisterSellOfferModel
+   */
+  signature: SignatureModel;
+}
+/**
+ *
+ * @export
  * @interface RegisterUserModel
  */
 export interface RegisterUserModel {
@@ -1092,6 +1391,62 @@ export interface RegisterUserModel {
    */
   eip712Signature: string;
 }
+/**
+ *
+ * @export
+ * @interface SellOfferDetailsModel
+ */
+export interface SellOfferDetailsModel {
+  /**
+   * The unique identifier of the user who is placing the sell offer.
+   * @type {string}
+   * @memberof SellOfferDetailsModel
+   */
+  sellerId: string;
+  /**
+   * The unique identifier of the asset that is being sold.
+   * @type {string}
+   * @memberof SellOfferDetailsModel
+   */
+  assetId: string;
+  /**
+   * The quantity of the product that is being sold.
+   * @type {string}
+   * @memberof SellOfferDetailsModel
+   */
+  quantity: string;
+  /**
+   * The hexadecimal string representation of the token ID, if applicable (ie. ERC-721/ERC-1155).
+   * @type {string}
+   * @memberof SellOfferDetailsModel
+   */
+  tokenId?: string | null;
+  /**
+   * The hexadecimal string representation of the minting blob, if applicable (ie. Mintable ERC-20/ERC-721/ERC-1155).
+   * @type {string}
+   * @memberof SellOfferDetailsModel
+   */
+  mintingBlob?: string | null;
+  /**
+   * The unique identifier of the asset that is being used as currency.
+   * @type {string}
+   * @memberof SellOfferDetailsModel
+   */
+  currencyId: string;
+  /**
+   *
+   * @type {DataAvailabilityModes}
+   * @memberof SellOfferDetailsModel
+   */
+  dataAvailabilityMode: DataAvailabilityModes;
+  /**
+   * The price of the asset that is being sold.
+   * @type {string}
+   * @memberof SellOfferDetailsModel
+   */
+  price: string;
+}
+
 /**
  * Settlement details model.
  * @export
@@ -1504,6 +1859,7 @@ export interface TransactionModel {
  */
 
 export const TransactionStatus = {
+  Created: 'Created',
   Streamed: 'Streamed',
   Pending: 'Pending',
   Confirmed: 'Confirmed',
@@ -3181,6 +3537,976 @@ export class FeeApi extends BaseAPI {
   public getFeeModel(feeId: string, options?: AxiosRequestConfig) {
     return FeeApiFp(this.configuration)
       .getFeeModel(feeId, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+}
+
+/**
+ * MarketplaceApi - axios parameter creator
+ * @export
+ */
+export const MarketplaceApiAxiosParamCreator = function (
+  configuration?: Configuration,
+) {
+  return {
+    /**
+     * This endpoint returns the details for a buy order in the public marketplace.
+     * @summary Get buy order details
+     * @param {BuyOrderDetailsModel} buyOrderDetailsModel The buy order details request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    buyOrderDetails: async (
+      buyOrderDetailsModel: BuyOrderDetailsModel,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'buyOrderDetailsModel' is not null or undefined
+      assertParamExists(
+        'buyOrderDetails',
+        'buyOrderDetailsModel',
+        buyOrderDetailsModel,
+      );
+      const localVarPath = `/api/v1/marketplace/buy-details`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'POST',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication apikey required
+      await setApiKeyToObject(
+        localVarHeaderParameter,
+        'x-api-key',
+        configuration,
+      );
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        buyOrderDetailsModel,
+        localVarRequestOptions,
+        configuration,
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * This endpoint deletes a sell offer in the public marketplace.
+     * @summary Delete sell offer
+     * @param {string} offerId The offer id.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteSellOffer: async (
+      offerId: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'offerId' is not null or undefined
+      assertParamExists('deleteSellOffer', 'offerId', offerId);
+      const localVarPath = `/api/v1/marketplace/sell/{offerId}`.replace(
+        `{${'offerId'}}`,
+        encodeURIComponent(String(offerId)),
+      );
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'DELETE',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication apikey required
+      await setApiKeyToObject(
+        localVarHeaderParameter,
+        'x-api-key',
+        configuration,
+      );
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * This endpoint returns a paginated list of buy orders in the public marketplace.
+     * @summary List buy orders
+     * @param {string} offerId
+     * @param {number} [pageNumber]
+     * @param {number} [pageSize]
+     * @param {string} [sortBy]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    listBuyOrders: async (
+      offerId: string,
+      pageNumber?: number,
+      pageSize?: number,
+      sortBy?: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'offerId' is not null or undefined
+      assertParamExists('listBuyOrders', 'offerId', offerId);
+      const localVarPath = `/api/v1/marketplace/buy-orders`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'GET',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication apikey required
+      await setApiKeyToObject(
+        localVarHeaderParameter,
+        'x-api-key',
+        configuration,
+      );
+
+      if (offerId !== undefined) {
+        localVarQueryParameter['offer_id'] = offerId;
+      }
+
+      if (pageNumber !== undefined) {
+        localVarQueryParameter['page_number'] = pageNumber;
+      }
+
+      if (pageSize !== undefined) {
+        localVarQueryParameter['page_size'] = pageSize;
+      }
+
+      if (sortBy !== undefined) {
+        localVarQueryParameter['sort_by'] = sortBy;
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * This endpoint returns a paginated list of sell offer in the public marketplace.
+     * @summary List sell offers
+     * @param {string} productId
+     * @param {OfferStatus} [offerStatus]
+     * @param {string} [userId]
+     * @param {number} [pageNumber]
+     * @param {number} [pageSize]
+     * @param {string} [sortBy]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    listSellOffers: async (
+      productId: string,
+      offerStatus?: OfferStatus,
+      userId?: string,
+      pageNumber?: number,
+      pageSize?: number,
+      sortBy?: string,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'productId' is not null or undefined
+      assertParamExists('listSellOffers', 'productId', productId);
+      const localVarPath = `/api/v1/marketplace/sell-offers`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'GET',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication apikey required
+      await setApiKeyToObject(
+        localVarHeaderParameter,
+        'x-api-key',
+        configuration,
+      );
+
+      if (offerStatus !== undefined) {
+        localVarQueryParameter['offer_status'] = offerStatus;
+      }
+
+      if (productId !== undefined) {
+        localVarQueryParameter['product_id'] = productId;
+      }
+
+      if (userId !== undefined) {
+        localVarQueryParameter['user_id'] = userId;
+      }
+
+      if (pageNumber !== undefined) {
+        localVarQueryParameter['page_number'] = pageNumber;
+      }
+
+      if (pageSize !== undefined) {
+        localVarQueryParameter['page_size'] = pageSize;
+      }
+
+      if (sortBy !== undefined) {
+        localVarQueryParameter['sort_by'] = sortBy;
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * This endpoint buys a product listed in the public marketplace.
+     * @summary Register buy order
+     * @param {RegisterBuyOrderModel} registerBuyOrderModel The buy order registration request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    registerBuyOrder: async (
+      registerBuyOrderModel: RegisterBuyOrderModel,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'registerBuyOrderModel' is not null or undefined
+      assertParamExists(
+        'registerBuyOrder',
+        'registerBuyOrderModel',
+        registerBuyOrderModel,
+      );
+      const localVarPath = `/api/v1/marketplace/buy`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'POST',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication apikey required
+      await setApiKeyToObject(
+        localVarHeaderParameter,
+        'x-api-key',
+        configuration,
+      );
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        registerBuyOrderModel,
+        localVarRequestOptions,
+        configuration,
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * This endpoint registers a sell offer in the public marketplace.
+     * @summary Register sell offer
+     * @param {RegisterSellOfferModel} registerSellOfferModel The sell offer registration request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    registerSellOffer: async (
+      registerSellOfferModel: RegisterSellOfferModel,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'registerSellOfferModel' is not null or undefined
+      assertParamExists(
+        'registerSellOffer',
+        'registerSellOfferModel',
+        registerSellOfferModel,
+      );
+      const localVarPath = `/api/v1/marketplace/sell`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'POST',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication apikey required
+      await setApiKeyToObject(
+        localVarHeaderParameter,
+        'x-api-key',
+        configuration,
+      );
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        registerSellOfferModel,
+        localVarRequestOptions,
+        configuration,
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * This endpoint returns the details for a sell offer in the public marketplace.
+     * @summary Get sell offer details
+     * @param {SellOfferDetailsModel} sellOfferDetailsModel The sell offer details request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    sellOfferDetails: async (
+      sellOfferDetailsModel: SellOfferDetailsModel,
+      options: AxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'sellOfferDetailsModel' is not null or undefined
+      assertParamExists(
+        'sellOfferDetails',
+        'sellOfferDetailsModel',
+        sellOfferDetailsModel,
+      );
+      const localVarPath = `/api/v1/marketplace/sell-details`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: 'POST',
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication apikey required
+      await setApiKeyToObject(
+        localVarHeaderParameter,
+        'x-api-key',
+        configuration,
+      );
+
+      localVarHeaderParameter['Content-Type'] = 'application/json';
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        sellOfferDetailsModel,
+        localVarRequestOptions,
+        configuration,
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+  };
+};
+
+/**
+ * MarketplaceApi - functional programming interface
+ * @export
+ */
+export const MarketplaceApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator =
+    MarketplaceApiAxiosParamCreator(configuration);
+  return {
+    /**
+     * This endpoint returns the details for a buy order in the public marketplace.
+     * @summary Get buy order details
+     * @param {BuyOrderDetailsModel} buyOrderDetailsModel The buy order details request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async buyOrderDetails(
+      buyOrderDetailsModel: BuyOrderDetailsModel,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (
+        axios?: AxiosInstance,
+        basePath?: string,
+      ) => AxiosPromise<OrderDetailsDto>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.buyOrderDetails(
+        buyOrderDetailsModel,
+        options,
+      );
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        BASE_PATH,
+        configuration,
+      );
+    },
+    /**
+     * This endpoint deletes a sell offer in the public marketplace.
+     * @summary Delete sell offer
+     * @param {string} offerId The offer id.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async deleteSellOffer(
+      offerId: string,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<OfferDto>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.deleteSellOffer(
+        offerId,
+        options,
+      );
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        BASE_PATH,
+        configuration,
+      );
+    },
+    /**
+     * This endpoint returns a paginated list of buy orders in the public marketplace.
+     * @summary List buy orders
+     * @param {string} offerId
+     * @param {number} [pageNumber]
+     * @param {number} [pageSize]
+     * @param {string} [sortBy]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async listBuyOrders(
+      offerId: string,
+      pageNumber?: number,
+      pageSize?: number,
+      sortBy?: string,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (
+        axios?: AxiosInstance,
+        basePath?: string,
+      ) => AxiosPromise<MarketplaceOrderDtoPaginatedResponseDto>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.listBuyOrders(
+        offerId,
+        pageNumber,
+        pageSize,
+        sortBy,
+        options,
+      );
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        BASE_PATH,
+        configuration,
+      );
+    },
+    /**
+     * This endpoint returns a paginated list of sell offer in the public marketplace.
+     * @summary List sell offers
+     * @param {string} productId
+     * @param {OfferStatus} [offerStatus]
+     * @param {string} [userId]
+     * @param {number} [pageNumber]
+     * @param {number} [pageSize]
+     * @param {string} [sortBy]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async listSellOffers(
+      productId: string,
+      offerStatus?: OfferStatus,
+      userId?: string,
+      pageNumber?: number,
+      pageSize?: number,
+      sortBy?: string,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (
+        axios?: AxiosInstance,
+        basePath?: string,
+      ) => AxiosPromise<OfferDtoPaginatedResponseDto>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.listSellOffers(
+        productId,
+        offerStatus,
+        userId,
+        pageNumber,
+        pageSize,
+        sortBy,
+        options,
+      );
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        BASE_PATH,
+        configuration,
+      );
+    },
+    /**
+     * This endpoint buys a product listed in the public marketplace.
+     * @summary Register buy order
+     * @param {RegisterBuyOrderModel} registerBuyOrderModel The buy order registration request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async registerBuyOrder(
+      registerBuyOrderModel: RegisterBuyOrderModel,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<OfferDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.registerBuyOrder(
+          registerBuyOrderModel,
+          options,
+        );
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        BASE_PATH,
+        configuration,
+      );
+    },
+    /**
+     * This endpoint registers a sell offer in the public marketplace.
+     * @summary Register sell offer
+     * @param {RegisterSellOfferModel} registerSellOfferModel The sell offer registration request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async registerSellOffer(
+      registerSellOfferModel: RegisterSellOfferModel,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<OfferDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.registerSellOffer(
+          registerSellOfferModel,
+          options,
+        );
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        BASE_PATH,
+        configuration,
+      );
+    },
+    /**
+     * This endpoint returns the details for a sell offer in the public marketplace.
+     * @summary Get sell offer details
+     * @param {SellOfferDetailsModel} sellOfferDetailsModel The sell offer details request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async sellOfferDetails(
+      sellOfferDetailsModel: SellOfferDetailsModel,
+      options?: AxiosRequestConfig,
+    ): Promise<
+      (
+        axios?: AxiosInstance,
+        basePath?: string,
+      ) => AxiosPromise<OrderDetailsDto>
+    > {
+      const localVarAxiosArgs =
+        await localVarAxiosParamCreator.sellOfferDetails(
+          sellOfferDetailsModel,
+          options,
+        );
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        BASE_PATH,
+        configuration,
+      );
+    },
+  };
+};
+
+/**
+ * MarketplaceApi - factory interface
+ * @export
+ */
+export const MarketplaceApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance,
+) {
+  const localVarFp = MarketplaceApiFp(configuration);
+  return {
+    /**
+     * This endpoint returns the details for a buy order in the public marketplace.
+     * @summary Get buy order details
+     * @param {BuyOrderDetailsModel} buyOrderDetailsModel The buy order details request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    buyOrderDetails(
+      buyOrderDetailsModel: BuyOrderDetailsModel,
+      options?: any,
+    ): AxiosPromise<OrderDetailsDto> {
+      return localVarFp
+        .buyOrderDetails(buyOrderDetailsModel, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * This endpoint deletes a sell offer in the public marketplace.
+     * @summary Delete sell offer
+     * @param {string} offerId The offer id.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteSellOffer(offerId: string, options?: any): AxiosPromise<OfferDto> {
+      return localVarFp
+        .deleteSellOffer(offerId, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * This endpoint returns a paginated list of buy orders in the public marketplace.
+     * @summary List buy orders
+     * @param {string} offerId
+     * @param {number} [pageNumber]
+     * @param {number} [pageSize]
+     * @param {string} [sortBy]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    listBuyOrders(
+      offerId: string,
+      pageNumber?: number,
+      pageSize?: number,
+      sortBy?: string,
+      options?: any,
+    ): AxiosPromise<MarketplaceOrderDtoPaginatedResponseDto> {
+      return localVarFp
+        .listBuyOrders(offerId, pageNumber, pageSize, sortBy, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * This endpoint returns a paginated list of sell offer in the public marketplace.
+     * @summary List sell offers
+     * @param {string} productId
+     * @param {OfferStatus} [offerStatus]
+     * @param {string} [userId]
+     * @param {number} [pageNumber]
+     * @param {number} [pageSize]
+     * @param {string} [sortBy]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    listSellOffers(
+      productId: string,
+      offerStatus?: OfferStatus,
+      userId?: string,
+      pageNumber?: number,
+      pageSize?: number,
+      sortBy?: string,
+      options?: any,
+    ): AxiosPromise<OfferDtoPaginatedResponseDto> {
+      return localVarFp
+        .listSellOffers(
+          productId,
+          offerStatus,
+          userId,
+          pageNumber,
+          pageSize,
+          sortBy,
+          options,
+        )
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * This endpoint buys a product listed in the public marketplace.
+     * @summary Register buy order
+     * @param {RegisterBuyOrderModel} registerBuyOrderModel The buy order registration request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    registerBuyOrder(
+      registerBuyOrderModel: RegisterBuyOrderModel,
+      options?: any,
+    ): AxiosPromise<OfferDto> {
+      return localVarFp
+        .registerBuyOrder(registerBuyOrderModel, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * This endpoint registers a sell offer in the public marketplace.
+     * @summary Register sell offer
+     * @param {RegisterSellOfferModel} registerSellOfferModel The sell offer registration request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    registerSellOffer(
+      registerSellOfferModel: RegisterSellOfferModel,
+      options?: any,
+    ): AxiosPromise<OfferDto> {
+      return localVarFp
+        .registerSellOffer(registerSellOfferModel, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * This endpoint returns the details for a sell offer in the public marketplace.
+     * @summary Get sell offer details
+     * @param {SellOfferDetailsModel} sellOfferDetailsModel The sell offer details request.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    sellOfferDetails(
+      sellOfferDetailsModel: SellOfferDetailsModel,
+      options?: any,
+    ): AxiosPromise<OrderDetailsDto> {
+      return localVarFp
+        .sellOfferDetails(sellOfferDetailsModel, options)
+        .then((request) => request(axios, basePath));
+    },
+  };
+};
+
+/**
+ * MarketplaceApi - object-oriented interface
+ * @export
+ * @class MarketplaceApi
+ * @extends {BaseAPI}
+ */
+export class MarketplaceApi extends BaseAPI {
+  /**
+   * This endpoint returns the details for a buy order in the public marketplace.
+   * @summary Get buy order details
+   * @param {BuyOrderDetailsModel} buyOrderDetailsModel The buy order details request.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof MarketplaceApi
+   */
+  public buyOrderDetails(
+    buyOrderDetailsModel: BuyOrderDetailsModel,
+    options?: AxiosRequestConfig,
+  ) {
+    return MarketplaceApiFp(this.configuration)
+      .buyOrderDetails(buyOrderDetailsModel, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * This endpoint deletes a sell offer in the public marketplace.
+   * @summary Delete sell offer
+   * @param {string} offerId The offer id.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof MarketplaceApi
+   */
+  public deleteSellOffer(offerId: string, options?: AxiosRequestConfig) {
+    return MarketplaceApiFp(this.configuration)
+      .deleteSellOffer(offerId, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * This endpoint returns a paginated list of buy orders in the public marketplace.
+   * @summary List buy orders
+   * @param {string} offerId
+   * @param {number} [pageNumber]
+   * @param {number} [pageSize]
+   * @param {string} [sortBy]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof MarketplaceApi
+   */
+  public listBuyOrders(
+    offerId: string,
+    pageNumber?: number,
+    pageSize?: number,
+    sortBy?: string,
+    options?: AxiosRequestConfig,
+  ) {
+    return MarketplaceApiFp(this.configuration)
+      .listBuyOrders(offerId, pageNumber, pageSize, sortBy, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * This endpoint returns a paginated list of sell offer in the public marketplace.
+   * @summary List sell offers
+   * @param {string} productId
+   * @param {OfferStatus} [offerStatus]
+   * @param {string} [userId]
+   * @param {number} [pageNumber]
+   * @param {number} [pageSize]
+   * @param {string} [sortBy]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof MarketplaceApi
+   */
+  public listSellOffers(
+    productId: string,
+    offerStatus?: OfferStatus,
+    userId?: string,
+    pageNumber?: number,
+    pageSize?: number,
+    sortBy?: string,
+    options?: AxiosRequestConfig,
+  ) {
+    return MarketplaceApiFp(this.configuration)
+      .listSellOffers(
+        productId,
+        offerStatus,
+        userId,
+        pageNumber,
+        pageSize,
+        sortBy,
+        options,
+      )
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * This endpoint buys a product listed in the public marketplace.
+   * @summary Register buy order
+   * @param {RegisterBuyOrderModel} registerBuyOrderModel The buy order registration request.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof MarketplaceApi
+   */
+  public registerBuyOrder(
+    registerBuyOrderModel: RegisterBuyOrderModel,
+    options?: AxiosRequestConfig,
+  ) {
+    return MarketplaceApiFp(this.configuration)
+      .registerBuyOrder(registerBuyOrderModel, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * This endpoint registers a sell offer in the public marketplace.
+   * @summary Register sell offer
+   * @param {RegisterSellOfferModel} registerSellOfferModel The sell offer registration request.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof MarketplaceApi
+   */
+  public registerSellOffer(
+    registerSellOfferModel: RegisterSellOfferModel,
+    options?: AxiosRequestConfig,
+  ) {
+    return MarketplaceApiFp(this.configuration)
+      .registerSellOffer(registerSellOfferModel, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * This endpoint returns the details for a sell offer in the public marketplace.
+   * @summary Get sell offer details
+   * @param {SellOfferDetailsModel} sellOfferDetailsModel The sell offer details request.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof MarketplaceApi
+   */
+  public sellOfferDetails(
+    sellOfferDetailsModel: SellOfferDetailsModel,
+    options?: AxiosRequestConfig,
+  ) {
+    return MarketplaceApiFp(this.configuration)
+      .sellOfferDetails(sellOfferDetailsModel, options)
       .then((request) => request(this.axios, this.basePath));
   }
 }

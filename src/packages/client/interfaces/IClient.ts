@@ -6,6 +6,7 @@ import { IProvider } from './IProvider';
 import { IUserClient } from './IUserClient';
 import { IVaultClient } from './IVaultClient';
 import { IMintClient } from './IMintClient';
+import { IMarketplaceClient } from './IMarketplaceClient';
 
 /**
  * Represents the client object.
@@ -21,6 +22,7 @@ import { IMintClient } from './IMintClient';
  * @see mints() -mints API client.
  * @see operations() - operations API client.
  * @see vault() - vault API client.
+ * @see marketrplace() - marketplace API client.
  * @see getProvider - A method for getting the current provider.
  * @see setCustomProviders - A method for setting a custom provider.
  * @see setDefaultProvider - A method for setting a new default provider.
@@ -32,6 +34,7 @@ export interface IClient {
   mints(): IMintClient;
   operations(): IOperationsClient;
   vault(): IVaultClient;
+  marketplace(): IMarketplaceClient;
   getProvider(): IProvider;
   setCustomProvider(provider: IProvider): void;
   setDefaultProvider(defaultProvider: DefaultProviderUrls): void;

@@ -112,6 +112,496 @@
         }
       }
     },
+    "/api/v1/marketplace/sell-details": {
+      "post": {
+        "tags": [
+          "Marketplace"
+        ],
+        "summary": "Get sell offer details",
+        "description": "This endpoint returns the details for a sell offer in the public marketplace.",
+        "operationId": "SellOfferDetails",
+        "requestBody": {
+          "description": "The sell offer details request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SellOfferDetailsModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the details for a sell offer in the public marketplace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDetailsDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The sell offer details request was invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "security": [
+          {
+            "apikey": [
+              "write:sell-offers"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/marketplace/sell": {
+      "post": {
+        "tags": [
+          "Marketplace"
+        ],
+        "summary": "Register sell offer",
+        "description": "This endpoint registers a sell offer in the public marketplace.",
+        "operationId": "RegisterSellOffer",
+        "requestBody": {
+          "description": "The sell offer registration request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterSellOfferModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Returns the newly registered sell offer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The sell offer registration request was invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "security": [
+          {
+            "apikey": [
+              "write:sell-offers"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/marketplace/sell/{offerId}": {
+      "delete": {
+        "tags": [
+          "Marketplace"
+        ],
+        "summary": "Delete sell offer",
+        "description": "This endpoint deletes a sell offer in the public marketplace.",
+        "operationId": "DeleteSellOffer",
+        "parameters": [
+          {
+            "name": "offerId",
+            "in": "path",
+            "description": "The offer id.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "The sell offer was successfully deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The sell offer deletion request was invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The sell offer doesn't exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "security": [
+          {
+            "apikey": [
+              "write:sell-offers"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/marketplace/sell-offers": {
+      "get": {
+        "tags": [
+          "Marketplace"
+        ],
+        "summary": "List sell offers",
+        "description": "This endpoint returns a paginated list of sell offer in the public marketplace.",
+        "operationId": "ListSellOffers",
+        "parameters": [
+          {
+            "name": "offer_status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OfferStatus"
+            }
+          },
+          {
+            "name": "product_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "title": "Product ID",
+              "type": "string",
+              "description": "The unique identifier of the product.",
+              "format": "guid"
+            }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "schema": {
+              "title": "User ID",
+              "type": "string",
+              "description": "The unique identifier of the user.",
+              "format": "guid"
+            }
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "schema": {
+              "title": "Page Number",
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer",
+              "description": "The page number to retrieve.",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "title": "Page Size",
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer",
+              "description": "The number of items to retrieve per page.",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "schema": {
+              "title": "Sort By",
+              "type": "string",
+              "description": "The field to sort the results by."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a paginated list of sell offers.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferDtoPaginatedResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The sell offer filters were invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "security": [
+          {
+            "apikey": [
+              "read:sell-offers"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/marketplace/buy-details": {
+      "post": {
+        "tags": [
+          "Marketplace"
+        ],
+        "summary": "Get buy order details",
+        "description": "This endpoint returns the details for a buy order in the public marketplace.",
+        "operationId": "BuyOrderDetails",
+        "requestBody": {
+          "description": "The buy order details request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuyOrderDetailsModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the order details for a buy order in the public marketplace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDetailsDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The buy order details request was invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "security": [
+          {
+            "apikey": [
+              "write:buy-orders"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/marketplace/buy": {
+      "post": {
+        "tags": [
+          "Marketplace"
+        ],
+        "summary": "Register buy order",
+        "description": "This endpoint buys a product listed in the public marketplace.",
+        "operationId": "RegisterBuyOrder",
+        "requestBody": {
+          "description": "The buy order registration request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterBuyOrderModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Returns the newly registered buy order.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The buy order registration request was invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "security": [
+          {
+            "apikey": [
+              "write:buy-orders"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/marketplace/buy-orders": {
+      "get": {
+        "tags": [
+          "Marketplace"
+        ],
+        "summary": "List buy orders",
+        "description": "This endpoint returns a paginated list of buy orders in the public marketplace.",
+        "operationId": "ListBuyOrders",
+        "parameters": [
+          {
+            "name": "offer_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "title": "Offer ID",
+              "type": "string",
+              "description": "The unique identifier of the offer.",
+              "format": "guid"
+            }
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "schema": {
+              "title": "Page Number",
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer",
+              "description": "The page number to retrieve.",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "title": "Page Size",
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer",
+              "description": "The number of items to retrieve per page.",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "schema": {
+              "title": "Sort By",
+              "type": "string",
+              "description": "The field to sort the results by."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a paginated list of buy orders.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketplaceOrderDtoPaginatedResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The buy order filters were invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "security": [
+          {
+            "apikey": [
+              "read:buy-orders"
+            ]
+          }
+        ]
+      }
+    },
     "/api/v1/mint": {
       "post": {
         "tags": [
@@ -2023,6 +2513,32 @@
         },
         "additionalProperties": false
       },
+      "BuyOrderDetailsModel": {
+        "required": [
+          "buyerId",
+          "dataAvailabilityMode",
+          "offerId"
+        ],
+        "type": "object",
+        "properties": {
+          "buyerId": {
+            "title": "Buyer ID",
+            "type": "string",
+            "description": "The unique identifier of the user who is placing the buy order.",
+            "format": "uuid"
+          },
+          "offerId": {
+            "title": "Offer ID",
+            "type": "string",
+            "description": "The unique identifier of the offer that is being bought.",
+            "format": "uuid"
+          },
+          "dataAvailabilityMode": {
+            "$ref": "#/components/schemas/DataAvailabilityModes"
+          }
+        },
+        "additionalProperties": false
+      },
       "ConfigureFeeModel": {
         "required": [
           "basisPoints",
@@ -2376,6 +2892,66 @@
         ],
         "type": "string"
       },
+      "MarketplaceOrderDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Order ID",
+            "type": "string",
+            "description": "The ID of the order.",
+            "format": "uuid"
+          },
+          "productId": {
+            "title": "Product ID",
+            "type": "string",
+            "description": "The ID of the product.",
+            "format": "uuid"
+          },
+          "quantity": {
+            "title": "Quantity",
+            "type": "string",
+            "description": "Quantity of the product order.",
+            "format": "int"
+          },
+          "price": {
+            "title": "Price",
+            "type": "string",
+            "description": "The price on the product order.",
+            "format": "int"
+          },
+          "date": {
+            "title": "Date",
+            "type": "string",
+            "description": "The date of the product order.",
+            "format": "date"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MarketplaceOrderDtoPaginatedResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "title": "Data",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MarketplaceOrderDto"
+            },
+            "description": "The data in the paginated response.",
+            "nullable": true
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationDto"
+          },
+          "totalCount": {
+            "title": "TotalCount",
+            "type": "integer",
+            "description": "The total count of results available.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "MemberDescriptionDto": {
         "type": "object",
         "properties": {
@@ -2495,6 +3071,82 @@
         "additionalProperties": false,
         "description": "Request model to mint a batch of assets."
       },
+      "OfferDto": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "title": "Offer ID",
+            "type": "string",
+            "description": "The ID of the offer.",
+            "format": "uuid"
+          },
+          "productId": {
+            "title": "Product ID",
+            "type": "string",
+            "description": "The ID of the product.",
+            "format": "uuid"
+          },
+          "quantity": {
+            "title": "Quantity",
+            "type": "string",
+            "description": "Quantity of the product offer.",
+            "format": "int"
+          },
+          "price": {
+            "title": "Price",
+            "type": "string",
+            "description": "The price on the product offer.",
+            "format": "int"
+          },
+          "creationDate": {
+            "title": "Creation Date",
+            "type": "string",
+            "description": "The date of creation of the product offer.",
+            "format": "date"
+          },
+          "closingDate": {
+            "title": "Closing Date",
+            "type": "string",
+            "description": "The date of closure of the product offer.",
+            "format": "date",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferDtoPaginatedResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "title": "Data",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfferDto"
+            },
+            "description": "The data in the paginated response.",
+            "nullable": true
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationDto"
+          },
+          "totalCount": {
+            "title": "TotalCount",
+            "type": "integer",
+            "description": "The total count of results available.",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferStatus": {
+        "enum": [
+          "Open",
+          "Cancelled",
+          "Closed",
+          "Expired"
+        ],
+        "type": "string"
+      },
       "OrderDetailsDto": {
         "type": "object",
         "properties": {
@@ -2526,6 +3178,18 @@
             "type": "string",
             "description": "The vault chain ID for the asset being bought.",
             "format": "string"
+          },
+          "sellVaultId": {
+            "title": "Sell Vault ID",
+            "type": "string",
+            "description": "The vault ID for the asset being sold.",
+            "format": "guid"
+          },
+          "buyVaultId": {
+            "title": "Sell Vault ID",
+            "type": "string",
+            "description": "The vault ID for the asset being bought.",
+            "format": "guid"
           },
           "fee": {
             "$ref": "#/components/schemas/FeeDto"
@@ -2859,6 +3523,62 @@
         },
         "additionalProperties": { }
       },
+      "RegisterBuyOrderModel": {
+        "required": [
+          "buyerId",
+          "currencyVaultId",
+          "expirationTimestamp",
+          "nonce",
+          "offerId",
+          "productVaultId",
+          "signature"
+        ],
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "title": "Offer ID",
+            "type": "string",
+            "description": "The unique identifier of the marketplace offer.",
+            "format": "uuid"
+          },
+          "buyerId": {
+            "title": "Buyer ID",
+            "type": "string",
+            "description": "The unique identifier of the user who is placing the buy order.",
+            "format": "uuid"
+          },
+          "productVaultId": {
+            "title": "Product Vault ID",
+            "type": "string",
+            "description": "The unique identifier of the product vault.",
+            "format": "uuid"
+          },
+          "currencyVaultId": {
+            "title": "Currency Vault ID",
+            "type": "string",
+            "description": "The unique identifier of the currency vault.",
+            "format": "uuid"
+          },
+          "expirationTimestamp": {
+            "title": "Expiration Timestamp",
+            "type": "integer",
+            "description": "The timestamp at which this transfer becomes invalid, in seconds since the Unix epoch.",
+            "format": "int64"
+          },
+          "nonce": {
+            "title": "Nonce",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "description": "The unique nonce for the settlement.",
+            "format": "int32"
+          },
+          "signature": {
+            "$ref": "#/components/schemas/SignatureModel"
+          }
+        },
+        "additionalProperties": false
+      },
       "RegisterDetailsDto": {
         "type": "object",
         "properties": {
@@ -2908,6 +3628,83 @@
         },
         "additionalProperties": false
       },
+      "RegisterSellOfferModel": {
+        "required": [
+          "currencyAmount",
+          "currencyVaultId",
+          "expirationTimestamp",
+          "nonce",
+          "productAmount",
+          "productVaultId",
+          "sellerId",
+          "signature"
+        ],
+        "type": "object",
+        "properties": {
+          "sellerId": {
+            "title": "Seller ID",
+            "type": "string",
+            "description": "The unique identifier of the user who is placing the sell offer.",
+            "format": "uuid"
+          },
+          "productVaultId": {
+            "title": "Product Vault ID",
+            "type": "string",
+            "description": "The unique identifier of the product vault.",
+            "format": "uuid"
+          },
+          "productAmount": {
+            "title": "Product Amount",
+            "type": "string",
+            "description": "The quantized amount of the product being sold."
+          },
+          "currencyVaultId": {
+            "title": "Currency Vault ID",
+            "type": "string",
+            "description": "The unique identifier of the currency vault.",
+            "format": "uuid"
+          },
+          "currencyAmount": {
+            "title": "Currency Amount",
+            "type": "string",
+            "description": "The quantized amount of the currency for which the product is being sold."
+          },
+          "expirationTimestamp": {
+            "title": "Expiration Timestamp",
+            "type": "integer",
+            "description": "The timestamp at which this settlement becomes invalid, in seconds since the Unix epoch.",
+            "format": "int64"
+          },
+          "nonce": {
+            "title": "Nonce",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "type": "integer",
+            "description": "The unique nonce for the transfer.",
+            "format": "int32"
+          },
+          "productName": {
+            "title": "Product name",
+            "maxLength": 100,
+            "type": "string",
+            "description": "The product name if the product hasn't been listed before in the marketplace.",
+            "format": "string",
+            "nullable": true
+          },
+          "productDescription": {
+            "title": "Product description",
+            "maxLength": 300,
+            "type": "string",
+            "description": "The product description if the product hasn't been listed before in the marketplace.",
+            "format": "string",
+            "nullable": true
+          },
+          "signature": {
+            "$ref": "#/components/schemas/SignatureModel"
+          }
+        },
+        "additionalProperties": false
+      },
       "RegisterUserModel": {
         "required": [
           "address",
@@ -2949,6 +3746,65 @@
             "type": "string",
             "description": "The EIP-712 Signature of the Username, Stark Key and Address.",
             "format": "hex"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SellOfferDetailsModel": {
+        "required": [
+          "assetId",
+          "currencyId",
+          "dataAvailabilityMode",
+          "price",
+          "quantity",
+          "sellerId"
+        ],
+        "type": "object",
+        "properties": {
+          "sellerId": {
+            "title": "Seller ID",
+            "type": "string",
+            "description": "The unique identifier of the user who is placing the sell offer.",
+            "format": "uuid"
+          },
+          "assetId": {
+            "title": "Asset ID",
+            "type": "string",
+            "description": "The unique identifier of the asset that is being sold.",
+            "format": "uuid"
+          },
+          "quantity": {
+            "title": "Quantity",
+            "type": "string",
+            "description": "The quantity of the product that is being sold."
+          },
+          "tokenId": {
+            "title": "Token ID",
+            "type": "string",
+            "description": "The hexadecimal string representation of the token ID, if applicable (ie. ERC-721/ERC-1155).",
+            "format": "hex",
+            "nullable": true
+          },
+          "mintingBlob": {
+            "title": "Minting Blob",
+            "type": "string",
+            "description": "The hexadecimal string representation of the minting blob, if applicable (ie. Mintable ERC-20/ERC-721/ERC-1155).",
+            "format": "hex",
+            "nullable": true
+          },
+          "currencyId": {
+            "title": "Currency ID",
+            "type": "string",
+            "description": "The unique identifier of the asset that is being used as currency.",
+            "format": "uuid"
+          },
+          "dataAvailabilityMode": {
+            "$ref": "#/components/schemas/DataAvailabilityModes"
+          },
+          "price": {
+            "title": "Price",
+            "type": "string",
+            "description": "The price of the asset that is being sold."
           }
         },
         "additionalProperties": false
@@ -3345,6 +4201,7 @@
       },
       "TransactionStatus": {
         "enum": [
+          "Created",
           "Streamed",
           "Pending",
           "Confirmed",

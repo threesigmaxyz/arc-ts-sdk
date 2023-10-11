@@ -5,9 +5,7 @@ import { ResponseData } from './ResponseData';
 /**
  * Interface for IDepositClient object
  *
- * @see setBaseAccount() - set base user account.
- * @see getBaseAccount() - get base user account.
- * @see depositAssets() - deposit assets into Arc.
+ * @see getDepositDetails() - fetches the deposit details to deposit assets on arc Arc.
  */
 export interface IDepositClient {
   /**

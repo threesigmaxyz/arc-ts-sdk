@@ -17,6 +17,15 @@ export {
   TransferModel,
   WithdrawDetailsDto,
   WithdrawModel,
+  BuyOrderDetailsModel,
+  MarketplaceOrderDtoPaginatedResponseDto,
+  OfferDto,
+  OfferDtoPaginatedResponseDto,
+  OfferStatus,
+  OrderDetailsDto,
+  RegisterBuyOrderModel,
+  RegisterSellOfferModel,
+  SellOfferDetailsModel,
 } from './gen';
 
 // users
