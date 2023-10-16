@@ -4,8 +4,8 @@ import { erc20Abi } from '../abi/erc20';
 import { erc721Abi } from '../abi/erc721';
 import { erc1155Abi } from '../abi/erc1155';
 import { starkexAbi } from '../abi/starkex';
-import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 import { ethers } from 'ethers';
+import { SigningWallet } from './Wallet';
 
 /**
  * A client class for interacting with the Deposit API of Arc.
@@ -14,14 +14,14 @@ import { ethers } from 'ethers';
  * The DepositCrypto manages deposits. It implements the IDepositCrypto interface.
  */
 export class DepositCrypto implements IDepositCrypto {
-  private signer: JsonRpcSigner;
+  private wallet: SigningWallet;
 
   /**
    * Constructor of the {@link DepositCrypto} class.
    *
    */
-  public constructor(signer: JsonRpcSigner) {
-    this.signer = signer;
+  public constructor(wallet: SigningWallet) {
+    this.wallet = wallet;
 
     this.deposit = this.deposit.bind(this);
   }
@@ -49,7 +49,7 @@ export class DepositCrypto implements IDepositCrypto {
     const assetContract = new ethers.Contract(
       depositData.assetContractAddress,
       abi,
-      this.signer,
+      this.wallet.getSigner(),
     );
 
     switch (depositData.depositFunction) {
@@ -80,7 +80,7 @@ export class DepositCrypto implements IDepositCrypto {
     const arcContract = new ethers.Contract(
       depositData.operatorContractAddress,
       starkexAbi,
-      this.signer,
+      this.wallet.getSigner(),
     );
 
     switch (depositData.depositFunction) {

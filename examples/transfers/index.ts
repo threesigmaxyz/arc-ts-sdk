@@ -62,16 +62,17 @@ if (!apiKey) {
       );
     }
 
-    const transferDetailsDto = transferDetailsDtoResponseData.result;
+    const transferDetailsDto =
+      transferDetailsDtoResponseData.result as TransferDetailsDto;
 
     const signature = cryptoUtils.transfers().signTransfer(transferDetailsDto);
 
     const transferModel: TransferModel = {
-      senderVaultId: transferDetailsDto.senderVaultId,
-      receiverVaultId: transferDetailsDto.receiverVaultId,
-      quantizedAmount: transferDetailsDto.quantizedAmount,
-      expirationTimestamp: transferDetailsDto.expirationTimestamp,
-      nonce: transferDetailsDto.nonce,
+      senderVaultId: transferDetailsDto.senderVaultId as string,
+      receiverVaultId: transferDetailsDto.receiverVaultId as string,
+      quantizedAmount: transferDetailsDto.quantizedAmount as string,
+      expirationTimestamp: transferDetailsDto.expirationTimestamp as number,
+      nonce: transferDetailsDto.nonce as number,
       signature: signature,
     };
 

@@ -5,7 +5,9 @@ import {
   Client,
   ClientFactory,
   DataAvailabilityModes,
-  IProvider,
+  DefaultProviderUrls,
+  OfferDto,
+  OrderDetailsDto,
 } from '../../src/packages/client';
 import {
   BuyOrderDetailsModel,
@@ -37,8 +39,8 @@ if (!apiKey) {
 
     // ===================================================================================
     // init arc client
-    const arcClient: Client = await ClientFactory.createCustomClient(
-      { url: 'https://localhost:57679' } as IProvider,
+    const arcClient: Client = await ClientFactory.createDefaultClient(
+      DefaultProviderUrls.TESTNET,
       apiKey,
     );
 
@@ -67,7 +69,9 @@ if (!apiKey) {
 
     // Sign order data
     const sellOrderData = sellOfferDetailsResponse.result;
-    const sellerSignature = cryptoUtils.marketplace().signOrder(sellOrderData);
+    const sellerSignature = cryptoUtils
+      .marketplace()
+      .signOrder(sellOrderData as OrderDetailsDto);
 
     // Submit sell offer
     const sellOffer: RegisterSellOfferModel = {
@@ -91,12 +95,12 @@ if (!apiKey) {
       throw new Error(JSON.stringify(sellOfferResponse.error, null, 4));
     }
 
-    const offerDto = sellOfferResponse.result;
+    const offerDto = sellOfferResponse.result as OfferDto;
 
     // Fetch buy order details
     const buyOrderDetails: BuyOrderDetailsModel = {
       buyerId: '5a35dbab-02ba-4ed4-b799-59daa263488f',
-      offerId: offerDto.offerId,
+      offerId: offerDto.offerId as string,
       dataAvailabilityMode: DataAvailabilityModes.Validium,
     };
 
@@ -109,17 +113,17 @@ if (!apiKey) {
     }
 
     // Sign buy order
-    const buyOrderData = buyOrderDetailsResponse.result;
+    const buyOrderData = buyOrderDetailsResponse.result as OrderDetailsDto;
     const buyerSignature = cryptoUtils.marketplace().signOrder(buyOrderData);
 
     // Submit buy order
     const buyOrder: RegisterBuyOrderModel = {
       buyerId: '5a35dbab-02ba-4ed4-b799-59daa263488f',
-      offerId: offerDto.offerId,
-      productVaultId: buyOrderData.buyVaultId,
-      currencyVaultId: buyOrderData.sellVaultChainId,
-      expirationTimestamp: buyOrderData.expirationTimestamp,
-      nonce: buyOrderData.nonce,
+      offerId: offerDto.offerId as string,
+      productVaultId: buyOrderData.buyVaultId as string,
+      currencyVaultId: buyOrderData.sellVaultChainId as string,
+      expirationTimestamp: buyOrderData.expirationTimestamp as number,
+      nonce: buyOrderData.nonce as number,
       signature: buyerSignature,
     };
 

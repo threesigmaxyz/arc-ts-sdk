@@ -6,6 +6,7 @@ import {
   DefaultProviderUrls,
   DepositDetailsModel,
 } from 'arc-client';
+import { DepositDetailsDto } from 'arc-client/gen';
 import { CryptoUtils, ICryptoUtils } from 'arc-crypto-utils';
 import * as dotenv from 'dotenv';
 const path = require('path');
@@ -57,7 +58,9 @@ if (!apiKey) {
     }
 
     // Execute deposit
-    await cryptoUtils.deposits().deposit(depositDetails.result);
+    await cryptoUtils
+      .deposits()
+      .deposit(depositDetails.result as DepositDetailsDto);
 
     console.log(
       `A deposit was made on Arc: ${JSON.stringify(

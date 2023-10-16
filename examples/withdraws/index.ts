@@ -57,7 +57,9 @@ if (!apiKey) {
     );
 
     // onchain withdraw
-    await cryptoUtils.withdraws().withdrawOnChain(withdraw.result);
+    await cryptoUtils
+      .withdraws()
+      .withdrawOnChain(withdraw.result as WithdrawDetailsDto);
 
     process.exit(0);
   } catch (ex) {

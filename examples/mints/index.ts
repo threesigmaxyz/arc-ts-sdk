@@ -31,7 +31,7 @@ if (!apiKey) {
     console.log('Api Key ', apiKey);
 
     // ===================================================================================
-    // init stark express client
+    // init arc client
     const arcClient: Client = await ClientFactory.createDefaultClient(
       DefaultProviderUrls.TESTNET,
       apiKey,
