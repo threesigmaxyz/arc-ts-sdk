@@ -3,7 +3,7 @@ import { WithdrawDetailsDto } from '../../client/gen';
 import { IWithdrawCrypto } from '../interfaces/IWithdrawCrypto';
 import { ethers } from 'ethers';
 import { starkexAbi } from '../abi/starkex';
-import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
+import { SigningWallet } from './Wallet';
 
 /**
  * A client class for interacting with the withdraws API of Arc.
@@ -12,14 +12,14 @@ import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
  * The WithdrawCrypto manages withdraws and implements the IWithdrawCrypto interface.
  */
 export class WithdrawCrypto implements IWithdrawCrypto {
-  private signer: JsonRpcSigner;
+  private wallet: SigningWallet;
 
   /**
    * Constructor of the {@link WithdrawCrypto} class.
    *
    */
-  public constructor(wallet: JsonRpcSigner) {
-    this.signer = wallet;
+  public constructor(wallet: SigningWallet) {
+    this.wallet = wallet;
 
     // bound methods
     this.withdrawOnChain = this.withdrawOnChain.bind(this);
@@ -35,7 +35,7 @@ export class WithdrawCrypto implements IWithdrawCrypto {
     const arcContract = new ethers.Contract(
       withdrawDetails.operatorContractAddress,
       starkexAbi,
-      this.signer,
+      this.wallet.getSigner(),
     );
 
     // Call on-chain withdraw function

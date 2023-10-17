@@ -9,7 +9,6 @@ import { IUserCrypto } from '../interfaces/IUserCrypto';
 import { ITransferCrypto } from '../interfaces/ITransferCrypto';
 import { IWithdrawCrypto } from '../interfaces/IWithdrawCrypto';
 import { IStarkAccount } from '../interfaces/IStarkAccount';
-import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
 import { ethers } from 'ethers';
 import { ISettlementCrypto } from '../interfaces/ISettlementCrypto';
 import { SettlementCrypto } from './SettlementCrypto';
@@ -17,6 +16,7 @@ import { IEthereumWallet } from '../interfaces/IEthereumWallet';
 const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 import { IMarketplaceCrypto } from '../interfaces/IMarketplaceCrypto';
 import { MarketplaceCrypto } from './MarketplaceCrypto';
+import { SigningWallet, WalletType } from './Wallet';
 
 /**
  * Arc Web3 CryptoUtils client object wraps all user, deposit, transfer, withdraw, and settlement functionalities.
@@ -30,7 +30,7 @@ export class CryptoUtils implements ICryptoUtils {
   private settlementClient: SettlementCrypto;
   private marketplaceClient: MarketplaceCrypto;
   public starkAccount: IStarkAccount;
-  public signer: JsonRpcSigner;
+  public wallet: SigningWallet;
 
   /**
    * Constructor of the CryptoUtils class.
@@ -62,7 +62,11 @@ export class CryptoUtils implements ICryptoUtils {
     let provider: ethers.JsonRpcProvider | ethers.BrowserProvider = undefined;
     if (ethereumWallet) {
       provider = new ethers.JsonRpcProvider(ethereumWallet.providerUrl);
-      this.signer = await provider.getSigner(ethereumWallet.privateKey);
+      // Create a Wallet instance with a private key and provider
+      this.wallet = new SigningWallet(
+        WalletType.Native,
+        new ethers.Wallet(ethereumWallet.privateKey, provider),
+      );
     } else {
       // A Web3Provider wraps a standard Web3 provider, which is
       // what MetaMask injects as window.ethereum into each page
@@ -77,14 +81,15 @@ export class CryptoUtils implements ICryptoUtils {
       // The MetaMask plugin also allows signing transactions to
       // send ether and pay to change state within the blockchain.
       // For this, you need the account signer...
-      this.signer = await provider.getSigner();
+      const injectedSigner = await provider.getSigner();
+      this.wallet = new SigningWallet(WalletType.Injected, injectedSigner);
+
+      // MetaMask requires requesting permission to connect users accounts
+      await provider.send('eth_requestAccounts', []);
     }
 
-    // MetaMask requires requesting permission to connect users accounts
-    await provider.send('eth_requestAccounts', []);
-
     // Generate Stark keys
-    const ethSignature = await this.signer.signMessage(message);
+    const ethSignature = await this.wallet.signMessage(message);
     const starkPrivateKey =
       starkwareCrypto.keyDerivation.getPrivateKeyFromEthSignature(ethSignature);
     const starkPublicKey =
@@ -96,10 +101,10 @@ export class CryptoUtils implements ICryptoUtils {
       publicKey: starkPublicKey,
     } as IStarkAccount;
 
-    this.userClient = new UserCrypto(this.signer, this.starkAccount);
-    this.depositClient = new DepositCrypto(this.signer);
+    this.userClient = new UserCrypto(this.wallet, this.starkAccount);
+    this.depositClient = new DepositCrypto(this.wallet);
     this.transferClient = new TransferCrypto(this.starkAccount);
-    this.withdrawClient = new WithdrawCrypto(this.signer);
+    this.withdrawClient = new WithdrawCrypto(this.wallet);
     this.settlementClient = new SettlementCrypto(this.starkAccount);
     this.marketplaceClient = new MarketplaceCrypto(this.starkAccount);
 

@@ -5,7 +5,7 @@ import { stripHexPrefix } from 'ethereumjs-util';
 import { MessageTypes, TypedMessage } from '@metamask/eth-sig-util';
 import { RegisterUserModel } from '../../client/gen';
 import { TypedDataDomain } from 'ethers/lib.commonjs/hash/typed-data';
-import { JsonRpcSigner } from 'ethers/lib.commonjs/providers/provider-jsonrpc';
+import { SigningWallet } from './Wallet';
 const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
 
 /**
@@ -15,15 +15,15 @@ const starkwareCrypto = require('@starkware-industries/starkware-crypto-utils');
  * The UserCrypto manages creating and registering new stark users as well as retrieving information on existing ones. It implements the IUserClient interface.
  */
 export class UserCrypto implements IUserCrypto {
-  private signer: JsonRpcSigner;
+  private wallet: SigningWallet;
   private starkAccount: IStarkAccount;
 
   /**
    * Constructor of the {@link UserCrypto} class.
    *
    */
-  public constructor(wallet: JsonRpcSigner, starkAccount: IStarkAccount) {
-    this.signer = wallet;
+  public constructor(wallet: SigningWallet, starkAccount: IStarkAccount) {
+    this.wallet = wallet;
     this.starkAccount = starkAccount;
 
     // bound methods
@@ -49,7 +49,7 @@ export class UserCrypto implements IUserCrypto {
 
     // TODO Is this still needed?
     data.domain.chainId = data.domain.chainId as number;
-    const eip712Signature = await this.signer.signTypedData(
+    const eip712Signature = await this.wallet.signTypedData(
       data.domain,
       data.types,
       data.message,
@@ -62,14 +62,14 @@ export class UserCrypto implements IUserCrypto {
     );
     const starkSignature = starkwareCrypto.sign(
       keyPair,
-      starkwareCrypto.pedersen([stripHexPrefix(this.signer.address)]),
+      starkwareCrypto.pedersen([stripHexPrefix(this.wallet.getAddress())]),
     );
     const r = starkSignature.r.toString('hex');
     const s = starkSignature.s.toString('hex');
 
     return {
       username,
-      address: this.signer.address,
+      address: this.wallet.getAddress(),
       eip712Signature,
       starkKey: this.starkAccount.publicKey,
       starkSignature: { r, s },
